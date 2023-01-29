@@ -14,6 +14,18 @@
         android:visibility="visible"
         tools:visibility="gone" />
 
+    <TextView
+        android:id="@+id/emptyStateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="@string/empty_state"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:translationZ="100dp"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notesRecyclerView"
         android:layout_width="match_parent"
