@@ -5,5 +5,7 @@
     <string name="delete_note">Delete</string>
     <string name="edit_note">Edit</string>
 
+    <string name="note_error_message">Enter title</string>
+
     <string name="empty_state" type="string">No notes&#10;Click the button to add note!</string>
 </resources>

@@ -14,7 +14,12 @@ class Communication {
         fun put(value: T)
     }
 
-    interface Mutable<T>: Observe<T>, Put<T>
+    // todo check what the hell I done
+    interface Get<T>{
+        fun get(): T
+    }
+
+    interface Mutable<T>: Observe<T>, Put<T>, Get<T>
 
     abstract class Abstract<T>(
         protected val liveData: MutableLiveData<T> = MutableLiveData()
@@ -22,11 +27,13 @@ class Communication {
 
         override fun observe(owner: LifecycleOwner, observer: Observer<T>) =
             liveData.observe(owner, observer)
+
+        override fun get(): T = liveData.value!!
     }
 
     abstract class Ui<T>(
         liveData: MutableLiveData<T> = MutableLiveData()
-    ): Abstract<T>(liveData) {
+    ): Communication.Abstract<T>(liveData) {
 
         override fun put(value: T) {
             liveData.value = value
@@ -35,7 +42,7 @@ class Communication {
 
     abstract class Post<T>(
         liveData: MutableLiveData<T> = MutableLiveData()
-    ): Abstract<T>(liveData){
+    ): Communication.Abstract<T>(liveData){
 
         override fun put(value: T) = liveData.postValue(value)
     }

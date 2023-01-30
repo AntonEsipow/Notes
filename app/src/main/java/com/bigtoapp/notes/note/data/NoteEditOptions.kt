@@ -12,6 +12,7 @@ interface NoteEditOptions {
 
     interface Mutable: Save, Read
 
+    // todo think how to do
     class Base: Mutable{
 
         private var value = ""
@@ -20,6 +21,10 @@ interface NoteEditOptions {
             value = id
         }
 
-        override fun read(): String = value
+        override fun read(): String {
+            val data = value
+            value = ""
+            return data
+        }
     }
 }

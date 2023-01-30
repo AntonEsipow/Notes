@@ -39,11 +39,8 @@ class NotesViewModel(
         communications.observeList(owner, observer)
 }
 
-interface NotesScreenOperations: NoteOperations{
+interface NotesScreenOperations {
     fun addNote()
-}
-
-interface NoteOperations{
     fun deleteNote(noteId: String)
     fun editNote(noteId: String)
 }
