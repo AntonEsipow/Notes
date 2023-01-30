@@ -3,6 +3,7 @@ package com.bigtoapp.notes.notes.presentation
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.bigtoapp.notes.main.BaseTest
 import com.bigtoapp.notes.main.presentation.DispatchersList
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.domain.NoteDomainToUi
@@ -14,7 +15,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class NotesViewModelTest {
+class NotesViewModelTest: BaseTest() {
 
     private lateinit var interactor: TestNotesInteractor
     private lateinit var communications: TestNotesCommunications
@@ -256,12 +257,4 @@ private class TestNotesInteractor: NotesInteractor {
     override fun editNote(noteId: String) {
         editNoteCalledList.add(noteId)
     }
-}
-
-private class TestDispatcherList(
-    private val dispatcher: CoroutineDispatcher = TestCoroutineDispatcher()
-): DispatchersList {
-
-    override fun io(): CoroutineDispatcher = dispatcher
-    override fun ui(): CoroutineDispatcher = dispatcher
 }
