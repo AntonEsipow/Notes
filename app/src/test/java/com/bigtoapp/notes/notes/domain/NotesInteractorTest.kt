@@ -45,10 +45,12 @@ class NotesInteractorTest {
                 NoteDomain(id = "2", title = "book", subtitle = "description")
             )
         )
+        repository.changeRemovedNote("1")
         val actual = interactor.deleteNote("1")
         val expected = listOf(NoteDomain(id = "2", title = "book", subtitle = "description"))
         assertEquals(expected, actual)
         assertEquals(1, repository.allNotesCalledCount)
+        assertEquals("1", repository.deleteNoteCalledList[0])
     }
 }
 
@@ -57,11 +59,16 @@ private class TestNotesRepository: NotesRepository {
     var allNotesCalledCount = 0
     val deleteNoteCalledList = mutableListOf<String>()
 
-    private var notesList = mutableListOf<NoteDomain>()
+    private val notesList = mutableListOf<NoteDomain>()
 
     fun changeExpectedList(list: List<NoteDomain>) {
         notesList.clear()
         notesList.addAll(list)
+    }
+
+    fun changeRemovedNote(noteId: String){
+        val item = notesList.find { it.map(TestSameNoteMapper(noteId)) }
+        notesList.remove(item)
     }
 
     override suspend fun allNotes(): List<NoteDomain>{
@@ -71,8 +78,6 @@ private class TestNotesRepository: NotesRepository {
 
     override suspend fun deleteNote(noteId: String) {
         deleteNoteCalledList.add(noteId)
-        val item = notesList.find { it.map(TestSameNoteMapper(noteId)) }
-        notesList.remove(item)
     }
 }
 
