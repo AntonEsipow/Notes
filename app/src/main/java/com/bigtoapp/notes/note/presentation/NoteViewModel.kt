@@ -8,6 +8,7 @@ import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.note.domain.NoteInteractor
+import com.bigtoapp.notes.notes.presentation.HandleNotesRequest
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
 
 class NoteViewModel(
@@ -23,6 +24,7 @@ class NoteViewModel(
         if(noteId.isEmpty())
             communications.showState(NoteUiState.AddNote)
         else {
+            // we get liveData value that already exist to avoid going to DB again
             val noteList = communications.getNotesList()
             val noteDetails = noteList.find { it.map(noteId) }!!
             communications.showState(NoteUiState.EditNote(noteDetails))

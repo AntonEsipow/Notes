@@ -205,32 +205,6 @@ class NotesViewModelTest: BaseTest() {
     fun `test navigation add note`() = Unit
 }
 
-private class TestNotesCommunications: NotesCommunications {
-
-    val progressCalledList = mutableListOf<Int>()
-    val stateCalledList = mutableListOf<NotesUiState>()
-    val notesList = mutableListOf<NoteUi>()
-    var timesShowList = 0
-
-    override fun showProgress(show: Int){
-        progressCalledList.add(show)
-    }
-
-    override fun showState(notesUiState: NotesUiState){
-        stateCalledList.add(notesUiState)
-    }
-
-    override fun showList(list: List<NoteUi>) {
-        timesShowList++
-        notesList.clear()
-        notesList.addAll(list)
-    }
-
-    override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) = Unit
-    override fun observeState(owner: LifecycleOwner, observer: Observer<NotesUiState>) = Unit
-    override fun observeList(owner: LifecycleOwner, observer: Observer<List<NoteUi>>) = Unit
-}
-
 private class TestNotesInteractor: NotesInteractor {
 
     var initNotesCalledCount = 0
@@ -244,7 +218,7 @@ private class TestNotesInteractor: NotesInteractor {
         notesList.addAll(list)
     }
 
-    override suspend fun allNotes(): List<NoteDomain>{
+    override suspend fun allNotes(): List<NoteDomain> {
         initNotesCalledCount++
         return notesList
     }

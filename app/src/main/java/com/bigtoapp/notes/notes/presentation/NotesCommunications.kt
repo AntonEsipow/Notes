@@ -4,13 +4,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.presentation.Communication
 
-interface NotesCommunications: ObserveNotes {
+interface NotesCommunications: ObserveNotes, ShowListCommunication {
 
     fun showProgress(show: Int)
 
     fun showState(notesUiState: NotesUiState)
-
-    fun showList(list: List<NoteUi>)
 
     class Base(
         private val progress: ProgressCommunication,
@@ -42,6 +40,10 @@ interface ObserveNotes {
     fun observeState(owner: LifecycleOwner, observer: Observer<NotesUiState>)
 
     fun observeList(owner: LifecycleOwner, observer: Observer<List<NoteUi>>)
+}
+
+interface ShowListCommunication {
+    fun showList(list: List<NoteUi>)
 }
 
 interface ProgressCommunication: Communication.Mutable<Int>{
