@@ -5,9 +5,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.R
+import com.bigtoapp.notes.main.presentation.HandleListRequest
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.note.domain.NoteInteractor
+import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.presentation.HandleNotesRequest
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
 
@@ -16,7 +18,7 @@ class NoteViewModel(
     private val manageResources: ManageResources,
     private val communications: NoteCommunications,
     private val interactor: NoteInteractor,
-    private val handleRequest: HandleNoteRequest
+    private val handleRequest: HandleListRequest<NoteDomain>
 ): ViewModel(), NoteScreenOperations, ClearError, ObserveNote {
 
     override fun displayScreenState() {

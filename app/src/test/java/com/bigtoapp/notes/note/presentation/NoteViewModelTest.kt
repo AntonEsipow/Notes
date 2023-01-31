@@ -36,7 +36,7 @@ class NoteViewModelTest: BaseTest() {
             manageResources,
             communications,
             interactor,
-            HandleNoteRequest.Base(
+            HandleNoteRequest(
                 TestDispatcherList(),
                 notesCommunications,
                 NoteDomainToUi()

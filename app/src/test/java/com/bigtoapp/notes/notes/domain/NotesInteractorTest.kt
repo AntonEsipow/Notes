@@ -66,6 +66,7 @@ private class TestNotesRepository: NotesRepository {
         notesList.addAll(list)
     }
 
+    // todo check in repository
     fun changeRemovedNote(noteId: String){
         val item = notesList.find { it.map(TestSameNoteMapper(noteId)) }
         notesList.remove(item)

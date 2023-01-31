@@ -28,7 +28,7 @@ class NotesViewModelTest: BaseTest() {
         viewModel = NotesViewModel(
             interactor,
             TestNotesCommunications(),
-            HandleNotesRequest.Base(
+            HandleNotesRequest(
                 TestDispatcherList(),
                 communications,
                 NoteDomainToUi()
