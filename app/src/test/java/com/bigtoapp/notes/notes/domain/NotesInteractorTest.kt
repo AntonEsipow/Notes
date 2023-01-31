@@ -39,16 +39,7 @@ class NotesInteractorTest {
 
     @Test
     fun `test delete note`() = runBlocking {
-        repository.changeExpectedList(
-            listOf(
-                NoteDomain(id = "1", title = "title", subtitle = "subtitle"),
-                NoteDomain(id = "2", title = "book", subtitle = "description")
-            )
-        )
-        repository.changeRemovedNote("1")
-        val actual = interactor.deleteNote("1")
-        val expected = listOf(NoteDomain(id = "2", title = "book", subtitle = "description"))
-        assertEquals(expected, actual)
+        interactor.deleteNote("1")
         assertEquals(1, repository.allNotesCalledCount)
         assertEquals("1", repository.deleteNoteCalledList[0])
     }
@@ -61,15 +52,9 @@ private class TestNotesRepository: NotesRepository {
 
     private val notesList = mutableListOf<NoteDomain>()
 
-    fun changeExpectedList(list: List<NoteDomain>) {
-        notesList.clear()
-        notesList.addAll(list)
-    }
-
-    // todo check in repository
-    fun changeRemovedNote(noteId: String){
-        val item = notesList.find { it.map(TestSameNoteMapper(noteId)) }
-        notesList.remove(item)
+    fun changeExpectedList(list: List<NoteDomain>) = with(notesList){
+        clear()
+        addAll(list)
     }
 
     override suspend fun allNotes(): List<NoteDomain>{
@@ -80,8 +65,4 @@ private class TestNotesRepository: NotesRepository {
     override suspend fun deleteNote(noteId: String) {
         deleteNoteCalledList.add(noteId)
     }
-}
-
-private class TestSameNoteMapper(private val noteId: String): NoteDomain.Mapper<Boolean>{
-    override fun map(id: String, title: String, subtitle: String): Boolean = noteId == id
 }

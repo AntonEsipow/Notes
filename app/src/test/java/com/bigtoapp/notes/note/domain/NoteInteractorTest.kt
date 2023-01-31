@@ -15,10 +15,7 @@ class NoteInteractorTest {
     @Before
     fun setUp(){
         repository = TestNoteRepository()
-        interactor = NoteInteractor.Base(
-            repository,
-            NoteDomainToData()
-        )
+        interactor = NoteInteractor.Base(repository)
     }
 
     @Test
@@ -43,11 +40,11 @@ private class TestNoteRepository: NoteRepository{
     var insertNoteCalledCount = 0
     var updateNoteCalledCount = 0
 
-    override suspend fun insertNote(noteData: NoteData){
+    override suspend fun insertNote(id: String, title: String, subtitle: String) {
         insertNoteCalledCount++
     }
 
-    override suspend fun updateNote(noteData: NoteData){
+    override suspend fun updateNote(id: String, title: String, subtitle: String) {
         updateNoteCalledCount++
     }
 
