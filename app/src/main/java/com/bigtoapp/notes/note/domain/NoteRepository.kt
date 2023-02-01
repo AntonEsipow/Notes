@@ -5,7 +5,7 @@ import com.bigtoapp.notes.notes.domain.AllNotes
 
 interface NoteRepository: AllNotes {
 
-    suspend fun insertNote(noteData: NoteData)
+    suspend fun insertNote(id: String, title: String, subtitle: String)
 
-    suspend fun updateNote(noteData: NoteData)
+    suspend fun updateNote(id: String, title: String, subtitle: String)
 }

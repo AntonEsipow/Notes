@@ -17,7 +17,7 @@ class BaseNotesRepositoryTest {
         dao = TestNotesDao()
         repository = BaseNotesRepository(
             dao,
-            NoteDateToDomain()
+            NoteDataToDomain()
         )
     }
 

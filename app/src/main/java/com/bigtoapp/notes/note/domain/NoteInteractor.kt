@@ -11,17 +11,12 @@ interface NoteInteractor {
     suspend fun updateNote(noteId: String, title: String, subtitle: String): List<NoteDomain>
 
     class Base(
-        private val repository: NoteRepository,
-        private val mapper: NoteDomain.Mapper<NoteData>
+        private val repository: NoteRepository
     ):NoteInteractor {
 
         override suspend fun insertNote(title: String, subtitle: String): List<NoteDomain> {
-            val note = NoteDomain(
-                id = UUID.randomUUID().toString(),
-                title = title,
-                subtitle = subtitle
-            )
-            repository.insertNote(note.map(mapper))
+            val noteId = UUID.randomUUID().toString()
+            repository.insertNote(noteId, title, subtitle)
             return repository.allNotes()
         }
 
@@ -30,12 +25,7 @@ interface NoteInteractor {
             title: String,
             subtitle: String
         ): List<NoteDomain> {
-            val note = NoteDomain(
-                id = noteId,
-                title = title,
-                subtitle = subtitle
-            )
-            repository.updateNote(note.map(mapper))
+            repository.updateNote(noteId, title, subtitle)
             return repository.allNotes()
         }
     }
