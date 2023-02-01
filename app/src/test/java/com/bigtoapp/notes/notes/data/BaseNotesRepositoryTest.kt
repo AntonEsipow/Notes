@@ -16,8 +16,7 @@ class BaseNotesRepositoryTest {
     fun setUp(){
         dao = TestNotesDao()
         repository = BaseNotesRepository(
-            dao,
-            NoteDataToDomain()
+            dao
         )
     }
 

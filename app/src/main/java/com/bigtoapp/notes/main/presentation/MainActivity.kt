@@ -1,42 +1,28 @@
 package com.bigtoapp.notes.main.presentation
 
+import android.app.ProgressDialog.show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import com.bigtoapp.notes.R
+import com.bigtoapp.notes.main.sl.ProvideViewModel
 import com.bigtoapp.notes.notes.presentation.NotesFragment
 
-class MainActivity : AppCompatActivity(), ShowFragment {
+class MainActivity : AppCompatActivity(), ProvideViewModel {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(savedInstanceState == null)
-            show(NotesFragment(), false)
-
+        val viewModel = provideViewModel(MainViewModel::class.java, this)
+        viewModel.observe(this){ strategy ->
+            strategy.navigate(supportFragmentManager, R.id.container)
+        }
+        viewModel.init(savedInstanceState == null)
     }
 
-    override fun show(fragment: Fragment){
-        show(fragment, true)
-    }
-
-    private fun show(fragment: Fragment, add: Boolean){
-        // todo make navigation strategy
-        val transaction = supportFragmentManager.beginTransaction()
-        val container = R.id.container
-        if (add)
-            transaction.replace(container, fragment)
-                .addToBackStack(fragment.javaClass.simpleName)
-        else
-            transaction.replace(container, fragment)
-        transaction.commit()
-    }
-}
-
-interface ShowFragment{
-    fun show(fragment: Fragment)
-
-    class Empty: ShowFragment{
-        override fun show(fragment: Fragment) = Unit
-    }
+    override fun <T : ViewModel> provideViewModel(clazz: Class<T>, owner: ViewModelStoreOwner): T =
+        (application as ProvideViewModel).provideViewModel(clazz, owner)
 }
