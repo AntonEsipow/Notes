@@ -25,7 +25,9 @@ interface CacheModule {
     class Mock(private val context: Context): CacheModule{
 
         private val database by lazy {
-            Room.inMemoryDatabaseBuilder(context, ToDoRoomDatabase::class.java).build()
+            Room.inMemoryDatabaseBuilder(context, ToDoRoomDatabase::class.java)
+                .fallbackToDestructiveMigration()
+                .build()
         }
 
         override fun provideDatabase(): ToDoRoomDatabase = database

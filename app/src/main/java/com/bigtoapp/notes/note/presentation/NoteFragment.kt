@@ -8,30 +8,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bigtoapp.notes.R
+import com.bigtoapp.notes.main.presentation.BaseFragment
 
-class NoteFragment: Fragment() {
+class NoteFragment: BaseFragment<NoteViewModel>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_note, container, false)
-    }
+    override val layoutId = R.layout.fragment_note
+    override val viewModelClass: Class<NoteViewModel> = NoteViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val value = requireArguments().getString(KEY)
-        view.findViewById<TextView>(R.id.textView).text = value
-    }
-
-    companion object{
-        private const val KEY = "TEST"
-
-        fun newInstance(value: String) = NoteFragment().apply {
-            arguments = Bundle().apply {
-                putString(KEY, value)
-            }
-        }
     }
 }
