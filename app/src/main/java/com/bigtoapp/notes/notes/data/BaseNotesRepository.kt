@@ -8,8 +8,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class BaseNotesRepository(
-    private val dao: NotesDao,
-    private val mapper: NoteData.Mapper<NoteDomain>
+    private val dao: NotesDao
 ): NotesRepository, NoteRepository {
 
     private val mutex = Mutex()
@@ -31,7 +30,7 @@ class BaseNotesRepository(
 
     override suspend fun allNotes(): List<NoteDomain> = mutex.withLock {
         val data = dao.allNotes()
-        return data.map { it.map(mapper) }
+        return data.map { NoteDomain(it.id, it.title, it.subtitle) }
     }
 
     override suspend fun deleteNote(noteId: String) = mutex.withLock{
