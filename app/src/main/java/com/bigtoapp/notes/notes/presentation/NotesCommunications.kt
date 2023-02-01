@@ -44,6 +44,13 @@ interface ObserveNotes {
 
 interface ShowListCommunication {
     fun showList(list: List<NoteUi>)
+
+    // todo check when load
+    class Base(
+        private val notesList: NotesListCommunication
+    ): ShowListCommunication {
+        override fun showList(list: List<NoteUi>) = notesList.put(list)
+    }
 }
 
 interface ProgressCommunication: Communication.Mutable<Int>{

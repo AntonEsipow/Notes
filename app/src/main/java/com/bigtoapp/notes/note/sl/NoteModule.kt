@@ -34,7 +34,8 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
                     core.provideNotesListCommunication()
                 ),
                 NoteDomainToUi()
-            )
+            ),
+            core.provideNavigation()
         )
     }
 }

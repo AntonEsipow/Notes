@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.BaseTest
 import com.bigtoapp.notes.main.presentation.ManageResources
+import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.note.domain.NoteInteractor
 import com.bigtoapp.notes.notes.domain.NoteDomain
@@ -23,9 +24,11 @@ class NoteViewModelTest: BaseTest() {
     private lateinit var note: TestReadNote
     private lateinit var manageResources: TestManageResources
     private lateinit var viewModel: NoteViewModel
+    private lateinit var navigation: TestNavigationCommunication
 
     @Before
     fun setUp(){
+        navigation = TestNavigationCommunication()
         interactor = TestNoteInteractor()
         communications = TestNoteCommunications()
         note = TestReadNote()
@@ -40,7 +43,8 @@ class NoteViewModelTest: BaseTest() {
                 TestDispatcherList(),
                 notesCommunications,
                 NoteDomainToUi()
-            )
+            ),
+            navigation
         )
     }
 
@@ -124,6 +128,10 @@ class NoteViewModelTest: BaseTest() {
         assertEquals(1, notesCommunications.timesShowList)
         assertEquals(3, notesCommunications.notesList.size)
         assertEquals(NoteUi("3", "book", "tom sawyer"), notesCommunications.notesList[2])
+        assertEquals(
+            NoteUiState.AddNote,
+            communications.stateCalledList[1]
+        )
     }
 
     @Test
@@ -150,6 +158,8 @@ class NoteViewModelTest: BaseTest() {
         assertEquals("2", interactor.updateNoteIdCheck[0])
         assertEquals(1, notesCommunications.timesShowList)
         assertEquals(2, notesCommunications.notesList.size)
+        assertEquals(1, navigation.count)
+        assertEquals(NavigationStrategy.Back, navigation.strategy)
     }
 
     @Test

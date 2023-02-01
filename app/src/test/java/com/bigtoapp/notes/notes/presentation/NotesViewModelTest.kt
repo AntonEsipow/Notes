@@ -5,6 +5,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.BaseTest
 import com.bigtoapp.notes.main.presentation.DispatchersList
+import com.bigtoapp.notes.main.presentation.NavigationStrategy
+import com.bigtoapp.notes.main.presentation.Screen
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.domain.NoteDomainToUi
 import com.bigtoapp.notes.notes.domain.NotesInteractor
@@ -20,9 +22,11 @@ class NotesViewModelTest: BaseTest() {
     private lateinit var interactor: TestNotesInteractor
     private lateinit var communications: TestNotesCommunications
     private lateinit var viewModel: NotesViewModel
+    private lateinit var navigation: TestNavigationCommunication
 
     @Before
     fun setUp(){
+        navigation = TestNavigationCommunication()
         communications = TestNotesCommunications()
         interactor = TestNotesInteractor()
         viewModel = NotesViewModel(
@@ -32,7 +36,8 @@ class NotesViewModelTest: BaseTest() {
                 TestDispatcherList(),
                 communications,
                 NoteDomainToUi()
-            )
+            ),
+            navigation
         )
     }
 
@@ -196,16 +201,27 @@ class NotesViewModelTest: BaseTest() {
         assertEquals(1, communications.timesShowList)
     }
 
-    // todo check navigation strategy
     @Test
-    fun `test edit note`() = Unit
+    fun `test navigation edit note`() {
+        viewModel.editNote("12345")
+        assertEquals("12345", interactor.updatedNoteId)
 
-    // todo check strategy when add navigation
+        assertEquals(1, navigation.count)
+        assertEquals(NavigationStrategy.Add(Screen.Note), navigation.strategy)
+    }
+
     @Test
-    fun `test navigation add note`() = Unit
+    fun `test navigation add note`() {
+        viewModel.addNote()
+
+        assertEquals(1, navigation.count)
+        assertEquals(NavigationStrategy.Add(Screen.Note), navigation.strategy)
+    }
 }
 
 private class TestNotesInteractor: NotesInteractor {
+
+    var updatedNoteId = ""
 
     var initNotesCalledCount = 0
     val editNoteCalledList = mutableListOf<String>()
@@ -229,6 +245,7 @@ private class TestNotesInteractor: NotesInteractor {
     }
 
     override fun editNote(noteId: String) {
+        updatedNoteId = noteId
         editNoteCalledList.add(noteId)
     }
 }

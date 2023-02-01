@@ -33,4 +33,11 @@ interface NavigationStrategy {
                 add(containerId, it.newInstance()).addToBackStack(it.simpleName)
             }
     }
+
+    // todo check how it works
+    object Back: NavigationStrategy {
+        override fun navigate(fragmentManager: FragmentManager, containerId: Int) {
+            fragmentManager.popBackStack()
+        }
+    }
 }
