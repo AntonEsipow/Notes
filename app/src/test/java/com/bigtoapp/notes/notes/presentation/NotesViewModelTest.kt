@@ -55,7 +55,7 @@ class NotesViewModelTest: BaseTest() {
         assertEquals(NotesUiState.NoNotes, communications.stateCalledList[0])
 
         assertEquals(0, communications.notesList.size)
-        assertEquals(0, communications.timesShowList)
+        assertEquals(1, communications.timesShowList)
     }
 
     @Test
@@ -198,7 +198,7 @@ class NotesViewModelTest: BaseTest() {
         assertEquals(2, communications.stateCalledList.size)
 
         assertEquals(NotesUiState.NoNotes, communications.stateCalledList[1])
-        assertEquals(1, communications.timesShowList)
+        assertEquals(2, communications.timesShowList)
     }
 
     @Test

@@ -10,6 +10,7 @@ import com.bigtoapp.notes.note.domain.NoteInteractor
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.domain.NoteDomainToUi
 import com.bigtoapp.notes.notes.presentation.NoteUi
+import com.bigtoapp.notes.notes.presentation.NotesUiState
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestDispatcher
 import org.junit.Assert.assertEquals
@@ -52,7 +53,7 @@ class NoteViewModelTest: BaseTest() {
     fun `test display add note screen`() {
         note.changeExpectedValue("")
 
-        viewModel.displayScreenState()
+        viewModel.init(true)
         assertEquals(NoteUiState.AddNote, communications.stateCalledList[0])
     }
 
@@ -64,7 +65,7 @@ class NoteViewModelTest: BaseTest() {
             NoteUi("2", "shop", "buy apples")
         ))
 
-        viewModel.displayScreenState()
+        viewModel.init(true)
         assertEquals(
             NoteUiState.EditNote(NoteUi("2", "shop", "buy apples")),
             communications.stateCalledList[0]
@@ -72,7 +73,7 @@ class NoteViewModelTest: BaseTest() {
     }
 
     @Test
-    fun `test no title error state screen`() = runBlocking {
+    fun `test no title error state`() = runBlocking {
         manageResources.makeExpectedAnswer("Enter something")
         note.changeExpectedValue("2")
         communications.changeExpectedList(listOf(
@@ -80,17 +81,17 @@ class NoteViewModelTest: BaseTest() {
             NoteUi("2", "shop", "buy apples")
         ))
 
-        viewModel.displayScreenState()
+        viewModel.init(true)
         assertEquals(
             NoteUiState.EditNote(NoteUi("2", "shop", "buy apples")),
             communications.stateCalledList[0]
         )
         viewModel.saveNote("", "tom sawyer")
-        assertEquals(NoteUiState.ShowError("Enter something"), communications.stateCalledList[1])
+        assertEquals(NoteUiState.ShowErrorTitle("Enter something"), communications.stateCalledList[1])
     }
 
     @Test
-    fun `test no description error state screen`() = runBlocking {
+    fun `test no description error state`() = runBlocking {
         manageResources.makeExpectedAnswer("Enter something")
         note.changeExpectedValue("2")
         communications.changeExpectedList(listOf(
@@ -98,13 +99,13 @@ class NoteViewModelTest: BaseTest() {
             NoteUi("2", "shop", "buy apples")
         ))
 
-        viewModel.displayScreenState()
+        viewModel.init(true)
         assertEquals(
             NoteUiState.EditNote(NoteUi("2", "shop", "buy apples")),
             communications.stateCalledList[0]
         )
-        viewModel.saveNote("shop", "")
-        assertEquals(NoteUiState.ShowError("Enter something"), communications.stateCalledList[1])
+        viewModel.saveNote("book", "")
+        assertEquals(NoteUiState.ShowErrorDescription("Enter something"), communications.stateCalledList[1])
     }
 
     @Test
@@ -112,7 +113,7 @@ class NoteViewModelTest: BaseTest() {
         manageResources.makeExpectedAnswer("Enter something")
         note.changeExpectedValue("")
 
-        viewModel.displayScreenState()
+        viewModel.init(true)
         assertEquals(
             NoteUiState.AddNote,
             communications.stateCalledList[0]
@@ -132,6 +133,9 @@ class NoteViewModelTest: BaseTest() {
             NoteUiState.AddNote,
             communications.stateCalledList[1]
         )
+
+        assertEquals(1, notesCommunications.stateCalledList.size)
+        assertEquals(NotesUiState.Notes, notesCommunications.stateCalledList[0])
     }
 
     @Test
@@ -143,7 +147,7 @@ class NoteViewModelTest: BaseTest() {
             NoteUi("2", "shop", "buy apples")
         ))
 
-        viewModel.displayScreenState()
+        viewModel.init(true)
         assertEquals(
             NoteUiState.EditNote(NoteUi("2", "shop", "buy apples")),
             communications.stateCalledList[0]
@@ -156,8 +160,13 @@ class NoteViewModelTest: BaseTest() {
         assertEquals(1, interactor.updateNoteCalledCount)
         assertEquals(0, interactor.insertNoteCalledCount)
         assertEquals("2", interactor.updateNoteIdCheck[0])
+
         assertEquals(1, notesCommunications.timesShowList)
         assertEquals(2, notesCommunications.notesList.size)
+
+        assertEquals(1, notesCommunications.stateCalledList.size)
+        assertEquals(NotesUiState.Notes, notesCommunications.stateCalledList[0])
+
         assertEquals(1, navigation.count)
         assertEquals(NavigationStrategy.Back, navigation.strategy)
     }
@@ -230,6 +239,10 @@ private class TestReadNote: NoteEditOptions.Read{
     }
 
     override fun read(): String = value
+
+    override fun clear() {
+        value = ""
+    }
 }
 
 private class TestManageResources : ManageResources {
