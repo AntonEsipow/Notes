@@ -9,7 +9,7 @@ sealed class NotesUiState {
 
     object NoNotes: NotesUiState(){
         override fun apply(textView: TextView) {
-            textView.visibility = View.GONE
+            textView.visibility = View.VISIBLE
         }
     }
 

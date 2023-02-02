@@ -10,15 +10,11 @@ import com.bigtoapp.notes.note.presentation.NoteUiStateCommunication
 import com.bigtoapp.notes.note.presentation.NoteViewModel
 import com.bigtoapp.notes.notes.data.BaseNotesRepository
 import com.bigtoapp.notes.notes.domain.NoteDomainToUi
-import com.bigtoapp.notes.notes.presentation.ShowListCommunication
+import com.bigtoapp.notes.notes.presentation.ShowNotesCommunications
 
 class NoteModule(private val core: Core): Module<NoteViewModel> {
 
     override fun viewModel(): NoteViewModel {
-
-        val repository = BaseNotesRepository(
-            core.provideDatabase().notesDao()
-        )
 
         return NoteViewModel(
             core.provideNoteEditOptions(),
@@ -27,11 +23,12 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
                 core.provideNotesListCommunication(),
                 NoteUiStateCommunication.Base()
             ),
-            NoteInteractor.Base(repository),
+            NoteInteractor.Base(core.provideRepository()),
             HandleNoteRequest(
                 core.provideDispatchers(),
-                ShowListCommunication.Base(
-                    core.provideNotesListCommunication()
+                ShowNotesCommunications.Base(
+                    core.provideNotesListCommunication(),
+                    core.provideNotesStateCommunication()
                 ),
                 NoteDomainToUi()
             ),

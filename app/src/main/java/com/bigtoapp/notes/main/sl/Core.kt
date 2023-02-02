@@ -7,13 +7,18 @@ import com.bigtoapp.notes.main.presentation.DispatchersList
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.main.presentation.NavigationCommunication
 import com.bigtoapp.notes.note.data.NoteEditOptions
+import com.bigtoapp.notes.notes.data.BaseNotesRepository
+import com.bigtoapp.notes.notes.domain.NotesRepository
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
 import com.bigtoapp.notes.notes.presentation.NotesScreenOperations
+import com.bigtoapp.notes.notes.presentation.NotesUiStateCommunication
 
 interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEditOptions,
-    ProvideNotesListCommunication {
+    ProvideNotesCommunication {
 
     fun provideDispatchers(): DispatchersList
+
+    fun provideRepository(): BaseNotesRepository
 
     class Base(
         context: Context,
@@ -28,12 +33,18 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
 
         private val notesListCommunication = NotesListCommunication.Base()
 
+        private val notesStateCommunication = NotesUiStateCommunication.Base()
+
         private val dispatchers by lazy {
             DispatchersList.Base()
         }
 
         private val cacheModule by lazy {
             provideInstances.provideCacheModule()
+        }
+
+        override fun provideRepository(): BaseNotesRepository {
+            return BaseNotesRepository(provideDatabase().notesDao())
         }
 
         override fun provideDispatchers(): DispatchersList = dispatchers
@@ -47,6 +58,8 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
         override fun provideNoteEditOptions(): NoteEditOptions.Mutable = noteEditOptions
 
         override fun provideNotesListCommunication(): NotesListCommunication = notesListCommunication
+
+        override fun provideNotesStateCommunication(): NotesUiStateCommunication = notesStateCommunication
     }
 }
 
@@ -58,6 +71,7 @@ interface ProvideNoteEditOptions{
     fun provideNoteEditOptions(): NoteEditOptions.Mutable
 }
 
-interface ProvideNotesListCommunication{
+interface ProvideNotesCommunication{
     fun provideNotesListCommunication(): NotesListCommunication
+    fun provideNotesStateCommunication(): NotesUiStateCommunication
 }

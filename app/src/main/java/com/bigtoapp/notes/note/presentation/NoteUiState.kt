@@ -37,25 +37,45 @@ sealed class NoteUiState{
         }
     }
 
-    // todo check how to use independent if needed
-    abstract class AbstractError(
-        private val message: String,
-        private val errorEnabled: Boolean
-    ): NoteUiState() {
+    data class ShowErrorTitle(
+        private val message: String
+        ): NoteUiState() {
         override fun apply(
             titleLayout: TextInputLayout,
             titleEditText: TextInputEditText,
             descriptionLayout: TextInputLayout,
             descriptionEditText: TextInputEditText
         ) {
-            titleLayout.isErrorEnabled = errorEnabled
+            titleLayout.isErrorEnabled = true
             titleLayout.error = message
-            descriptionLayout.isErrorEnabled = errorEnabled
+        }
+    }
+
+    data class ShowErrorDescription(
+        private val message: String
+        ): NoteUiState(){
+        override fun apply(
+            titleLayout: TextInputLayout,
+            titleEditText: TextInputEditText,
+            descriptionLayout: TextInputLayout,
+            descriptionEditText: TextInputEditText
+        ) {
+            descriptionLayout.isErrorEnabled = true
             descriptionLayout.error = message
         }
     }
 
-    data class ShowError(private val message: String): AbstractError(message, true)
-
-    class ClearError : AbstractError("", false)
+    class ClearError : NoteUiState() {
+        override fun apply(
+            titleLayout: TextInputLayout,
+            titleEditText: TextInputEditText,
+            descriptionLayout: TextInputLayout,
+            descriptionEditText: TextInputEditText
+        ) {
+            titleLayout.isErrorEnabled = false
+            titleLayout.error = ""
+            descriptionLayout.isErrorEnabled = false
+            descriptionLayout.error = ""
+        }
+    }
 }

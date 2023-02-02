@@ -49,7 +49,7 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
             viewModel.saveNote(titleEditText.text.toString(), descriptionEditText.text.toString())
         }
 
-        viewModel.displayScreenState()
+        viewModel.init(savedInstanceState == null)
     }
 
     override fun onResume() {

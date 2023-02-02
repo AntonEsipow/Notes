@@ -14,17 +14,13 @@ class NotesModule(private val core: Core): Module<NotesViewModel> {
 
         val communications = NotesCommunications.Base(
             ProgressCommunication.Base(),
-            NotesUiStateCommunication.Base(),
+            core.provideNotesStateCommunication(),
             core.provideNotesListCommunication()
-        )
-
-        val repository = BaseNotesRepository(
-            core.provideDatabase().notesDao()
         )
 
         return NotesViewModel(
             NotesInteractor.Base(
-                repository,
+                core.provideRepository(),
                 core.provideNoteEditOptions()
             ),
             communications,

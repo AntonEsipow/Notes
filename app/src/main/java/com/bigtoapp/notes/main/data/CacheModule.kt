@@ -26,7 +26,6 @@ interface CacheModule {
 
         private val database by lazy {
             Room.inMemoryDatabaseBuilder(context, ToDoRoomDatabase::class.java)
-                .fallbackToDestructiveMigration()
                 .build()
         }
 

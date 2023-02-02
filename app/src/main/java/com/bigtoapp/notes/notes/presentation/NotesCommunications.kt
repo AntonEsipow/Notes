@@ -4,11 +4,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.presentation.Communication
 
-interface NotesCommunications: ObserveNotes, ShowListCommunication {
+interface NotesCommunications: ObserveNotes, ShowNotesCommunications {
 
     fun showProgress(show: Int)
-
-    fun showState(notesUiState: NotesUiState)
 
     class Base(
         private val progress: ProgressCommunication,
@@ -42,14 +40,17 @@ interface ObserveNotes {
     fun observeList(owner: LifecycleOwner, observer: Observer<List<NoteUi>>)
 }
 
-interface ShowListCommunication {
-    fun showList(list: List<NoteUi>)
+interface ShowNotesCommunications {
 
-    // todo check when load
+    fun showList(list: List<NoteUi>)
+    fun showState(notesUiState: NotesUiState)
+
     class Base(
-        private val notesList: NotesListCommunication
-    ): ShowListCommunication {
+        private val notesList: NotesListCommunication,
+        private val notesState: NotesUiStateCommunication
+    ): ShowNotesCommunications {
         override fun showList(list: List<NoteUi>) = notesList.put(list)
+        override fun showState(notesUiState: NotesUiState) = notesState.put(notesUiState)
     }
 }
 

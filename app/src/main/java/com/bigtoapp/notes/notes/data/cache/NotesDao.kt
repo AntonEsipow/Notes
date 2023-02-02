@@ -1,9 +1,6 @@
 package com.bigtoapp.notes.notes.data.cache
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.bigtoapp.notes.notes.data.NoteData
 
 @Dao

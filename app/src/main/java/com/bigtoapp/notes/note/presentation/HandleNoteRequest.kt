@@ -10,13 +10,19 @@ import kotlinx.coroutines.launch
 
 class HandleNoteRequest(
     private val dispatchers: DispatchersList,
-    private val communications: ShowListCommunication,
+    private val communications: ShowNotesCommunications,
     private val mapper: NoteDomain.Mapper<NoteUi>
 ): HandleListRequest<NoteDomain> {
     // todo check loading state
     override fun handle(coroutineScope: CoroutineScope, block: suspend () -> List<NoteDomain>) {
         coroutineScope.launch(dispatchers.io()) {
             val list = block.invoke()
+            communications.showState(
+                if(list.isEmpty())
+                    NotesUiState.NoNotes
+                else
+                    NotesUiState.Notes
+            )
             communications.showList(list.map { it.map(mapper) })
         }
     }

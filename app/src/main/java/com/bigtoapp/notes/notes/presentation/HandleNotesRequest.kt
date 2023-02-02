@@ -22,11 +22,10 @@ class HandleNotesRequest(
             communications.showState(
                 if(list.isEmpty())
                     NotesUiState.NoNotes
-                else {
-                    communications.showList(list.map { it.map(mapper) })
+                else
                     NotesUiState.Notes
-                }
             )
+            communications.showList(list.map { it.map(mapper) })
         }
     }
 }

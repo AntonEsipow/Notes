@@ -8,6 +8,7 @@ interface NoteEditOptions {
 
     interface Read{
         fun read(): String
+        fun clear()
     }
 
     interface Mutable: Save, Read
@@ -21,10 +22,10 @@ interface NoteEditOptions {
             value = id
         }
 
-        override fun read(): String {
-            val data = value
+        override fun read() = value
+
+        override fun clear() {
             value = ""
-            return data
         }
     }
 }
