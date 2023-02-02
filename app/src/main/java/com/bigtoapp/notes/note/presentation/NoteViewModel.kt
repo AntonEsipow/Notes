@@ -31,7 +31,7 @@ class NoteViewModel(
         else {
             // we get liveData value that already exist to avoid going to DB again
             val noteList = communications.getNotesList()
-            val noteDetails = noteList.find { it.map(noteId) }!!
+            val noteDetails = noteList.find { it.mapId(noteId) }!!
             communications.showState(NoteUiState.EditNote(noteDetails))
         }
     }

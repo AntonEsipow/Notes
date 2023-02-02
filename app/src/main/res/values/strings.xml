@@ -8,4 +8,8 @@
     <string name="note_error_message">Enter title</string>
 
     <string name="empty_state" type="string">No notes&#10;Click the button to add note!</string>
+
+    <string name="title_hint">Title</string>
+    <string name="description_hint">Description</string>
+    <string name="save_note">Save note</string>
 </resources>
