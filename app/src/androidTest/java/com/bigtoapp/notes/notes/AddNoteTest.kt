@@ -1,6 +1,7 @@
-package com.bigtoapp.notes
+package com.bigtoapp.notes.notes
 
 import androidx.test.espresso.Espresso.pressBack
+import com.bigtoapp.notes.main.BaseTest
 import org.junit.Test
 
 class AddNoteTest: BaseTest() {

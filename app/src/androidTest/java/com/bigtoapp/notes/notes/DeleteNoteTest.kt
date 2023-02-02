@@ -1,12 +1,13 @@
-package com.bigtoapp.notes
+package com.bigtoapp.notes.notes
 
 import androidx.test.espresso.Espresso
+import com.bigtoapp.notes.main.BaseTest
 import org.junit.Test
 
-class AddNotesTest: BaseTest() {
+class DeleteNoteTest: BaseTest() {
 
     @Test
-    fun test_add_some_notes(){
+    fun test_delete_note(){
         val notesPage = NotesPage()
         val notePage = NotePage()
 
@@ -29,6 +30,11 @@ class AddNotesTest: BaseTest() {
 
             recyclerView.viewInRecycler(1, titleItem).checkText("home")
             recyclerView.viewInRecycler(1, descriptionItem).checkText("clean room")
+
+            recyclerView.viewInRecycler(0, deleteButton).click()
+
+            recyclerView.viewInRecycler(0, titleItem).checkText("home")
+            recyclerView.viewInRecycler(0, descriptionItem).checkText("clean room")
         }
     }
 }

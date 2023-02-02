@@ -1,4 +1,4 @@
-package com.bigtoapp.notes
+package com.bigtoapp.notes.main
 
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.matcher.ViewMatchers

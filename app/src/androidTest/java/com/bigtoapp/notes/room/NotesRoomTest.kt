@@ -1,4 +1,4 @@
-package com.bigtoapp.notes
+package com.bigtoapp.notes.room
 
 import android.content.Context
 import androidx.room.Room
@@ -16,7 +16,7 @@ import java.io.IOException
 import kotlin.jvm.Throws
 
 @RunWith(AndroidJUnit4::class)
-class RoomTest {
+class NotesRoomTest {
 
     private lateinit var db: ToDoRoomDatabase
     private lateinit var dao: NotesDao

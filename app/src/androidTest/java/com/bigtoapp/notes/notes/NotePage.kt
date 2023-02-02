@@ -1,4 +1,7 @@
-package com.bigtoapp.notes
+package com.bigtoapp.notes.notes
+
+import com.bigtoapp.notes.R
+import com.bigtoapp.notes.main.Page
 
 class NotePage: Page() {
 

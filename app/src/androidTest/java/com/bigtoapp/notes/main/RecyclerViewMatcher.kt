@@ -1,4 +1,4 @@
-package com.bigtoapp.notes
+package com.bigtoapp.notes.main
 
 import android.content.res.Resources
 import android.view.View
