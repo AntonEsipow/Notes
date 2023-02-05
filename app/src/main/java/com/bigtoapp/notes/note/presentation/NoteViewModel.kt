@@ -1,5 +1,8 @@
 package com.bigtoapp.notes.note.presentation
 
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -9,8 +12,12 @@ import com.bigtoapp.notes.main.presentation.*
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.note.domain.NoteInteractor
 import com.bigtoapp.notes.notes.domain.NoteDomain
+import com.bigtoapp.notes.notes.presentation.DateFormatter
 import com.bigtoapp.notes.notes.presentation.HandleNotesRequest
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NoteViewModel(
     private val note: NoteEditOptions.Read,
@@ -18,8 +25,9 @@ class NoteViewModel(
     private val communications: NoteCommunications,
     private val interactor: NoteInteractor,
     private val handleRequest: HandleListRequest<NoteDomain>,
-    private val navigationCommunication: NavigationCommunication.Mutate
-): ViewModel(), Init, NoteScreenOperations, ClearError, ObserveNote {
+    private val navigationCommunication: NavigationCommunication.Mutate,
+    private val dateFormatter: DateFormatter<String, Long>
+): ViewModel(), Init, NoteScreenOperations, ClearError, ObserveNote, PerformDateOperations {
 
     override fun init(isFirstRun: Boolean) {
         val noteId = note.read()
@@ -33,7 +41,7 @@ class NoteViewModel(
         }
     }
 
-    override fun saveNote(title: String, subtitle: String) {
+    override fun saveNote(title: String, subtitle: String, date: String) {
         val noteId = note.read()
         if(title.isEmpty())
             communications.showState(
@@ -44,16 +52,39 @@ class NoteViewModel(
         else {
             if(noteId.isEmpty()){
                 handleRequest.handle(viewModelScope){
-                    interactor.insertNote(title, subtitle)
+                    interactor.insertNote(title, subtitle, date)
                 }
                 communications.showState(NoteUiState.AddNote)
             } else {
                 handleRequest.handle(viewModelScope){
-                    interactor.updateNote(noteId, title, subtitle)
+                    interactor.updateNote(noteId, title, subtitle, date)
                 }
                 note.clear()
                 navigationCommunication.put(NavigationStrategy.Back)
             }
+        }
+    }
+
+    override fun changePerformDate(parentFragmentManager: FragmentManager, view: TextView) {
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Calendar")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+        datePicker.show(parentFragmentManager, "MATERIAL_DATE_PICKER")
+        // Setting up the event for when ok is clicked
+        datePicker.addOnPositiveButtonClickListener {
+            // formatting date in dd-mm-yyyy format.
+            val date = dateFormatter.format(it)
+            view.text = date
+        }
+        // Setting up the event for when cancelled is clicked
+        datePicker.addOnNegativeButtonClickListener {
+            // NO message
+        }
+        // Setting up the event for when back button is pressed
+        datePicker.addOnCancelListener {
+            // No message
         }
     }
 
@@ -64,7 +95,11 @@ class NoteViewModel(
 }
 
 interface NoteScreenOperations{
-    fun saveNote(title: String, subtitle: String)
+    fun saveNote(title: String, subtitle: String, date: String)
+}
+
+interface PerformDateOperations{
+    fun changePerformDate(parentFragmentManager: FragmentManager, view: TextView)
 }
 
 interface ClearError{

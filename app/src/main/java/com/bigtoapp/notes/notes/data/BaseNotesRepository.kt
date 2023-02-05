@@ -13,25 +13,29 @@ class BaseNotesRepository(
 
     private val mutex = Mutex()
 
-    override suspend fun insertNote(id: String, title: String, subtitle: String, createdTime: Long) =
+    override suspend fun insertNote(
+        id: String, title: String, subtitle: String, createdTime: Long, performDate: Long
+    ) =
         mutex.withLock {
         val data = NoteData(
             id = id,
             title = title,
             subtitle = subtitle,
-            createdTime = createdTime
+            createdTime = createdTime,
+            performDate = performDate
         )
         dao.insertNote(data)
     }
 
-    override suspend fun updateNote(id: String, title: String, subtitle: String) = mutex.withLock {
-        dao.updateNote(id, title, subtitle)
-    }
+    override suspend fun updateNote(id: String, title: String, subtitle: String, performDate: Long) =
+        mutex.withLock {
+            dao.updateNote(id, title, subtitle, performDate)
+        }
 
 
     override suspend fun allNotes(): List<NoteDomain> = mutex.withLock {
         val data = dao.allNotes()
-        return data.map { NoteDomain(it.id, it.title, it.subtitle) }
+        return data.map { NoteDomain(it.id, it.title, it.subtitle, it.performDate) }
     }
 
     override suspend fun deleteNote(noteId: String) = mutex.withLock{

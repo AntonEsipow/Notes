@@ -15,6 +15,8 @@ interface NotesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNote(noteData: NoteData)
 
-    @Query("UPDATE notes_table SET title = :title, subtitle = :subtitle WHERE id = :id")
-    fun updateNote(id: String, title: String, subtitle: String)
+    @Query(
+        "UPDATE notes_table SET title = :title, subtitle = :subtitle, performDate = :performDate WHERE id = :id"
+    )
+    fun updateNote(id: String, title: String, subtitle: String, performDate: Long)
 }

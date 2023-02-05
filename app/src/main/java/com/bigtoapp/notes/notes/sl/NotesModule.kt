@@ -27,7 +27,7 @@ class NotesModule(private val core: Core): Module<NotesViewModel> {
             HandleNotesRequest(
                 core.provideDispatchers(),
                 communications,
-                NoteDomainToUi()
+                NoteDomainToUi(DateToUi())
             ),
             core.provideNavigation()
         )

@@ -43,9 +43,10 @@ class NotesViewHolder(
 
     private val title = itemView.findViewById<TextView>(R.id.titleTextView)
     private val description = itemView.findViewById<TextView>(R.id.descriptionTextView)
+    private val date = itemView.findViewById<TextView>(R.id.dateTextView)
     private val deleteButton = itemView.findViewById<Button>(R.id.deleteNoteButton)
     private val updateButton = itemView.findViewById<Button>(R.id.updateNoteButton)
-    private val mapper = NoteItemUi(title, description)
+    private val mapper = NoteItemUi(title, description, date)
 
     fun bind(model: NoteUi){
         model.map(mapper)

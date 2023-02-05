@@ -10,11 +10,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.BaseFragment
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NoteFragment: BaseFragment<NoteViewModel>() {
 
@@ -35,18 +40,29 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         val descriptionInputLayout = view.findViewById<TextInputLayout>(R.id.descriptionInputLayout)
         descriptionEditText = view.findViewById(R.id.descriptionEditText)
         val saveNoteButton = view.findViewById<Button>(R.id.saveNoteButton)
+        val datePicker = view.findViewById<TextView>(R.id.datePicker)
+        val dateText = view.findViewById<TextView>(R.id.dateText)
 
         viewModel.observeState(this){
             it.apply(
                 titleInputLayout,
                 titleEditText,
                 descriptionInputLayout,
-                descriptionEditText
+                descriptionEditText,
+                dateText
             )
         }
 
         saveNoteButton.setOnClickListener {
-            viewModel.saveNote(titleEditText.text.toString(), descriptionEditText.text.toString())
+            viewModel.saveNote(
+                titleEditText.text.toString(),
+                descriptionEditText.text.toString(),
+                dateText.text.toString()
+            )
+        }
+
+        datePicker.setOnClickListener {
+            viewModel.changePerformDate(parentFragmentManager, dateText)
         }
 
         viewModel.init(savedInstanceState == null)

@@ -1,8 +1,12 @@
 package com.bigtoapp.notes.note.presentation
 
+import android.widget.TextView
+import com.bigtoapp.notes.notes.presentation.EditNoteUi
 import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.text.SimpleDateFormat
+import java.util.*
 
 sealed class NoteUiState{
 
@@ -10,18 +14,22 @@ sealed class NoteUiState{
         titleLayout: TextInputLayout,
         titleEditText: TextInputEditText,
         descriptionLayout: TextInputLayout,
-        descriptionEditText: TextInputEditText
+        descriptionEditText: TextInputEditText,
+        dateText: TextView
     )
 
     object AddNote: NoteUiState(){
+
         override fun apply(
             titleLayout: TextInputLayout,
             titleEditText: TextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText
+            descriptionEditText: TextInputEditText,
+            dateText: TextView
         ) {
             titleEditText.setText("")
             descriptionEditText.setText("")
+            dateText.text = ""
         }
     }
 
@@ -30,11 +38,13 @@ sealed class NoteUiState{
             titleLayout: TextInputLayout,
             titleEditText: TextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText
+            descriptionEditText: TextInputEditText,
+            dateText: TextView
         ) {
-            titleEditText.setText(noteUi.getTitle())
-            descriptionEditText.setText(noteUi.getDescription())
+            val mapper = EditNoteUi(titleEditText, descriptionEditText, dateText)
+            noteUi.map(mapper)
         }
+
     }
 
     data class ShowErrorTitle(
@@ -44,7 +54,8 @@ sealed class NoteUiState{
             titleLayout: TextInputLayout,
             titleEditText: TextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText
+            descriptionEditText: TextInputEditText,
+            dateText: TextView
         ) {
             titleLayout.isErrorEnabled = true
             titleLayout.error = message
@@ -58,7 +69,8 @@ sealed class NoteUiState{
             titleLayout: TextInputLayout,
             titleEditText: TextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText
+            descriptionEditText: TextInputEditText,
+            dateText: TextView
         ) {
             descriptionLayout.isErrorEnabled = true
             descriptionLayout.error = message
@@ -70,7 +82,8 @@ sealed class NoteUiState{
             titleLayout: TextInputLayout,
             titleEditText: TextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText
+            descriptionEditText: TextInputEditText,
+            dateText: TextView
         ) {
             titleLayout.isErrorEnabled = false
             titleLayout.error = ""
