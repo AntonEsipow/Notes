@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.presentation.DispatchersList
 import com.bigtoapp.notes.main.presentation.NavigationCommunication
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
+import com.bigtoapp.notes.notes.presentation.DateFormatter
 import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.bigtoapp.notes.notes.presentation.NotesCommunications
 import com.bigtoapp.notes.notes.presentation.NotesUiState
@@ -57,5 +58,9 @@ abstract class BaseTest {
         override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) = Unit
         override fun observeState(owner: LifecycleOwner, observer: Observer<NotesUiState>) = Unit
         override fun observeList(owner: LifecycleOwner, observer: Observer<List<NoteUi>>) = Unit
+    }
+
+    protected class TestDateToUi: DateFormatter<String, Long>{
+        override fun format(value: Long): String = value.toString()
     }
 }

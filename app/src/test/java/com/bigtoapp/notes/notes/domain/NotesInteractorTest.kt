@@ -24,14 +24,14 @@ class NotesInteractorTest {
     fun `test all notes`() = runBlocking {
         repository.changeExpectedList(
             listOf(
-                NoteDomain(id = "1", title = "title", subtitle = "subtitle"),
-                NoteDomain(id = "2", title = "book", subtitle = "description")
+                NoteDomain(id = "1", title = "title", subtitle = "subtitle", 2L),
+                NoteDomain(id = "2", title = "book", subtitle = "description", 2L)
             )
         )
         val actual = interactor.allNotes()
         val expected = listOf(
-            NoteDomain(id = "1", title = "title", subtitle = "subtitle"),
-            NoteDomain(id = "2", title = "book", subtitle = "description")
+            NoteDomain(id = "1", title = "title", subtitle = "subtitle", 2L),
+            NoteDomain(id = "2", title = "book", subtitle = "description", 2L)
         )
         assertEquals(expected, actual)
         assertEquals(1, repository.allNotesCalledCount)

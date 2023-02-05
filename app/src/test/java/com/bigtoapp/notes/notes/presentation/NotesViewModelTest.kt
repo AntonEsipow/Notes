@@ -35,7 +35,9 @@ class NotesViewModelTest: BaseTest() {
             HandleNotesRequest(
                 TestDispatcherList(),
                 communications,
-                NoteDomainToUi()
+                NoteDomainToUi(
+                    TestDateToUi()
+                )
             ),
             navigation
         )
@@ -61,7 +63,7 @@ class NotesViewModelTest: BaseTest() {
     @Test
     fun `test init note`() = runBlocking {
         interactor.changeExpectedList(
-            listOf(NoteDomain(id = "1", title = "title", subtitle = "subtitle"))
+            listOf(NoteDomain("1", "title", "subtitle", 1L))
         )
         viewModel.init(isFirstRun = true)
 
@@ -77,7 +79,7 @@ class NotesViewModelTest: BaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(1, communications.notesList.size)
         assertEquals(
-            NoteUi(id = "1", header="title", description ="subtitle"),
+            NoteUi(id = "1", header="title", description ="subtitle", performDate = "1"),
             communications.notesList[0]
         )
     }
@@ -86,8 +88,8 @@ class NotesViewModelTest: BaseTest() {
     fun `test init some notes`() = runBlocking {
         interactor.changeExpectedList(
             listOf(
-                NoteDomain(id = "1", title = "title", subtitle = "subtitle"),
-                NoteDomain(id = "2", title = "shop", subtitle = "apple")
+                NoteDomain("1", "title", "subtitle", 1L),
+                NoteDomain("2", "shop", "apple", 2L)
             )
         )
         viewModel.init(isFirstRun = true)
@@ -104,11 +106,11 @@ class NotesViewModelTest: BaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(2, communications.notesList.size)
         assertEquals(
-            NoteUi(id = "1", header="title", description ="subtitle"),
+            NoteUi("1", "title", "subtitle", "1"),
             communications.notesList[0]
         )
         assertEquals(
-            NoteUi(id = "2", header="shop", description ="apple"),
+            NoteUi("2", "shop", "apple", "2"),
             communications.notesList[1]
         )
     }
@@ -117,8 +119,8 @@ class NotesViewModelTest: BaseTest() {
     fun `test delete note`() = runBlocking {
         interactor.changeExpectedList(
             listOf(
-                NoteDomain(id = "1", title = "title", subtitle = "subtitle"),
-                NoteDomain(id = "2", title = "shop", subtitle = "apple")
+                NoteDomain("1", "title", "subtitle", 1L),
+                NoteDomain("2", "shop", "apple", 2L)
             )
         )
         viewModel.init(isFirstRun = true)
@@ -135,17 +137,17 @@ class NotesViewModelTest: BaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(2, communications.notesList.size)
         assertEquals(
-            NoteUi(id = "1", header="title", description ="subtitle"),
+            NoteUi("1", "title", "subtitle", "1"),
             communications.notesList[0]
         )
         assertEquals(
-            NoteUi(id = "2", header="shop", description ="apple"),
+            NoteUi("2", "shop", "apple", "2"),
             communications.notesList[1]
         )
 
         interactor.changeExpectedList(
             listOf(
-                NoteDomain(id = "2", title="shop", subtitle ="apple")
+                NoteDomain("2", "shop", "apple", 1L)
             )
         )
         viewModel.deleteNote("1")
@@ -159,7 +161,7 @@ class NotesViewModelTest: BaseTest() {
 
         assertEquals(NotesUiState.Notes, communications.stateCalledList[1])
         assertEquals(
-            NoteUi(id = "2", header="shop", description ="apple"),
+            NoteUi("2","shop", "apple", "1"),
             communications.notesList[0]
         )
     }
@@ -168,7 +170,7 @@ class NotesViewModelTest: BaseTest() {
     fun `test delete last note`() = runBlocking {
         interactor.changeExpectedList(
             listOf(
-                NoteDomain(id = "1", title ="title", subtitle ="subtitle")
+                NoteDomain("1", "title", "subtitle", 1L)
             )
         )
         viewModel.init(isFirstRun = true)
@@ -185,7 +187,7 @@ class NotesViewModelTest: BaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(1, communications.notesList.size)
         assertEquals(
-            NoteUi(id = "1", header="title", description ="subtitle"),
+            NoteUi("1", "title", "subtitle", "1"),
             communications.notesList[0]
         )
 

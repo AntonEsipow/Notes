@@ -23,13 +23,13 @@ class BaseNotesRepositoryTest {
     @Test
     fun `test all notes`(): Unit = runBlocking {
         dao.changeExpectedData(listOf(
-            NoteData("1", "title", "description", 1L),
-            NoteData("2", "book", "alice in wonderland", 1L)
+            NoteData("1", "title", "description", 1L, 1L),
+            NoteData("2", "book", "alice in wonderland", 1L, 2L)
         ))
         val actual = repository.allNotes()
         val expected = listOf(
-            NoteDomain("1", "title", "description"),
-            NoteDomain("2", "book", "alice in wonderland")
+            NoteDomain("1", "title", "description", 1L),
+            NoteDomain("2", "book", "alice in wonderland", 2L)
         )
         assertEquals(expected, actual)
         assertEquals(1, dao.allNotesCalledCount)
@@ -38,17 +38,17 @@ class BaseNotesRepositoryTest {
     @Test
     fun `test insert note`(): Unit = runBlocking{
         dao.changeExpectedData(listOf(
-            NoteData("1", "title", "description", 1L),
-            NoteData("2", "book", "alice in wonderland", 1L)
+            NoteData("1", "title", "description", 1L, 1L),
+            NoteData("2", "book", "alice in wonderland", 1L, 2L)
         ))
-        repository.insertNote("3", "shop", "fish", 1L)
+        repository.insertNote("3", "shop", "fish", 1L, 3L)
         assertEquals(1, dao.insertNoteCalledCount)
 
         val actual = repository.allNotes()
         val expected = listOf(
-            NoteDomain("1", "title", "description"),
-            NoteDomain("2", "book", "alice in wonderland"),
-            NoteDomain("3", "shop", "fish")
+            NoteDomain("1", "title", "description", 1L),
+            NoteDomain("2", "book", "alice in wonderland", 2L),
+            NoteDomain("3", "shop", "fish", 3L)
         )
         assertEquals(expected, actual)
     }
@@ -56,16 +56,16 @@ class BaseNotesRepositoryTest {
     @Test
     fun `test update note`(): Unit = runBlocking{
         dao.changeExpectedData(listOf(
-            NoteData("1", "title", "description", 1L),
-            NoteData("2", "book", "alice in wonderland", 1L)
+            NoteData("1", "title", "description", 1L, 1L),
+            NoteData("2", "book", "alice in wonderland", 1L, 2L)
         ))
-        repository.updateNote("2", "shop", "fish")
+        repository.updateNote("2", "shop", "fish", 4L)
         assertEquals(1, dao.updateNoteCalledCount)
 
         val actual = repository.allNotes()
         val expected = listOf(
-            NoteDomain("1", "title", "description"),
-            NoteDomain("2", "shop", "fish")
+            NoteDomain("1", "title", "description", 1L),
+            NoteDomain("2", "shop", "fish", 4L)
         )
         assertEquals(expected, actual)
     }
@@ -73,15 +73,15 @@ class BaseNotesRepositoryTest {
     @Test
     fun `test delete note`(): Unit = runBlocking{
         dao.changeExpectedData(listOf(
-            NoteData("1", "title", "description", 1L),
-            NoteData("2", "book", "alice in wonderland", 1L)
+            NoteData("1", "title", "description", 1L, 1L),
+            NoteData("2", "book", "alice in wonderland", 1L, 2L)
         ))
         repository.deleteNote("1")
         assertEquals("1", dao.deleteNoteCalledList[0])
 
         val actual = repository.allNotes()
         val expected = listOf(
-            NoteDomain("2", "book", "alice in wonderland")
+            NoteDomain("2", "book", "alice in wonderland", 2L)
         )
         assertEquals(expected, actual)
     }
@@ -106,11 +106,11 @@ private class TestNotesDao: NotesDao {
         data.add(noteData)
     }
 
-    override fun updateNote(id: String, title: String, subtitle: String) {
+    override fun updateNote(id: String, title: String, subtitle: String, performDate: Long) {
         updateNoteCalledCount++
         val item = data.find { it.mapId(id) }
         val index = data.indexOf(item)
-        val noteData = NoteData(id, title, subtitle, 4L)
+        val noteData = NoteData(id, title, subtitle, 4L, performDate)
         data[index] = noteData
     }
 
