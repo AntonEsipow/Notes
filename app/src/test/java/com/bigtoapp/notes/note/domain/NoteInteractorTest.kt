@@ -11,11 +11,13 @@ class NoteInteractorTest {
 
     private lateinit var interactor: NoteInteractor
     private lateinit var repository: TestNoteRepository
+    private lateinit var generator: TestGenerator
 
     @Before
     fun setUp(){
+        generator = TestGenerator()
         repository = TestNoteRepository()
-        interactor = NoteInteractor.Base(repository)
+        interactor = NoteInteractor.Base(repository, generator)
     }
 
     @Test
@@ -23,6 +25,14 @@ class NoteInteractorTest {
         interactor.insertNote("shop", "fish")
         assertEquals(1, repository.insertNoteCalledCount)
         assertEquals(1, repository.allNotesCalledCount)
+        assertEquals("1", repository.idCalledList[0])
+        assertEquals(1, repository.createdTimeCalledList[0])
+
+        interactor.insertNote("watch", "casio")
+        assertEquals(2, repository.insertNoteCalledCount)
+        assertEquals(2, repository.allNotesCalledCount)
+        assertEquals("2", repository.idCalledList[1])
+        assertEquals(2, repository.createdTimeCalledList[1])
     }
 
     @Test
@@ -33,15 +43,19 @@ class NoteInteractorTest {
     }
 }
 
-// todo think how to improve test
 private class TestNoteRepository: NoteRepository{
 
     var allNotesCalledCount = 0
     var insertNoteCalledCount = 0
     var updateNoteCalledCount = 0
 
-    override suspend fun insertNote(id: String, title: String, subtitle: String) {
+    val idCalledList = mutableListOf<String>()
+    val createdTimeCalledList = mutableListOf<Long>()
+
+    override suspend fun insertNote(id: String, title: String, subtitle: String, createdTime: Long) {
         insertNoteCalledCount++
+        idCalledList.add(id)
+        createdTimeCalledList.add(createdTime)
     }
 
     override suspend fun updateNote(id: String, title: String, subtitle: String) {
@@ -52,4 +66,17 @@ private class TestNoteRepository: NoteRepository{
         allNotesCalledCount++
         return emptyList()
     }
+}
+
+private class TestGenerator: GenerateData {
+
+    private var id = 0
+    private var time = 0L
+
+    override fun generateId(): String {
+        ++id
+        return id.toString()
+    }
+
+    override fun generateCreatedTime(): Long = ++time
 }

@@ -13,12 +13,13 @@ class BaseNotesRepository(
 
     private val mutex = Mutex()
 
-    override suspend fun insertNote(id: String, title: String, subtitle: String) = mutex.withLock {
+    override suspend fun insertNote(id: String, title: String, subtitle: String, createdTime: Long) =
+        mutex.withLock {
         val data = NoteData(
             id = id,
             title = title,
             subtitle = subtitle,
-            createdTime = System.currentTimeMillis()
+            createdTime = createdTime
         )
         dao.insertNote(data)
     }

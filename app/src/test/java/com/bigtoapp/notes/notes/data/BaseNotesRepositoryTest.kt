@@ -41,7 +41,7 @@ class BaseNotesRepositoryTest {
             NoteData("1", "title", "description", 1L),
             NoteData("2", "book", "alice in wonderland", 1L)
         ))
-        repository.insertNote("3", "shop", "fish")
+        repository.insertNote("3", "shop", "fish", 1L)
         assertEquals(1, dao.insertNoteCalledCount)
 
         val actual = repository.allNotes()

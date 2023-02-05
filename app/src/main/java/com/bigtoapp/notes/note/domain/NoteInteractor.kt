@@ -11,12 +11,14 @@ interface NoteInteractor {
     suspend fun updateNote(noteId: String, title: String, subtitle: String): List<NoteDomain>
 
     class Base(
-        private val repository: NoteRepository
+        private val repository: NoteRepository,
+        private val generate: GenerateData
     ):NoteInteractor {
 
         override suspend fun insertNote(title: String, subtitle: String): List<NoteDomain> {
-            val noteId = UUID.randomUUID().toString()
-            repository.insertNote(noteId, title, subtitle)
+            val noteId = generate.generateId()
+            val createdTime = generate.generateCreatedTime()
+            repository.insertNote(noteId, title, subtitle, createdTime)
             return repository.allNotes()
         }
 
@@ -28,5 +30,17 @@ interface NoteInteractor {
             repository.updateNote(noteId, title, subtitle)
             return repository.allNotes()
         }
+    }
+}
+
+interface GenerateData{
+
+    fun generateId(): String
+    fun generateCreatedTime(): Long
+
+    class Base(): GenerateData{
+        override fun generateId(): String = UUID.randomUUID().toString()
+
+        override fun generateCreatedTime(): Long = System.currentTimeMillis()
     }
 }
