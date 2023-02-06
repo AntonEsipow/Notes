@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/material_timepicker_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/material_timepicker_textinput_display.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_calendar_day.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_calendar_day_of_week.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_calendar_year.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_picker_actions.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_picker_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_picker_header_title_text.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_picker_header_toggle.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_picker_text_input_date_range.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/.gradle/caches/transforms-3/613effe678a3a4c581e033fe582926a8/transformed/material-1.8.0/res/layout/mtrl_search_bar.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Anton/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_note.xml" value="0.264" />
         <entry key="..\:/Users/Anton/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Anton/AndroidStudioProjects/Notes/app/src/main/res/layout/note_item.xml" value="0.25416666666666665" />

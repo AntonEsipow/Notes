@@ -15,11 +15,11 @@ class DeleteNoteTest: BaseTest() {
 
         notePage.run{
             titleInput.typeText("shop")
-            decriptionInput.typeText("milk")
+            descriptionInput.typeText("milk")
             saveButton.click()
 
             titleInput.typeText("home")
-            decriptionInput.typeText("clean room")
+            descriptionInput.typeText("clean room")
             saveButton.click()
         }
         Espresso.pressBack()

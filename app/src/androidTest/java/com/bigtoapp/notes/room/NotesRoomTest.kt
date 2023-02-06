@@ -38,7 +38,7 @@ class NotesRoomTest {
 
     @Test
     fun test_add_note(){
-        val note = NoteData("1", "book", "alice in wonderland", 1L)
+        val note = NoteData("1", "book", "alice in wonderland", 1L, 1L)
         assertEquals(emptyList<NoteData>(), dao.allNotes())
 
         dao.insertNote(note)
@@ -48,8 +48,8 @@ class NotesRoomTest {
 
     @Test
     fun test_add_2_notes(){
-        val noteFirst = NoteData("1", "book", "alice in wonderland", 1L)
-        val noteSecond = NoteData("2", "shop", "peanuts", 2L)
+        val noteFirst = NoteData("1", "book", "alice in wonderland", 1L, 1L)
+        val noteSecond = NoteData("2", "shop", "peanuts", 2L, 2L)
 
         assertEquals(emptyList<NoteData>(), dao.allNotes())
         dao.insertNote(noteFirst)
@@ -64,8 +64,8 @@ class NotesRoomTest {
 
     @Test
     fun test_delete_note(){
-        val noteFirst = NoteData("1", "book", "alice in wonderland", 1L)
-        val noteSecond = NoteData("2", "shop", "peanuts", 2L)
+        val noteFirst = NoteData("1", "book", "alice in wonderland", 1L, 1L)
+        val noteSecond = NoteData("2", "shop", "peanuts", 2L, 2L)
 
         dao.insertNote(noteFirst)
         dao.insertNote(noteSecond)
@@ -80,7 +80,7 @@ class NotesRoomTest {
 
     @Test
     fun test_delete_last_note(){
-        val note = NoteData("1", "book", "alice in wonderland", 1L)
+        val note = NoteData("1", "book", "alice in wonderland", 1L, 1L)
         assertEquals(emptyList<NoteData>(), dao.allNotes())
 
         dao.insertNote(note)
@@ -95,8 +95,8 @@ class NotesRoomTest {
 
     @Test
     fun test_update_note(){
-        val noteFirst = NoteData("1", "book", "alice in wonderland", 1L)
-        val noteSecond = NoteData("2", "shop", "peanuts", 2L)
+        val noteFirst = NoteData("1", "book", "alice in wonderland", 1L, 1L)
+        val noteSecond = NoteData("2", "shop", "peanuts", 2L,2L)
 
         assertEquals(emptyList<NoteData>(), dao.allNotes())
         dao.insertNote(noteFirst)
@@ -108,11 +108,11 @@ class NotesRoomTest {
         assertEquals(noteFirst, newList[0])
         assertEquals(noteSecond, newList[1])
 
-        dao.updateNote("1", "workout", "bench press")
+        dao.updateNote("1", "workout", "bench press", 2L)
         val finalList = dao.allNotes()
         assertEquals(2, finalList.size)
         assertEquals(
-            NoteData("1", "workout", "bench press", 1L),
+            NoteData("1", "workout", "bench press", 1L, 2L),
             finalList[0]
         )
     }

@@ -14,4 +14,6 @@
     <string name="description_hint">Description</string>
     <string name="save_note">Save note</string>
     <string name="pick_date">Pick Date</string>
+
+    <string name="calendar">Calendar</string>
 </resources>

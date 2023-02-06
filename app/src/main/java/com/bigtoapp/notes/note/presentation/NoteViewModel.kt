@@ -16,6 +16,7 @@ import com.bigtoapp.notes.notes.presentation.DateFormatter
 import com.bigtoapp.notes.notes.presentation.HandleNotesRequest
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.datepicker.MaterialDatePicker.INPUT_MODE_CALENDAR
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,10 +66,12 @@ class NoteViewModel(
         }
     }
 
+    // todo refactor
     override fun changePerformDate(parentFragmentManager: FragmentManager, view: TextView) {
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Calendar")
+                .setInputMode(INPUT_MODE_CALENDAR)
+                .setTitleText(manageResources.string(R.string.calendar))
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
         datePicker.show(parentFragmentManager, "MATERIAL_DATE_PICKER")
@@ -77,14 +80,6 @@ class NoteViewModel(
             // formatting date in dd-mm-yyyy format.
             val date = dateFormatter.format(it)
             view.text = date
-        }
-        // Setting up the event for when cancelled is clicked
-        datePicker.addOnNegativeButtonClickListener {
-            // NO message
-        }
-        // Setting up the event for when back button is pressed
-        datePicker.addOnCancelListener {
-            // No message
         }
     }
 

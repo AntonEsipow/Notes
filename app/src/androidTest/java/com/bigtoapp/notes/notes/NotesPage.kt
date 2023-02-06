@@ -10,6 +10,7 @@ class NotesPage: Page() {
 
     val titleItem = R.id.titleTextView
     val descriptionItem = R.id.descriptionTextView
+    val dateItem = R.id.dateTextView
     val deleteButton = R.id.deleteNoteButton
     val editButton = R.id.updateNoteButton
 }

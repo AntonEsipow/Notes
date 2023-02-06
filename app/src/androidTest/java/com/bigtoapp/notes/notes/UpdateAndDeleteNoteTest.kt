@@ -15,11 +15,11 @@ class UpdateAndDeleteNoteTest: BaseTest() {
 
         notePage.run{
             titleInput.typeText("shop")
-            decriptionInput.typeText("milk")
+            descriptionInput.typeText("milk")
             saveButton.click()
 
             titleInput.typeText("home")
-            decriptionInput.typeText("clean room")
+            descriptionInput.typeText("clean room")
             saveButton.click()
         }
         Espresso.pressBack()
@@ -36,10 +36,10 @@ class UpdateAndDeleteNoteTest: BaseTest() {
 
         notePage.run {
             titleInput.clearText()
-            decriptionInput.clearText()
+            descriptionInput.clearText()
 
             titleInput.typeText("car")
-            decriptionInput.typeText("change the rubber")
+            descriptionInput.typeText("change the rubber")
             saveButton.click()
         }
 
@@ -60,10 +60,10 @@ class UpdateAndDeleteNoteTest: BaseTest() {
 
         notePage.run {
             titleInput.clearText()
-            decriptionInput.clearText()
+            descriptionInput.clearText()
 
             titleInput.typeText("grocery")
-            decriptionInput.typeText("buy apples")
+            descriptionInput.typeText("buy apples")
             saveButton.click()
         }
 
