@@ -31,14 +31,12 @@ class NoteInteractorTest {
     fun `test insert notes`() = runBlocking {
         interactor.insertNote("shop", "fish", "3")
         assertEquals(1, repository.insertNoteCalledCount)
-        assertEquals(1, repository.allNotesCalledCount)
         assertEquals("1", repository.idCalledList[0])
         assertEquals(1, repository.createdTimeCalledList[0])
         assertEquals(3, repository.insertDateCalledList[0])
 
         interactor.insertNote("watch", "casio", "2")
         assertEquals(2, repository.insertNoteCalledCount)
-        assertEquals(2, repository.allNotesCalledCount)
         assertEquals("2", repository.idCalledList[1])
         assertEquals(2, repository.createdTimeCalledList[1])
         assertEquals(2, repository.insertDateCalledList[1])
@@ -48,7 +46,6 @@ class NoteInteractorTest {
     fun `test update note`() = runBlocking {
         interactor.updateNote("1","shop", "fish", "5")
         assertEquals(1, repository.updateNoteCalledCount)
-        assertEquals(1, repository.allNotesCalledCount)
         assertEquals(5, repository.updateDateCalledList[0])
     }
 
@@ -56,7 +53,6 @@ class NoteInteractorTest {
     fun `test insert note no date`() = runBlocking {
         interactor.insertNote("shop", "fish", "")
         assertEquals(1, repository.insertNoteCalledCount)
-        assertEquals(1, repository.allNotesCalledCount)
         assertEquals("1", repository.idCalledList[0])
         assertEquals(1, repository.createdTimeCalledList[0])
         assertEquals(1, repository.insertDateCalledList[0])
@@ -65,7 +61,6 @@ class NoteInteractorTest {
 
 private class TestNoteRepository: NoteRepository{
 
-    var allNotesCalledCount = 0
     var insertNoteCalledCount = 0
     var updateNoteCalledCount = 0
 
@@ -93,11 +88,6 @@ private class TestNoteRepository: NoteRepository{
         updateNoteCalledCount++
         updateDate = performDate
         updateDateCalledList.add(updateDate)
-    }
-
-    override suspend fun allNotes(): List<NoteDomain> {
-        allNotesCalledCount++
-        return emptyList()
     }
 }
 

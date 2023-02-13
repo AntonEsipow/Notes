@@ -1,18 +1,13 @@
 package com.bigtoapp.notes.notes.presentation
 
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.BaseTest
-import com.bigtoapp.notes.main.presentation.DispatchersList
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.Screen
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.domain.NoteDomainToUi
 import com.bigtoapp.notes.notes.domain.NotesInteractor
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -209,7 +204,7 @@ class NotesViewModelTest: BaseTest() {
         assertEquals("12345", interactor.updatedNoteId)
 
         assertEquals(1, navigation.count)
-        assertEquals(NavigationStrategy.Add(Screen.Note), navigation.strategy)
+        assertEquals(NavigationStrategy.ReplaceToBackStack(Screen.Note), navigation.strategy)
     }
 
     @Test
@@ -217,7 +212,7 @@ class NotesViewModelTest: BaseTest() {
         viewModel.addNote()
 
         assertEquals(1, navigation.count)
-        assertEquals(NavigationStrategy.Add(Screen.Note), navigation.strategy)
+        assertEquals(NavigationStrategy.ReplaceToBackStack(Screen.Note), navigation.strategy)
     }
 }
 

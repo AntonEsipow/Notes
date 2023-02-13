@@ -42,14 +42,11 @@ class NoteViewModelTest: BaseTest() {
             communications,
             interactor,
             HandleNoteRequest(
-                TestDispatcherList(),
-                notesCommunications,
-                NoteDomainToUi(
-                    formatter
-                )
+                TestDispatcherList()
             ),
             navigation,
-            formatter
+            formatter,
+            Dialog.DatePicker(manageResources)
         )
     }
 
@@ -122,24 +119,15 @@ class NoteViewModelTest: BaseTest() {
             NoteUiState.AddNote,
             communications.stateCalledList[0]
         )
-        interactor.changeExpectedList(listOf(
-            NoteDomain("1", "title", "subtitle", 1L),
-            NoteDomain("2", "shop", "buy apples", 2L),
-            NoteDomain("3", "book", "tom sawyer", 3L)
-        ))
+
         viewModel.saveNote("book", "tom sawyer", "3")
         assertEquals(1, interactor.insertNoteCalledCount)
         assertEquals(0, interactor.updateNoteCalledCount)
-        assertEquals(1, notesCommunications.timesShowList)
-        assertEquals(3, notesCommunications.notesList.size)
-        assertEquals(NoteUi("3", "book", "tom sawyer", "3"), notesCommunications.notesList[2])
+
         assertEquals(
             NoteUiState.AddNote,
             communications.stateCalledList[1]
         )
-
-        assertEquals(1, notesCommunications.stateCalledList.size)
-        assertEquals(NotesUiState.Notes, notesCommunications.stateCalledList[0])
     }
 
     @Test
@@ -156,20 +144,11 @@ class NoteViewModelTest: BaseTest() {
             NoteUiState.EditNote(NoteUi("2", "shop", "buy apples", "2")),
             communications.stateCalledList[0]
         )
-        interactor.changeExpectedList(listOf(
-            NoteDomain("1", "title", "subtitle", 1L),
-            NoteDomain("2", "book", "tom sawyer", 2L)
-        ))
+
         viewModel.saveNote("book", "tom sawyer", "2")
         assertEquals(1, interactor.updateNoteCalledCount)
         assertEquals(0, interactor.insertNoteCalledCount)
         assertEquals("2", interactor.updateNoteIdCheck[0])
-
-        assertEquals(1, notesCommunications.timesShowList)
-        assertEquals(2, notesCommunications.notesList.size)
-
-        assertEquals(1, notesCommunications.stateCalledList.size)
-        assertEquals(NotesUiState.Notes, notesCommunications.stateCalledList[0])
 
         assertEquals(1, navigation.count)
         assertEquals(NavigationStrategy.Back, navigation.strategy)
@@ -191,22 +170,13 @@ private class TestNoteInteractor: NoteInteractor {
     var updateNoteCalledCount = 0
     val updateNoteIdCheck = mutableListOf<String>()
 
-    private var notesList = mutableListOf<NoteDomain>()
-
-    fun changeExpectedList(list: List<NoteDomain>) {
-        notesList.clear()
-        notesList.addAll(list)
-    }
-
-    override suspend fun insertNote(title: String, subtitle: String, date: String): List<NoteDomain>{
+    override suspend fun insertNote(title: String, subtitle: String, date: String){
         insertNoteCalledCount++
-        return notesList
     }
 
-    override suspend fun updateNote(noteId: String, title: String, subtitle: String, date: String): List<NoteDomain>{
+    override suspend fun updateNote(noteId: String, title: String, subtitle: String, date: String){
         updateNoteCalledCount++
         updateNoteIdCheck.add(noteId)
-        return notesList
     }
 }
 

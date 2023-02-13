@@ -25,11 +25,6 @@ class AddNoteTest: BaseTest() {
             titleInput.typeText("shop")
             descriptionInput.typeText("milk")
             pickDate.click()
-
-            // todo add functionality
-            Espresso.onView(withId(com.google.android.material.R.id.confirm_button))
-                .perform(click())
-
             saveButton.click()
         }
         pressBack()

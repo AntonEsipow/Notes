@@ -1,25 +1,15 @@
 package com.bigtoapp.notes.note.presentation
 
 import android.os.Bundle
-import android.provider.Contacts.SettingsColumns.KEY
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.BaseFragment
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import java.text.SimpleDateFormat
-import java.util.*
 
 class NoteFragment: BaseFragment<NoteViewModel>() {
 
@@ -28,6 +18,7 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
 
     private lateinit var titleEditText: TextInputEditText
     private lateinit var descriptionEditText: TextInputEditText
+    private lateinit var dateText: TextView
 
     private val watcher = object : SimpleTextWatcher() {
         override fun afterTextChanged(s: Editable?) = viewModel.clearError()
@@ -40,8 +31,13 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         val descriptionInputLayout = view.findViewById<TextInputLayout>(R.id.descriptionInputLayout)
         descriptionEditText = view.findViewById(R.id.descriptionEditText)
         val saveNoteButton = view.findViewById<Button>(R.id.saveNoteButton)
-        val datePicker = view.findViewById<TextView>(R.id.datePicker)
-        val dateText = view.findViewById<TextView>(R.id.dateText)
+        val datePicker = view.findViewById<Button>(R.id.datePicker)
+        dateText = view.findViewById(R.id.dateText)
+
+        if (savedInstanceState != null) {
+            val date = savedInstanceState.getString(BUNDLE_KEY, DEFAULT_VAL_DATE)!!
+            dateText.text = date
+        }
 
         viewModel.observeState(this){
             it.apply(
@@ -62,7 +58,7 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         }
 
         datePicker.setOnClickListener {
-            viewModel.changePerformDate(parentFragmentManager, dateText)
+            viewModel.changePerformDate(childFragmentManager, dateText)
         }
 
         viewModel.init(savedInstanceState == null)
@@ -78,6 +74,16 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         super.onPause()
         titleEditText.removeTextChangedListener(watcher)
         descriptionEditText.removeTextChangedListener(watcher)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(BUNDLE_KEY, dateText.text.toString())
+    }
+
+    companion object {
+        private const val BUNDLE_KEY = "Date"
+        private const val DEFAULT_VAL_DATE = ""
     }
 }
 

@@ -11,7 +11,7 @@ import com.bigtoapp.notes.notes.domain.NotesInteractor
 class NotesViewModel(
     private val interactor: NotesInteractor,
     private val communications: NotesCommunications,
-    private val handleRequest: HandleListRequest<NoteDomain>,
+    private val handleRequest: HandleRequest<List<NoteDomain>>,
     private val navigationCommunication: NavigationCommunication.Mutate
 ): ViewModel(), Init, ObserveNotes, NotesScreenOperations {
 
@@ -23,7 +23,7 @@ class NotesViewModel(
     }
 
     override fun addNote() = navigationCommunication.put(
-        NavigationStrategy.Add(Screen.Note)
+        NavigationStrategy.ReplaceToBackStack(Screen.Note)
     )
 
     override fun deleteNote(noteId: String) = handleRequest.handle(viewModelScope){
@@ -32,7 +32,7 @@ class NotesViewModel(
 
     override fun editNote(noteId: String) {
         interactor.editNote(noteId)
-        navigationCommunication.put(NavigationStrategy.Add(Screen.Note))
+        navigationCommunication.put(NavigationStrategy.ReplaceToBackStack(Screen.Note))
     }
 
     override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) =

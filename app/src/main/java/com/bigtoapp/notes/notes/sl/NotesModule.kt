@@ -14,7 +14,7 @@ class NotesModule(private val core: Core): Module<NotesViewModel> {
 
         val communications = NotesCommunications.Base(
             ProgressCommunication.Base(),
-            core.provideNotesStateCommunication(),
+            NotesUiStateCommunication.Base(),
             core.provideNotesListCommunication()
         )
 

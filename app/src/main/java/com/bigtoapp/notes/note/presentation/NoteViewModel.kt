@@ -1,7 +1,6 @@
 package com.bigtoapp.notes.note.presentation
 
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -11,34 +10,31 @@ import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.*
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.note.domain.NoteInteractor
-import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.presentation.DateFormatter
-import com.bigtoapp.notes.notes.presentation.HandleNotesRequest
-import com.bigtoapp.notes.notes.presentation.NotesListCommunication
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.datepicker.MaterialDatePicker.INPUT_MODE_CALENDAR
-import java.text.SimpleDateFormat
-import java.util.*
 
 class NoteViewModel(
     private val note: NoteEditOptions.Read,
     private val manageResources: ManageResources,
     private val communications: NoteCommunications,
     private val interactor: NoteInteractor,
-    private val handleRequest: HandleListRequest<NoteDomain>,
+    private val handleRequest: HandleRequest<Unit>,
     private val navigationCommunication: NavigationCommunication.Mutate,
-    private val dateFormatter: DateFormatter<String, Long>
+    private val dateFormatter: DateFormatter<String, Long>,
+    private val dialog: Dialog<MaterialDatePicker<Long>>
 ): ViewModel(), Init, NoteScreenOperations, ClearError, ObserveNote, PerformDateOperations {
 
     override fun init(isFirstRun: Boolean) {
-        val noteId = note.read()
-        if(noteId.isEmpty())
-            communications.showState(NoteUiState.AddNote)
-        else {
-            // we get liveData value that already exist to avoid going to DB again
-            val noteList = communications.getNotesList()
-            val noteDetails = noteList.find { it.mapId(noteId) }!!
-            communications.showState(NoteUiState.EditNote(noteDetails))
+        if(isFirstRun) {
+            val noteId = note.read()
+            if(noteId.isEmpty())
+                communications.showState(NoteUiState.AddNote)
+            else {
+                // we get liveData value that already exist to avoid going to DB again
+                val noteList = communications.getNotesList()
+                val noteDetails = noteList.find { it.mapId(noteId) }!!
+                communications.showState(NoteUiState.EditNote(noteDetails))
+            }
         }
     }
 
@@ -66,20 +62,12 @@ class NoteViewModel(
         }
     }
 
-    // todo refactor
     override fun changePerformDate(parentFragmentManager: FragmentManager, view: TextView) {
-        val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setInputMode(INPUT_MODE_CALENDAR)
-                .setTitleText(manageResources.string(R.string.calendar))
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
-        datePicker.show(parentFragmentManager, "MATERIAL_DATE_PICKER")
-        // Setting up the event for when ok is clicked
+        val datePicker = dialog.create()
+        datePicker.show(parentFragmentManager, DATE_PICKER_TAG)
         datePicker.addOnPositiveButtonClickListener {
             // formatting date in dd-mm-yyyy format.
-            val date = dateFormatter.format(it)
-            view.text = date
+            view.text = dateFormatter.format(it)
         }
     }
 
@@ -87,6 +75,10 @@ class NoteViewModel(
         communications.observeState(owner, observer)
 
     override fun clearError() = communications.showState(NoteUiState.ClearError())
+
+    companion object {
+        private const val DATE_PICKER_TAG = "MATERIAL_DATE_PICKER"
+    }
 }
 
 interface NoteScreenOperations{

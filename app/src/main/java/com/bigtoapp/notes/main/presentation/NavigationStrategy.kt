@@ -34,7 +34,12 @@ interface NavigationStrategy {
             }
     }
 
-    // todo check how it works
+    data class ReplaceToBackStack(override val screen: Screen): Abstract(screen) {
+        override fun FragmentTransaction.executeTransaction(containerId: Int) =
+            replace(containerId,screen.fragment().newInstance())
+                .addToBackStack(screen.fragment().simpleName)
+    }
+
     object Back: NavigationStrategy {
         override fun navigate(fragmentManager: FragmentManager, containerId: Int) {
             fragmentManager.popBackStack()

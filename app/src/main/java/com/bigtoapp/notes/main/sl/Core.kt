@@ -33,8 +33,6 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
 
         private val notesListCommunication = NotesListCommunication.Base()
 
-        private val notesStateCommunication = NotesUiStateCommunication.Base()
-
         private val dispatchers by lazy {
             DispatchersList.Base()
         }
@@ -58,8 +56,6 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
         override fun provideNoteEditOptions(): NoteEditOptions.Mutable = noteEditOptions
 
         override fun provideNotesListCommunication(): NotesListCommunication = notesListCommunication
-
-        override fun provideNotesStateCommunication(): NotesUiStateCommunication = notesStateCommunication
     }
 }
 
@@ -73,5 +69,4 @@ interface ProvideNoteEditOptions{
 
 interface ProvideNotesCommunication{
     fun provideNotesListCommunication(): NotesListCommunication
-    fun provideNotesStateCommunication(): NotesUiStateCommunication
 }
