@@ -1,8 +1,8 @@
-package com.bigtoapp.notes.note.data
+package com.bigtoapp.notes.category.data
 
 import com.bigtoapp.notes.main.data.EditOptions
 
-class NoteEditOptions: EditOptions.Mutable{
+class CategoryEditOptions: EditOptions.Mutable{
 
     private var value = ""
 

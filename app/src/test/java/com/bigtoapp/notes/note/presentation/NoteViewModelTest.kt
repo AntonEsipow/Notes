@@ -3,6 +3,7 @@ package com.bigtoapp.notes.note.presentation
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.NotesBaseTest
+import com.bigtoapp.notes.main.data.EditOptions
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.note.data.NoteEditOptions
@@ -200,7 +201,7 @@ private class TestNoteCommunications: NoteCommunications{
     override fun observeState(owner: LifecycleOwner, observer: Observer<NoteUiState>) = Unit
 }
 
-private class TestReadNote: NoteEditOptions.Read{
+private class TestReadNote: EditOptions.Read{
 
     private var value = ""
 

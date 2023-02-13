@@ -2,16 +2,14 @@ package com.bigtoapp.notes.main.sl
 
 import android.content.Context
 import com.bigtoapp.notes.main.data.CacheModule
+import com.bigtoapp.notes.main.data.EditOptions
 import com.bigtoapp.notes.main.data.ToDoRoomDatabase
 import com.bigtoapp.notes.main.presentation.DispatchersList
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.main.presentation.NavigationCommunication
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.notes.data.BaseNotesRepository
-import com.bigtoapp.notes.notes.domain.NotesRepository
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
-import com.bigtoapp.notes.notes.presentation.NotesScreenOperations
-import com.bigtoapp.notes.notes.presentation.NotesUiStateCommunication
 
 interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEditOptions,
     ProvideNotesCommunication {
@@ -25,7 +23,7 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
         private val provideInstances: ProvideInstances
     ): Core{
 
-        private val noteEditOptions = NoteEditOptions.Base()
+        private val noteEditOptions = NoteEditOptions()
 
         private val manageResources = ManageResources.Base(context)
 
@@ -53,7 +51,7 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
 
         override fun provideNavigation(): NavigationCommunication.Mutable = navigationCommunication
 
-        override fun provideNoteEditOptions(): NoteEditOptions.Mutable = noteEditOptions
+        override fun provideNoteEditOptions(): EditOptions.Mutable = noteEditOptions
 
         override fun provideNotesListCommunication(): NotesListCommunication = notesListCommunication
     }
@@ -64,7 +62,7 @@ interface ProvideNavigation{
 }
 
 interface ProvideNoteEditOptions{
-    fun provideNoteEditOptions(): NoteEditOptions.Mutable
+    fun provideNoteEditOptions(): EditOptions.Mutable
 }
 
 interface ProvideNotesCommunication{

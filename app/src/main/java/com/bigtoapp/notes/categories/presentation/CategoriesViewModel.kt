@@ -6,10 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.categories.domain.CategoriesInteractor
 import com.bigtoapp.notes.categories.domain.CategoryDomain
+import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.*
 
 class CategoriesViewModel(
-    private val interactor: CategoriesInteractor,
+    private val interactor: ListInteractor<List<CategoryDomain>>,
     private val communications: CategoriesCommunications,
     private val handleRequest: HandleRequest<List<CategoryDomain>>,
     private val navigation: NavigationCommunication.Mutate
@@ -18,7 +19,7 @@ class CategoriesViewModel(
     override fun init(isFirstRun: Boolean) {
         if(isFirstRun){
             handleRequest.handle(viewModelScope){
-                interactor.allCategories()
+                interactor.all()
             }
         }
     }
@@ -26,11 +27,11 @@ class CategoriesViewModel(
     override fun addCategory() = navigation.put(NavigationStrategy.ReplaceToBackStack(Screen.Category))
 
     override fun deleteCategory(categoryId: String) = handleRequest.handle(viewModelScope){
-        interactor.deleteCategory(categoryId)
+        interactor.delete(categoryId)
     }
 
     override fun editCategory(categoryId: String) {
-        interactor.editCategory(categoryId)
+        interactor.edit(categoryId)
         navigation.put(NavigationStrategy.ReplaceToBackStack(Screen.Category))
     }
 

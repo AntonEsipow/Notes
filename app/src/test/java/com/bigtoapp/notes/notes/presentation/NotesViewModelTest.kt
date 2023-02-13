@@ -2,6 +2,7 @@ package com.bigtoapp.notes.notes.presentation
 
 import android.view.View
 import com.bigtoapp.notes.main.NotesBaseTest
+import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.Screen
 import com.bigtoapp.notes.notes.domain.NoteDomain
@@ -216,7 +217,7 @@ class NotesViewModelTest: NotesBaseTest() {
     }
 }
 
-private class TestNotesInteractor: NotesInteractor {
+private class TestNotesInteractor: ListInteractor<List<NoteDomain>> {
 
     var updatedNoteId = ""
 
@@ -231,18 +232,18 @@ private class TestNotesInteractor: NotesInteractor {
         notesList.addAll(list)
     }
 
-    override suspend fun allNotes(): List<NoteDomain> {
+    override suspend fun all(): List<NoteDomain> {
         initNotesCalledCount++
         return notesList
     }
 
-    override suspend fun deleteNote(noteId: String): List<NoteDomain>{
-        deleteNoteCalledList.add(noteId)
+    override suspend fun delete(id: String): List<NoteDomain>{
+        deleteNoteCalledList.add(id)
         return notesList
     }
 
-    override fun editNote(noteId: String) {
-        updatedNoteId = noteId
-        editNoteCalledList.add(noteId)
+    override fun edit(id: String) {
+        updatedNoteId = id
+        editNoteCalledList.add(id)
     }
 }

@@ -5,6 +5,7 @@ import com.bigtoapp.notes.categories.domain.CategoriesInteractor
 import com.bigtoapp.notes.categories.domain.CategoryDomain
 import com.bigtoapp.notes.categories.domain.CategoryDomainToUi
 import com.bigtoapp.notes.main.CategoriesBaseTest
+import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.Screen
 import kotlinx.coroutines.runBlocking
@@ -226,7 +227,7 @@ class NotesViewModelTest: CategoriesBaseTest() {
     }
 }
 
-private class TestCategoriesInteractor: CategoriesInteractor {
+private class TestCategoriesInteractor: ListInteractor<List<CategoryDomain>> {
 
     var updatedCategoryId = ""
 
@@ -241,18 +242,18 @@ private class TestCategoriesInteractor: CategoriesInteractor {
         notesList.addAll(list)
     }
 
-    override suspend fun allCategories(): List<CategoryDomain> {
+    override suspend fun all(): List<CategoryDomain> {
         initCategoriesCalledCount++
         return notesList
     }
 
-    override suspend fun deleteCategory(categoryId: String): List<CategoryDomain>{
-        deleteCategoryCalledList.add(categoryId)
+    override suspend fun delete(id: String): List<CategoryDomain>{
+        deleteCategoryCalledList.add(id)
         return notesList
     }
 
-    override fun editCategory(categoryId: String) {
-        updatedCategoryId = categoryId
-        editCategoryCalledList.add(categoryId)
+    override fun edit(id: String) {
+        updatedCategoryId = id
+        editCategoryCalledList.add(id)
     }
 }

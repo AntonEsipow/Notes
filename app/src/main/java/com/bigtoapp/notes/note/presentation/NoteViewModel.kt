@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.R
+import com.bigtoapp.notes.main.data.EditOptions
 import com.bigtoapp.notes.main.presentation.*
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.note.domain.NoteInteractor
@@ -14,7 +15,7 @@ import com.bigtoapp.notes.notes.presentation.DateFormatter
 import com.google.android.material.datepicker.MaterialDatePicker
 
 class NoteViewModel(
-    private val note: NoteEditOptions.Read,
+    private val note: EditOptions.Read,
     private val manageResources: ManageResources,
     private val communications: NoteCommunications,
     private val interactor: NoteInteractor,

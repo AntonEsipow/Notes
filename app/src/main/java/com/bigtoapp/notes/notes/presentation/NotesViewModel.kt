@@ -4,12 +4,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.*
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.domain.NotesInteractor
 
 class NotesViewModel(
-    private val interactor: NotesInteractor,
+    private val interactor: ListInteractor<List<NoteDomain>>,
     private val communications: NotesCommunications,
     private val handleRequest: HandleRequest<List<NoteDomain>>,
     private val navigationCommunication: NavigationCommunication.Mutate
@@ -18,7 +19,7 @@ class NotesViewModel(
     override fun init(isFirstRun: Boolean) {
         if(isFirstRun)
             handleRequest.handle(viewModelScope){
-                interactor.allNotes()
+                interactor.all()
             }
     }
 
@@ -27,11 +28,11 @@ class NotesViewModel(
     )
 
     override fun deleteNote(noteId: String) = handleRequest.handle(viewModelScope){
-        interactor.deleteNote(noteId)
+        interactor.delete(noteId)
     }
 
     override fun editNote(noteId: String) {
-        interactor.editNote(noteId)
+        interactor.edit(noteId)
         navigationCommunication.put(NavigationStrategy.ReplaceToBackStack(Screen.Note))
     }
 

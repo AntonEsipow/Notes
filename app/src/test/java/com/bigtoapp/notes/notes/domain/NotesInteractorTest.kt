@@ -14,9 +14,9 @@ class NotesInteractorTest {
     @Before
     fun setUp(){
         repository = TestNotesRepository()
-        interactor = NotesInteractor.Base(
+        interactor = NotesInteractor(
             repository,
-            NoteEditOptions.Base()
+            NoteEditOptions()
         )
     }
 
@@ -28,7 +28,7 @@ class NotesInteractorTest {
                 NoteDomain(id = "2", title = "book", subtitle = "description", 2L)
             )
         )
-        val actual = interactor.allNotes()
+        val actual = interactor.all()
         val expected = listOf(
             NoteDomain(id = "1", title = "title", subtitle = "subtitle", 2L),
             NoteDomain(id = "2", title = "book", subtitle = "description", 2L)
@@ -39,7 +39,7 @@ class NotesInteractorTest {
 
     @Test
     fun `test delete note`() = runBlocking {
-        interactor.deleteNote("1")
+        interactor.delete("1")
         assertEquals(1, repository.allNotesCalledCount)
         assertEquals("1", repository.deleteNoteCalledList[0])
     }
