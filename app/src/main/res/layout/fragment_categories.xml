@@ -7,16 +7,16 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/categoriesButton"
+        android:id="@+id/notesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/categories" />
+        android:text="@string/notes" />
 
     <Button
-        android:id="@+id/addNoteButton"
+        android:id="@+id/addCategoryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_note" />
+        android:text="@string/add_category" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -33,7 +33,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:gravity="center"
-        android:text="@string/empty_state_note"
+        android:text="@string/empty_state_category"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         android:translationZ="100dp"
         android:visibility="gone"
@@ -45,6 +45,6 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="2"
-        tools:listitem="@layout/note_item" />
+        tools:listitem="@layout/category_item" />
 
 </LinearLayout>

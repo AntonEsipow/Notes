@@ -14,30 +14,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/noteTitleTextView"
+            android:id="@+id/categoryTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_small"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             tools:text="Title" />
-
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:text="Description" />
-
-        <TextView
-            android:id="@+id/dateTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="21/04/23" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,7 +28,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/deleteNoteButton"
+                android:id="@+id/deleteCategoryButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,7 +36,7 @@
                 android:text="@string/delete_note" />
 
             <Button
-                android:id="@+id/updateNoteButton"
+                android:id="@+id/updateCategoryButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

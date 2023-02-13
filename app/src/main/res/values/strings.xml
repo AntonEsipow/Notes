@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Notes</string>
+
     <string name="add_note">Add Note</string>
+    <string name="categories">Categories</string>
+
+    <string name="add_category">Add Category</string>
+    <string name="notes">Notes</string>
 
     <string name="delete_note">Delete</string>
     <string name="edit_note">Edit</string>
@@ -8,12 +13,15 @@
     <string name="title_error_message">Enter title</string>
     <string name="subtitle_error_message">Enter description</string>
 
-    <string name="empty_state" type="string">No notes, click the button to add note!</string>
+    <string name="empty_state_note" type="string">No notes, click the button to add note!</string>
+    <string name="empty_state_category" type="string">No categories, click the button to add note!</string>
 
     <string name="title_hint">Title</string>
     <string name="description_hint">Description</string>
     <string name="save_note">Save note</string>
     <string name="pick_date">Pick Date</string>
+
+    <string name="save_category">Save category</string>
 
     <string name="calendar">Calendar</string>
 </resources>
