@@ -1,6 +1,5 @@
 package com.bigtoapp.notes.notes.data
 
-import com.bigtoapp.notes.notes.data.cache.NotesDao
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

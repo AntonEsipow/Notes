@@ -1,6 +1,7 @@
 package com.bigtoapp.notes.main.sl
 
 import android.content.Context
+import com.bigtoapp.notes.categories.data.BaseCategoriesRepository
 import com.bigtoapp.notes.main.data.CacheModule
 import com.bigtoapp.notes.main.data.EditOptions
 import com.bigtoapp.notes.main.data.ToDoRoomDatabase
@@ -16,7 +17,9 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
 
     fun provideDispatchers(): DispatchersList
 
-    fun provideRepository(): BaseNotesRepository
+    fun provideNotesRepository(): BaseNotesRepository
+
+    fun provideCategoriesRepository(): BaseCategoriesRepository
 
     class Base(
         context: Context,
@@ -39,9 +42,12 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
             provideInstances.provideCacheModule()
         }
 
-        override fun provideRepository(): BaseNotesRepository {
-            return BaseNotesRepository(provideDatabase().notesDao())
-        }
+        override fun provideNotesRepository() =
+            BaseNotesRepository(provideDatabase().notesDao())
+
+
+        override fun provideCategoriesRepository() =
+            BaseCategoriesRepository(provideDatabase().categoriesDao())
 
         override fun provideDispatchers(): DispatchersList = dispatchers
 

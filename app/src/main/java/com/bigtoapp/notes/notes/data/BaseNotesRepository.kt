@@ -2,7 +2,6 @@ package com.bigtoapp.notes.notes.data
 
 import com.bigtoapp.notes.main.data.ListRepository
 import com.bigtoapp.notes.note.domain.NoteRepository
-import com.bigtoapp.notes.notes.data.cache.NotesDao
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

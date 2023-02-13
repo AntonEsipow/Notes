@@ -4,6 +4,7 @@ import com.bigtoapp.notes.category.data.CategoryEditOptions
 import com.bigtoapp.notes.main.data.ListRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -34,15 +35,15 @@ class CategoriesInteractorTest {
             CategoryDomain(id = "1", title = "title"),
             CategoryDomain(id = "2", title = "book")
         )
-        Assert.assertEquals(expected, actual)
-        Assert.assertEquals(1, repository.allCategoriesCalledCount)
+        assertEquals(expected, actual)
+        assertEquals(1, repository.allCategoriesCalledCount)
     }
 
     @Test
     fun `test delete category`() = runBlocking {
         interactor.delete("1")
-        Assert.assertEquals(1, repository.allCategoriesCalledCount)
-        Assert.assertEquals("1", repository.deleteCategoryCalledList[0])
+        assertEquals(1, repository.allCategoriesCalledCount)
+        assertEquals("1", repository.deleteCategoryCalledList[0])
     }
 }
 

@@ -1,4 +1,4 @@
-package com.bigtoapp.notes.notes.data.cache
+package com.bigtoapp.notes.notes.data
 
 import androidx.room.*
 import com.bigtoapp.notes.notes.data.NoteData

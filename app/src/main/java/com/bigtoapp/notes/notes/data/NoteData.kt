@@ -15,9 +15,9 @@ data class NoteData(
     val performDate: Long
 ): MapperSameId<String> {
 
-    override fun mapId(noteId: String): Boolean = noteId == id
+    override fun mapId(id: String): Boolean = this.id == id
 }
 
 interface MapperSameId<T>{
-    fun mapId(noteId: T): Boolean
+    fun mapId(id: T): Boolean
 }

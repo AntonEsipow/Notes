@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bigtoapp.notes.main.data.ToDoRoomDatabase
 import com.bigtoapp.notes.notes.data.NoteData
-import com.bigtoapp.notes.notes.data.cache.NotesDao
+import com.bigtoapp.notes.notes.data.NotesDao
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
