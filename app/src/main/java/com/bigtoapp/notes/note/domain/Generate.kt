@@ -18,14 +18,19 @@ interface Generate {
 
     interface Mutable<T>: GenerateId, GenerateTime<T>
 
+    abstract class Abstract(): GenerateId {
+        override fun generateId(): String = UUID.randomUUID().toString()
+    }
+
+    class RandomId:Abstract()
+
     class CalendarTime(
         private val formatter: DateFormatter<String, Long>
     ): GenerateTime<String> {
         override fun generateTime() = formatter.format(System.currentTimeMillis())
     }
 
-    class CurrentTime(): Mutable<Long> {
-        override fun generateId() = UUID.randomUUID().toString()
+    class IdAndCurrentTime(): Abstract(), Mutable<Long> {
         override fun generateTime(): Long = System.currentTimeMillis()
     }
 }

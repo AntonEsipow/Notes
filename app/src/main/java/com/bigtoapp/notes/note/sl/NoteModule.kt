@@ -28,7 +28,7 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
             ),
             NoteInteractor.Base(
                 core.provideRepository(),
-                Generate.CurrentTime(),
+                Generate.IdAndCurrentTime(),
                 DateToDomain(
                     Generate.CalendarTime(formatter)
                 )
