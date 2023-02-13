@@ -2,22 +2,18 @@ package com.bigtoapp.notes.note.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.bigtoapp.notes.main.BaseTest
+import com.bigtoapp.notes.main.NotesBaseTest
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.note.domain.NoteInteractor
-import com.bigtoapp.notes.notes.domain.NoteDomain
-import com.bigtoapp.notes.notes.domain.NoteDomainToUi
 import com.bigtoapp.notes.notes.presentation.NoteUi
-import com.bigtoapp.notes.notes.presentation.NotesUiState
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class NoteViewModelTest: BaseTest() {
+class NoteViewModelTest: NotesBaseTest() {
 
     private lateinit var interactor: TestNoteInteractor
     private lateinit var communications: TestNoteCommunications

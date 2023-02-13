@@ -41,7 +41,7 @@ class NotesViewHolder(
     private val noteActions: NoteActions
 ): RecyclerView.ViewHolder(view){
 
-    private val title = itemView.findViewById<TextView>(R.id.titleTextView)
+    private val title = itemView.findViewById<TextView>(R.id.noteTitleTextView)
     private val description = itemView.findViewById<TextView>(R.id.descriptionTextView)
     private val date = itemView.findViewById<TextView>(R.id.dateTextView)
     private val deleteButton = itemView.findViewById<Button>(R.id.deleteNoteButton)

@@ -1,7 +1,7 @@
 package com.bigtoapp.notes.notes.presentation
 
 import android.view.View
-import com.bigtoapp.notes.main.BaseTest
+import com.bigtoapp.notes.main.NotesBaseTest
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.Screen
 import com.bigtoapp.notes.notes.domain.NoteDomain
@@ -12,7 +12,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class NotesViewModelTest: BaseTest() {
+class NotesViewModelTest: NotesBaseTest() {
 
     private lateinit var interactor: TestNotesInteractor
     private lateinit var communications: TestNotesCommunications

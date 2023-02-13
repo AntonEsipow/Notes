@@ -40,6 +40,7 @@ interface ObserveNotes {
     fun observeList(owner: LifecycleOwner, observer: Observer<List<NoteUi>>)
 }
 
+// todo refactor
 interface ShowNotesCommunications {
 
     fun showList(list: List<NoteUi>)

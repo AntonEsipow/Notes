@@ -1,7 +1,7 @@
 package com.bigtoapp.notes.main.presentation
 
 import com.bigtoapp.notes.main.BaseTest
-import org.junit.Assert
+import com.bigtoapp.notes.main.NotesBaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
