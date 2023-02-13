@@ -26,7 +26,7 @@ class BaseNotesRepositoryTest {
             NoteData("1", "title", "description", 1L, 1L),
             NoteData("2", "book", "alice in wonderland", 1L, 2L)
         ))
-        val actual = repository.allNotes()
+        val actual = repository.all()
         val expected = listOf(
             NoteDomain("1", "title", "description", 1L),
             NoteDomain("2", "book", "alice in wonderland", 2L)
@@ -44,7 +44,7 @@ class BaseNotesRepositoryTest {
         repository.insertNote("3", "shop", "fish", 1L, 3L)
         assertEquals(1, dao.insertNoteCalledCount)
 
-        val actual = repository.allNotes()
+        val actual = repository.all()
         val expected = listOf(
             NoteDomain("1", "title", "description", 1L),
             NoteDomain("2", "book", "alice in wonderland", 2L),
@@ -62,7 +62,7 @@ class BaseNotesRepositoryTest {
         repository.updateNote("2", "shop", "fish", 4L)
         assertEquals(1, dao.updateNoteCalledCount)
 
-        val actual = repository.allNotes()
+        val actual = repository.all()
         val expected = listOf(
             NoteDomain("1", "title", "description", 1L),
             NoteDomain("2", "shop", "fish", 4L)
@@ -76,10 +76,10 @@ class BaseNotesRepositoryTest {
             NoteData("1", "title", "description", 1L, 1L),
             NoteData("2", "book", "alice in wonderland", 1L, 2L)
         ))
-        repository.deleteNote("1")
+        repository.delete("1")
         assertEquals("1", dao.deleteNoteCalledList[0])
 
-        val actual = repository.allNotes()
+        val actual = repository.all()
         val expected = listOf(
             NoteDomain("2", "book", "alice in wonderland", 2L)
         )

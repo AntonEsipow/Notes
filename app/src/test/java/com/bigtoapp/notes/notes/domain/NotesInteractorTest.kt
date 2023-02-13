@@ -1,5 +1,6 @@
 package com.bigtoapp.notes.notes.domain
 
+import com.bigtoapp.notes.main.data.ListRepository
 import com.bigtoapp.notes.note.data.NoteEditOptions
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -45,7 +46,7 @@ class NotesInteractorTest {
     }
 }
 
-private class TestNotesRepository: NotesRepository {
+private class TestNotesRepository: ListRepository<List<NoteDomain>> {
 
     var allNotesCalledCount = 0
     val deleteNoteCalledList = mutableListOf<String>()
@@ -57,12 +58,12 @@ private class TestNotesRepository: NotesRepository {
         addAll(list)
     }
 
-    override suspend fun allNotes(): List<NoteDomain>{
+    override suspend fun all(): List<NoteDomain>{
         allNotesCalledCount++
         return notesList
     }
 
-    override suspend fun deleteNote(noteId: String) {
-        deleteNoteCalledList.add(noteId)
+    override suspend fun delete(id: String) {
+        deleteNoteCalledList.add(id)
     }
 }

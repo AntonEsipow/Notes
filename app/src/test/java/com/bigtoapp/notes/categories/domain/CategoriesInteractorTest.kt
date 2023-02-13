@@ -1,10 +1,7 @@
 package com.bigtoapp.notes.categories.domain
 
 import com.bigtoapp.notes.category.data.CategoryEditOptions
-import com.bigtoapp.notes.note.data.NoteEditOptions
-import com.bigtoapp.notes.notes.domain.NoteDomain
-import com.bigtoapp.notes.notes.domain.NotesInteractor
-import com.bigtoapp.notes.notes.domain.NotesRepository
+import com.bigtoapp.notes.main.data.ListRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -49,7 +46,7 @@ class CategoriesInteractorTest {
     }
 }
 
-private class TestCategoriesRepository: CategoriesRepository {
+private class TestCategoriesRepository: ListRepository<List<CategoryDomain>> {
 
     var allCategoriesCalledCount = 0
     val deleteCategoryCalledList = mutableListOf<String>()
@@ -61,12 +58,12 @@ private class TestCategoriesRepository: CategoriesRepository {
         addAll(list)
     }
 
-    override suspend fun allCategories(): List<CategoryDomain>{
+    override suspend fun all(): List<CategoryDomain>{
         allCategoriesCalledCount++
         return notesList
     }
 
-    override suspend fun deleteCategory(categoryId: String) {
-        deleteCategoryCalledList.add(categoryId)
+    override suspend fun delete(id: String) {
+        deleteCategoryCalledList.add(id)
     }
 }
