@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.NotesBaseTest
 import com.bigtoapp.notes.main.data.EditOptions
+import com.bigtoapp.notes.main.presentation.HandleRequest
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.note.data.NoteEditOptions
@@ -18,7 +19,6 @@ class NoteViewModelTest: NotesBaseTest() {
 
     private lateinit var interactor: TestNoteInteractor
     private lateinit var communications: TestNoteCommunications
-    private lateinit var notesCommunications: TestNotesCommunications
     private lateinit var note: TestReadNote
     private lateinit var manageResources: TestManageResources
     private lateinit var viewModel: NoteViewModel
@@ -31,14 +31,13 @@ class NoteViewModelTest: NotesBaseTest() {
         communications = TestNoteCommunications()
         note = TestReadNote()
         manageResources = TestManageResources()
-        notesCommunications = TestNotesCommunications()
         val formatter = TestDateToUi()
         viewModel = NoteViewModel(
             note,
             manageResources,
             communications,
             interactor,
-            HandleNoteRequest(
+            HandleRequest.Base(
                 TestDispatcherList()
             ),
             navigation,
@@ -189,11 +188,11 @@ private class TestNoteCommunications: NoteCommunications{
         noteList.addAll(list)
     }
 
-    override fun showState(noteState: NoteUiState){
-        stateCalledList.add(noteState)
+    override fun showState(uiState: NoteUiState){
+        stateCalledList.add(uiState)
     }
 
-    override fun getNotesList(): List<NoteUi>{
+    override fun getList(): List<NoteUi>{
         getNotesCalledCount++
         return noteList
     }

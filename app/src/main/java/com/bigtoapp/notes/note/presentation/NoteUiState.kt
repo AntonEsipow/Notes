@@ -1,12 +1,9 @@
 package com.bigtoapp.notes.note.presentation
 
 import android.widget.TextView
-import com.bigtoapp.notes.notes.presentation.EditNoteUi
 import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import java.text.SimpleDateFormat
-import java.util.*
 
 sealed class NoteUiState{
 

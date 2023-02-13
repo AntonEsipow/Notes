@@ -6,9 +6,7 @@ import com.bigtoapp.notes.main.presentation.Communication
 import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
 
-interface NoteCommunications: ObserveNote {
-
-    fun getNotesList(): List<NoteUi>
+interface NoteCommunications: ObserveNote, GetList<NoteUi> {
 
     fun showState(uiState: NoteUiState)
 
@@ -17,13 +15,12 @@ interface NoteCommunications: ObserveNote {
         private val state: NoteUiStateCommunication
     ): NoteCommunications{
 
-        override fun getNotesList(): List<NoteUi> =
-            noteList.get()
-
         override fun showState(uiState: NoteUiState) = state.put(uiState)
 
         override fun observeState(owner: LifecycleOwner, observer: Observer<NoteUiState>) =
             state.observe(owner, observer)
+
+        override fun getList(): List<NoteUi> = noteList.get()
     }
 }
 
@@ -33,4 +30,8 @@ interface ObserveNote{
 
 interface NoteUiStateCommunication: Communication.Mutable<NoteUiState>{
     class Base: Communication.Post<NoteUiState>(), NoteUiStateCommunication
+}
+
+interface GetList<T>{
+    fun getList(): List<T>
 }

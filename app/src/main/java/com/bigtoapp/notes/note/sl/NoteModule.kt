@@ -1,6 +1,7 @@
 package com.bigtoapp.notes.note.sl
 
 import android.app.DatePickerDialog
+import com.bigtoapp.notes.main.presentation.HandleRequest
 import com.bigtoapp.notes.main.sl.Core
 import com.bigtoapp.notes.main.sl.Module
 import com.bigtoapp.notes.note.domain.Generate
@@ -32,7 +33,7 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
                     Generate.CalendarTime(formatter)
                 )
             ),
-            HandleNoteRequest(
+            HandleRequest.Base(
                 core.provideDispatchers()
             ),
             core.provideNavigation(),
