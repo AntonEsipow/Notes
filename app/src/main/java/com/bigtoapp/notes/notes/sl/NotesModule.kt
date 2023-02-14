@@ -18,7 +18,7 @@ class NotesModule(private val core: Core): Module<NotesViewModel> {
 
         return NotesViewModel(
             NotesInteractor(
-                core.provideRepository(),
+                core.provideNotesRepository(),
                 core.provideNoteEditOptions()
             ),
             communications,

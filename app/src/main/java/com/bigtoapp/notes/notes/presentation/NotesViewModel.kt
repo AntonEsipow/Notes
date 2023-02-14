@@ -36,6 +36,10 @@ class NotesViewModel(
         navigationCommunication.put(NavigationStrategy.ReplaceToBackStack(Screen.Note))
     }
 
+    override fun navigateCategories() {
+        navigationCommunication.put(NavigationStrategy.Replace(Screen.Categories))
+    }
+
     override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) =
         communications.observeProgress(owner, observer)
 
@@ -50,4 +54,5 @@ interface NotesScreenOperations {
     fun addNote()
     fun deleteNote(noteId: String)
     fun editNote(noteId: String)
+    fun navigateCategories()
 }

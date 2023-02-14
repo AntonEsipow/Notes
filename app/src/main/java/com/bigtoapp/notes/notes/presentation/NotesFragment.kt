@@ -26,14 +26,19 @@ class NotesFragment : BaseFragment<NotesViewModel>() {
         val emptyState = view.findViewById<TextView>(R.id.emptyStateTextView)
         val recyclerView = view.findViewById<RecyclerView>(R.id.notesRecyclerView)
         val addNoteButton = view.findViewById<Button>(R.id.addNoteButton)
-        val adapter = NotesAdapter(object: NoteActions {
-            override fun deleteNote(noteId: String) = viewModel.deleteNote(noteId)
-            override fun editNote(noteId: String) = viewModel.editNote(noteId)
+        val navigateCategoriesButton = view.findViewById<Button>(R.id.categoriesButton)
+        val adapter = NotesAdapter(object: ItemActions {
+            override fun delete(id: String) = viewModel.deleteNote(id)
+            override fun edit(id: String) = viewModel.editNote(id)
         })
         recyclerView.adapter = adapter
 
         addNoteButton.setOnClickListener {
             viewModel.addNote()
+        }
+
+        navigateCategoriesButton.setOnClickListener {
+            viewModel.navigateCategories()
         }
 
         viewModel.observeState(this){

@@ -12,7 +12,7 @@ import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.Mapper
 
 class NotesAdapter(
-    private val noteActions: NoteActions
+    private val noteActions: ItemActions
 ): RecyclerView.Adapter<NotesViewHolder>(), Mapper.Unit<List<NoteUi>> {
 
     private val list = mutableListOf<NoteUi>()
@@ -38,7 +38,7 @@ class NotesAdapter(
 
 class NotesViewHolder(
     view: View,
-    private val noteActions: NoteActions
+    private val noteActions: ItemActions
 ): RecyclerView.ViewHolder(view){
 
     private val title = itemView.findViewById<TextView>(R.id.noteTitleTextView)
@@ -50,15 +50,14 @@ class NotesViewHolder(
 
     fun bind(model: NoteUi){
         model.map(mapper)
-        deleteButton.setOnClickListener { noteActions.deleteNote(model.mapId()) }
-        updateButton.setOnClickListener { noteActions.editNote(model.mapId()) }
+        deleteButton.setOnClickListener { noteActions.delete(model.mapId()) }
+        updateButton.setOnClickListener { noteActions.edit(model.mapId()) }
     }
-
 }
 
-interface NoteActions{
-    fun deleteNote(noteId: String)
-    fun editNote(noteId: String)
+interface ItemActions{
+    fun delete(id: String)
+    fun edit(id: String)
 }
 
 class DiffUtilCallback(

@@ -1,5 +1,6 @@
 package com.bigtoapp.notes.main.presentation
 
+import com.bigtoapp.notes.categories.presentation.CategoriesFragment
 import com.bigtoapp.notes.category.presentation.CategoryFragment
 import com.bigtoapp.notes.note.presentation.NoteFragment
 import com.bigtoapp.notes.notes.presentation.NotesFragment
@@ -14,6 +15,10 @@ sealed class Screen {
 
     object Note: Screen(){
         override fun fragment(): Class<out BaseFragment<*>> = NoteFragment::class.java
+    }
+
+    object Categories: Screen() {
+        override fun fragment(): Class<out BaseFragment<*>> = CategoriesFragment::class.java
     }
 
     object Category: Screen(){

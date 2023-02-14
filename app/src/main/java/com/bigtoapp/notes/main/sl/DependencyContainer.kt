@@ -1,6 +1,10 @@
 package com.bigtoapp.notes.main.sl
 
 import androidx.lifecycle.ViewModel
+import com.bigtoapp.notes.categories.presentation.CategoriesViewModel
+import com.bigtoapp.notes.categories.sl.CategoriesModule
+import com.bigtoapp.notes.category.presentation.CategoryViewModel
+import com.bigtoapp.notes.category.sl.CategoryModule
 import com.bigtoapp.notes.main.presentation.MainViewModel
 import com.bigtoapp.notes.note.presentation.NoteViewModel
 import com.bigtoapp.notes.note.sl.NoteModule
@@ -25,6 +29,8 @@ interface DependencyContainer {
             MainViewModel::class.java -> MainModule(core)
             NotesViewModel::class.java -> NotesModule(core)
             NoteViewModel::class.java -> NoteModule(core)
+            CategoriesViewModel::class.java -> CategoriesModule(core)
+            CategoryViewModel::class.java -> CategoryModule(core)
             else -> dependencyContainer.module(clazz)
         }
     }

@@ -35,6 +35,10 @@ class CategoriesViewModel(
         navigation.put(NavigationStrategy.ReplaceToBackStack(Screen.Category))
     }
 
+    override fun navigateNotes() {
+        navigation.put(NavigationStrategy.Replace(Screen.Notes))
+    }
+
     override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) =
         communications.observeProgress(owner, observer)
 
@@ -49,4 +53,5 @@ interface CategoriesScreenOperations{
     fun addCategory()
     fun deleteCategory(categoryId: String)
     fun editCategory(categoryId: String)
+    fun navigateNotes()
 }

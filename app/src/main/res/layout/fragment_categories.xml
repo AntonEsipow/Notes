@@ -19,7 +19,7 @@
         android:text="@string/add_category" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressCategory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -28,7 +28,7 @@
         tools:visibility="gone" />
 
     <TextView
-        android:id="@+id/emptyStateTextView"
+        android:id="@+id/categoryEmptyState"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -40,7 +40,7 @@
         tools:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notesRecyclerView"
+        android:id="@+id/categoryRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

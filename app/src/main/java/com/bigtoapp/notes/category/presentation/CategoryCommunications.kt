@@ -13,7 +13,7 @@ interface CategoryCommunications: ObserveCategory, GetList<CategoryUi> {
     fun showState(uiState: CategoryUiState)
 
     class Base(
-        private val noteList: CategoriesListCommunication,
+        private val categoryList: CategoriesListCommunication,
         private val state: CategoryUiStateCommunication
     ): CategoryCommunications {
 
@@ -22,7 +22,7 @@ interface CategoryCommunications: ObserveCategory, GetList<CategoryUi> {
         override fun observeState(owner: LifecycleOwner, observer: Observer<CategoryUiState>) =
             state.observe(owner, observer)
 
-        override fun getList(): List<CategoryUi> = noteList.get()
+        override fun getList(): List<CategoryUi> = categoryList.get()
     }
 }
 

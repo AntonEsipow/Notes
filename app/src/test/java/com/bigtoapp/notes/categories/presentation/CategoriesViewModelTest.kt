@@ -225,6 +225,14 @@ class NotesViewModelTest: CategoriesBaseTest() {
         assertEquals(1, navigation.count)
         assertEquals(NavigationStrategy.ReplaceToBackStack(Screen.Category), navigation.strategy)
     }
+
+    @Test
+    fun `test navigation notes`() {
+        viewModel.navigateNotes()
+
+        assertEquals(1, navigation.count)
+        assertEquals(NavigationStrategy.Replace(Screen.Notes), navigation.strategy)
+    }
 }
 
 private class TestCategoriesInteractor: ListInteractor<List<CategoryDomain>> {

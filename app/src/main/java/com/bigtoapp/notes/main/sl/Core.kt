@@ -2,6 +2,8 @@ package com.bigtoapp.notes.main.sl
 
 import android.content.Context
 import com.bigtoapp.notes.categories.data.BaseCategoriesRepository
+import com.bigtoapp.notes.categories.presentation.CategoriesListCommunication
+import com.bigtoapp.notes.category.data.CategoryEditOptions
 import com.bigtoapp.notes.main.data.CacheModule
 import com.bigtoapp.notes.main.data.EditOptions
 import com.bigtoapp.notes.main.data.ToDoRoomDatabase
@@ -12,8 +14,8 @@ import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.notes.data.BaseNotesRepository
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
 
-interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEditOptions,
-    ProvideNotesCommunication {
+interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideEditOptions,
+    ProvideListCommunication {
 
     fun provideDispatchers(): DispatchersList
 
@@ -28,11 +30,15 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
 
         private val noteEditOptions = NoteEditOptions()
 
+        private val categoryEditOptions = CategoryEditOptions()
+
         private val manageResources = ManageResources.Base(context)
 
         private val navigationCommunication = NavigationCommunication.Base()
 
         private val notesListCommunication = NotesListCommunication.Base()
+
+        private val categoriesListCommunication = CategoriesListCommunication.Base()
 
         private val dispatchers by lazy {
             DispatchersList.Base()
@@ -59,7 +65,11 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideNoteEdit
 
         override fun provideNoteEditOptions(): EditOptions.Mutable = noteEditOptions
 
+        override fun provideCategoryEditOptions(): EditOptions.Mutable = categoryEditOptions
+
         override fun provideNotesListCommunication(): NotesListCommunication = notesListCommunication
+
+        override fun provideCategoriesListCommunication() = categoriesListCommunication
     }
 }
 
@@ -67,10 +77,12 @@ interface ProvideNavigation{
     fun provideNavigation(): NavigationCommunication.Mutable
 }
 
-interface ProvideNoteEditOptions{
+interface ProvideEditOptions{
     fun provideNoteEditOptions(): EditOptions.Mutable
+    fun provideCategoryEditOptions(): EditOptions.Mutable
 }
 
-interface ProvideNotesCommunication{
+interface ProvideListCommunication{
     fun provideNotesListCommunication(): NotesListCommunication
+    fun provideCategoriesListCommunication(): CategoriesListCommunication
 }
