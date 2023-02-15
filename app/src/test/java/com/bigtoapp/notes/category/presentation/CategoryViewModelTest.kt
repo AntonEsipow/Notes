@@ -5,7 +5,6 @@ import androidx.lifecycle.Observer
 import com.bigtoapp.notes.categories.presentation.CategoryUi
 import com.bigtoapp.notes.category.domain.CategoryInteractor
 import com.bigtoapp.notes.main.CategoriesBaseTest
-import com.bigtoapp.notes.main.data.EditOptions
 import com.bigtoapp.notes.main.presentation.HandleRequest
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
@@ -18,7 +17,6 @@ class CategoryViewModelTest: CategoriesBaseTest() {
 
     private lateinit var interactor: TestCategoryInteractor
     private lateinit var communications: TestCategoryCommunications
-    private lateinit var category: TestReadNote
     private lateinit var manageResources: TestManageResources
     private lateinit var viewModel: CategoryViewModel
     private lateinit var navigation: TestNavigationCommunication
@@ -28,10 +26,8 @@ class CategoryViewModelTest: CategoriesBaseTest() {
         navigation = TestNavigationCommunication()
         interactor = TestCategoryInteractor()
         communications = TestCategoryCommunications()
-        category = TestReadNote()
         manageResources = TestManageResources()
         viewModel = CategoryViewModel(
-            category,
             manageResources,
             communications,
             interactor,
@@ -44,21 +40,19 @@ class CategoryViewModelTest: CategoriesBaseTest() {
 
     @Test
     fun `test display add category screen`() {
-        category.changeExpectedValue("")
 
-        viewModel.init(true)
+        viewModel.init(true, "")
         assertEquals(CategoryUiState.AddCategory, communications.stateCalledList[0])
     }
 
     @Test
     fun `test display update category screen`() {
-        category.changeExpectedValue("2")
         communications.changeExpectedList(listOf(
             CategoryUi("1", "title"),
             CategoryUi("2", "shop")
         ))
 
-        viewModel.init(true)
+        viewModel.init(true, "2")
         assertEquals(
             CategoryUiState.EditCategory(CategoryUi("2", "shop")),
             communications.stateCalledList[0]
@@ -68,30 +62,28 @@ class CategoryViewModelTest: CategoriesBaseTest() {
     @Test
     fun `test no title error state`() = runBlocking {
         manageResources.makeExpectedAnswer("Enter something")
-        category.changeExpectedValue("2")
         communications.changeExpectedList(listOf(
             CategoryUi("1", "title"),
             CategoryUi("2", "shop")
         ))
 
-        viewModel.init(true)
+        viewModel.init(true, "2")
         assertEquals(
             CategoryUiState.EditCategory(CategoryUi("2", "shop")),
             communications.stateCalledList[0]
         )
-        viewModel.saveCategory("")
+        viewModel.saveCategory("","2")
         assertEquals(CategoryUiState.ShowError("Enter something"), communications.stateCalledList[1])
     }
 
     @Test
     fun `test insert category`() = runBlocking {
         manageResources.makeExpectedAnswer("Enter something")
-        category.changeExpectedValue("")
 
-        viewModel.init(true)
+        viewModel.init(true, "")
         assertEquals(CategoryUiState.AddCategory, communications.stateCalledList[0])
 
-        viewModel.saveCategory("book")
+        viewModel.saveCategory("book", "")
         assertEquals(1, interactor.insertCategoryCalledCount)
         assertEquals(0, interactor.updateCategoryCalledCount)
 
@@ -104,19 +96,18 @@ class CategoryViewModelTest: CategoriesBaseTest() {
     @Test
     fun `test update category`() = runBlocking {
         manageResources.makeExpectedAnswer("Enter something")
-        category.changeExpectedValue("2")
         communications.changeExpectedList(listOf(
             CategoryUi("1", "title"),
             CategoryUi("2", "shop")
         ))
 
-        viewModel.init(true)
+        viewModel.init(true, "2")
         assertEquals(
             CategoryUiState.EditCategory(CategoryUi("2", "shop")),
             communications.stateCalledList[0]
         )
 
-        viewModel.saveCategory("book")
+        viewModel.saveCategory("book", "2")
         assertEquals(1, interactor.updateCategoryCalledCount)
         assertEquals(0, interactor.insertCategoryCalledCount)
         assertEquals("2", interactor.updateCategoryIdCheck[0])
@@ -172,21 +163,6 @@ private class TestCategoryCommunications: CategoryCommunications {
     }
 
     override fun observeState(owner: LifecycleOwner, observer: Observer<CategoryUiState>) = Unit
-}
-
-private class TestReadNote: EditOptions.Read{
-
-    private var value = ""
-
-    fun changeExpectedValue(noteId: String){
-        value = noteId
-    }
-
-    override fun read(): String = value
-
-    override fun clear() {
-        value = ""
-    }
 }
 
 private class TestManageResources : ManageResources {

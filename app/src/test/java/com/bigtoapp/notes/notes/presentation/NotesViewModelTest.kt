@@ -202,10 +202,9 @@ class NotesViewModelTest: NotesBaseTest() {
     @Test
     fun `test navigation edit note`() {
         viewModel.editNote("12345")
-        assertEquals("12345", interactor.updatedNoteId)
 
         assertEquals(1, navigation.count)
-        assertEquals(NavigationStrategy.ReplaceToBackStack(Screen.Note), navigation.strategy)
+        assertEquals(NavigationStrategy.ReplaceWithBundle(Screen.Note, "12345"), navigation.strategy)
     }
 
     @Test
@@ -227,10 +226,7 @@ class NotesViewModelTest: NotesBaseTest() {
 
 private class TestNotesInteractor: ListInteractor<List<NoteDomain>> {
 
-    var updatedNoteId = ""
-
     var initNotesCalledCount = 0
-    val editNoteCalledList = mutableListOf<String>()
     val deleteNoteCalledList = mutableListOf<String>()
 
     private var notesList = mutableListOf<NoteDomain>()
@@ -248,10 +244,5 @@ private class TestNotesInteractor: ListInteractor<List<NoteDomain>> {
     override suspend fun delete(id: String): List<NoteDomain>{
         deleteNoteCalledList.add(id)
         return notesList
-    }
-
-    override fun edit(id: String) {
-        updatedNoteId = id
-        editNoteCalledList.add(id)
     }
 }

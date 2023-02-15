@@ -19,7 +19,6 @@ class CategoryModule(private val core: Core): Module<CategoryViewModel> {
         )
 
         return CategoryViewModel(
-            core.provideCategoryEditOptions(),
             core,
             communications,
             CategoryInteractor.Base(

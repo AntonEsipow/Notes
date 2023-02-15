@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.BaseFragment
+import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.note.presentation.SimpleTextWatcher
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -21,21 +22,27 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
         override fun afterTextChanged(s: Editable?) = viewModel.clearError()
     }
 
+    private var id = ""
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val titleInputLayout = view.findViewById<TextInputLayout>(R.id.categoryInputLayout)
         titleEditText = view.findViewById(R.id.categoryEditText)
         val saveNoteButton = view.findViewById<Button>(R.id.saveCategoryButton)
 
+        if(arguments!=null){
+            id = requireArguments().getString(NavigationStrategy.BUNDLE_KEY, "")
+        }
+
         viewModel.observeState(this){
             it.apply(titleInputLayout, titleEditText)
         }
 
         saveNoteButton.setOnClickListener {
-            viewModel.saveCategory(titleEditText.text.toString())
+            viewModel.saveCategory(titleEditText.text.toString(), id)
         }
 
-        viewModel.init(savedInstanceState == null)
+        viewModel.init(savedInstanceState == null, id)
     }
 
     override fun onResume() {

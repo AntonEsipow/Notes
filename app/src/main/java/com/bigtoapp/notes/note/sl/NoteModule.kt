@@ -20,7 +20,6 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
         val formatter = DateToUi()
 
         return NoteViewModel(
-            core.provideNoteEditOptions(),
             core,
             NoteCommunications.Base(
                 core.provideNotesListCommunication(),

@@ -31,8 +31,7 @@ class CategoriesViewModel(
     }
 
     override fun editCategory(categoryId: String) {
-        interactor.edit(categoryId)
-        navigation.put(NavigationStrategy.ReplaceToBackStack(Screen.Category))
+        navigation.put(NavigationStrategy.ReplaceWithBundle(Screen.Category, categoryId))
     }
 
     override fun navigateNotes() {

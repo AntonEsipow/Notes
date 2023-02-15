@@ -14,9 +14,11 @@ data class CategoryUi(
         fun map(id: String, header: String): T
     }
 
-    override fun mapId(source: String): Boolean = source == id
-
     override fun mapId() = id
 
     override fun map(source: CategoryUi): Boolean = source.id == id
+}
+
+class SameCategory(private val source: String): CategoryUi.Mapper<Boolean>{
+    override fun map(id: String, header: String) = source == id
 }

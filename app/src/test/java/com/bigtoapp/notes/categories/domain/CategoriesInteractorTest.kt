@@ -1,9 +1,7 @@
 package com.bigtoapp.notes.categories.domain
 
-import com.bigtoapp.notes.category.data.CategoryEditOptions
 import com.bigtoapp.notes.main.data.ListRepository
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -17,8 +15,7 @@ class CategoriesInteractorTest {
     fun setUp(){
         repository = TestCategoriesRepository()
         interactor = CategoriesInteractor(
-            repository,
-            CategoryEditOptions()
+            repository
         )
     }
 

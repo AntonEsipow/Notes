@@ -18,8 +18,7 @@ class CategoriesModule(private val core: Core): Module<CategoriesViewModel> {
 
         return CategoriesViewModel(
             CategoriesInteractor(
-                core.provideCategoriesRepository(),
-                core.provideCategoryEditOptions()
+                core.provideCategoriesRepository()
             ),
             communication,
             HandleCategoriesRequest(

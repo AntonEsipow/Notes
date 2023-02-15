@@ -212,10 +212,9 @@ class NotesViewModelTest: CategoriesBaseTest() {
     @Test
     fun `test navigation edit category`() {
         viewModel.editCategory("12345")
-        assertEquals("12345", interactor.updatedCategoryId)
 
         assertEquals(1, navigation.count)
-        assertEquals(NavigationStrategy.ReplaceToBackStack(Screen.Category), navigation.strategy)
+        assertEquals(NavigationStrategy.ReplaceWithBundle(Screen.Category, "12345"), navigation.strategy)
     }
 
     @Test
@@ -237,10 +236,7 @@ class NotesViewModelTest: CategoriesBaseTest() {
 
 private class TestCategoriesInteractor: ListInteractor<List<CategoryDomain>> {
 
-    var updatedCategoryId = ""
-
     var initCategoriesCalledCount = 0
-    val editCategoryCalledList = mutableListOf<String>()
     val deleteCategoryCalledList = mutableListOf<String>()
 
     private var notesList = mutableListOf<CategoryDomain>()
@@ -258,10 +254,5 @@ private class TestCategoriesInteractor: ListInteractor<List<CategoryDomain>> {
     override suspend fun delete(id: String): List<CategoryDomain>{
         deleteCategoryCalledList.add(id)
         return notesList
-    }
-
-    override fun edit(id: String) {
-        updatedCategoryId = id
-        editCategoryCalledList.add(id)
     }
 }

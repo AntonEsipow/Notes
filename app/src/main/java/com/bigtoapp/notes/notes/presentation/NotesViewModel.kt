@@ -32,8 +32,7 @@ class NotesViewModel(
     }
 
     override fun editNote(noteId: String) {
-        interactor.edit(noteId)
-        navigationCommunication.put(NavigationStrategy.ReplaceToBackStack(Screen.Note))
+        navigationCommunication.put(NavigationStrategy.ReplaceWithBundle(Screen.Note, noteId))
     }
 
     override fun navigateCategories() {

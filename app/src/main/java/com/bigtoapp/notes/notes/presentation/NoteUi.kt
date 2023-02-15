@@ -15,8 +15,6 @@ data class NoteUi(
         fun map(id: String, header: String, description: String, performDate: String): T
     }
 
-    override fun mapId(source: String): Boolean = source == id
-
     override fun mapId() = id
 
     override fun map(source: NoteUi): Boolean = source.id == id
@@ -25,5 +23,13 @@ data class NoteUi(
 // todo refactor
 interface MapId{
     fun mapId(): String
-    fun mapId(source: String): Boolean
+}
+
+class SameId(private val source: String): NoteUi.Mapper<Boolean>{
+    override fun map(
+        id: String,
+        header: String,
+        description: String,
+        performDate: String
+    ) = source == id
 }

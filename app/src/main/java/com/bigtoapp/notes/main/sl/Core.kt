@@ -3,18 +3,15 @@ package com.bigtoapp.notes.main.sl
 import android.content.Context
 import com.bigtoapp.notes.categories.data.BaseCategoriesRepository
 import com.bigtoapp.notes.categories.presentation.CategoriesListCommunication
-import com.bigtoapp.notes.category.data.CategoryEditOptions
 import com.bigtoapp.notes.main.data.CacheModule
-import com.bigtoapp.notes.main.data.EditOptions
 import com.bigtoapp.notes.main.data.ToDoRoomDatabase
 import com.bigtoapp.notes.main.presentation.DispatchersList
 import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.main.presentation.NavigationCommunication
-import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.notes.data.BaseNotesRepository
 import com.bigtoapp.notes.notes.presentation.NotesListCommunication
 
-interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideEditOptions,
+interface Core: CacheModule, ManageResources, ProvideNavigation,
     ProvideListCommunication {
 
     fun provideDispatchers(): DispatchersList
@@ -27,10 +24,6 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideEditOpti
         context: Context,
         private val provideInstances: ProvideInstances
     ): Core{
-
-        private val noteEditOptions = NoteEditOptions()
-
-        private val categoryEditOptions = CategoryEditOptions()
 
         private val manageResources = ManageResources.Base(context)
 
@@ -63,10 +56,6 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideEditOpti
 
         override fun provideNavigation(): NavigationCommunication.Mutable = navigationCommunication
 
-        override fun provideNoteEditOptions(): EditOptions.Mutable = noteEditOptions
-
-        override fun provideCategoryEditOptions(): EditOptions.Mutable = categoryEditOptions
-
         override fun provideNotesListCommunication(): NotesListCommunication = notesListCommunication
 
         override fun provideCategoriesListCommunication() = categoriesListCommunication
@@ -75,11 +64,6 @@ interface Core: CacheModule, ManageResources, ProvideNavigation, ProvideEditOpti
 
 interface ProvideNavigation{
     fun provideNavigation(): NavigationCommunication.Mutable
-}
-
-interface ProvideEditOptions{
-    fun provideNoteEditOptions(): EditOptions.Mutable
-    fun provideCategoryEditOptions(): EditOptions.Mutable
 }
 
 interface ProvideListCommunication{

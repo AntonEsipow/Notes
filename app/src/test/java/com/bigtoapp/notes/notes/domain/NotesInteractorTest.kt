@@ -1,7 +1,6 @@
 package com.bigtoapp.notes.notes.domain
 
 import com.bigtoapp.notes.main.data.ListRepository
-import com.bigtoapp.notes.note.data.NoteEditOptions
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -16,8 +15,7 @@ class NotesInteractorTest {
     fun setUp(){
         repository = TestNotesRepository()
         interactor = NotesInteractor(
-            repository,
-            NoteEditOptions()
+            repository
         )
     }
 

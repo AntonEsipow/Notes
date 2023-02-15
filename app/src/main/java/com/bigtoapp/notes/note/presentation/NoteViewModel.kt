@@ -7,15 +7,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.R
-import com.bigtoapp.notes.main.data.EditOptions
 import com.bigtoapp.notes.main.presentation.*
-import com.bigtoapp.notes.note.data.NoteEditOptions
 import com.bigtoapp.notes.note.domain.NoteInteractor
 import com.bigtoapp.notes.notes.presentation.DateFormatter
+import com.bigtoapp.notes.notes.presentation.SameId
 import com.google.android.material.datepicker.MaterialDatePicker
 
 class NoteViewModel(
-    private val note: EditOptions.Read,
     private val manageResources: ManageResources,
     private val communications: NoteCommunications,
     private val interactor: NoteInteractor,
@@ -23,24 +21,23 @@ class NoteViewModel(
     private val navigationCommunication: NavigationCommunication.Mutate,
     private val dateFormatter: DateFormatter<String, Long>,
     private val dialog: Dialog<MaterialDatePicker<Long>>
-): ViewModel(), Init, NoteScreenOperations, ClearError, ObserveNote, PerformDateOperations {
+): ViewModel(), ClearError, ObserveNote, PerformDateOperations, NoteScreenOperations, InitWithId {
 
-    override fun init(isFirstRun: Boolean) {
+    override fun init(isFirstRun: Boolean, id: String) {
         if(isFirstRun) {
-            val noteId = note.read()
-            if(noteId.isEmpty())
+            if(id.isEmpty())
                 communications.showState(NoteUiState.AddNote)
             else {
                 // we get liveData value that already exist to avoid going to DB again
                 val noteList = communications.getList()
-                val noteDetails = noteList.find { it.mapId(noteId) }!!
+                val mapper = SameId(id)
+                val noteDetails = noteList.find { it.map(mapper) }!!
                 communications.showState(NoteUiState.EditNote(noteDetails))
             }
         }
     }
 
-    override fun saveNote(title: String, subtitle: String, date: String) {
-        val noteId = note.read()
+    override fun saveNote(title: String, subtitle: String, date: String, noteId: String) {
         if(title.isEmpty())
             communications.showState(
                 NoteUiState.ShowErrorTitle(manageResources.string(R.string.title_error_message)))
@@ -57,7 +54,6 @@ class NoteViewModel(
                 handleRequest.handle(viewModelScope){
                     interactor.updateNote(noteId, title, subtitle, date)
                 }
-                note.clear()
                 navigationCommunication.put(NavigationStrategy.Back)
             }
         }
@@ -83,7 +79,11 @@ class NoteViewModel(
 }
 
 interface NoteScreenOperations{
-    fun saveNote(title: String, subtitle: String, date: String)
+    fun saveNote(title: String, subtitle: String, date: String, noteId: String)
+}
+
+interface InitWithId{
+    fun init(isFirstRun: Boolean, id: String)
 }
 
 interface PerformDateOperations{

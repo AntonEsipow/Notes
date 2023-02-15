@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.BaseFragment
+import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -24,6 +25,8 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         override fun afterTextChanged(s: Editable?) = viewModel.clearError()
     }
 
+    private var id = ""
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val titleInputLayout = view.findViewById<TextInputLayout>(R.id.titleInputLayout)
@@ -33,6 +36,10 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         val saveNoteButton = view.findViewById<Button>(R.id.saveNoteButton)
         val datePicker = view.findViewById<Button>(R.id.datePicker)
         dateText = view.findViewById(R.id.dateText)
+
+        if(arguments!=null){
+            id = requireArguments().getString(NavigationStrategy.BUNDLE_KEY, "")
+        }
 
         if (savedInstanceState != null) {
             val date = savedInstanceState.getString(BUNDLE_KEY, DEFAULT_VAL_DATE)!!
@@ -53,7 +60,8 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
             viewModel.saveNote(
                 titleEditText.text.toString(),
                 descriptionEditText.text.toString(),
-                dateText.text.toString()
+                dateText.text.toString(),
+                id
             )
         }
 
@@ -61,7 +69,7 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
             viewModel.changePerformDate(childFragmentManager, dateText)
         }
 
-        viewModel.init(savedInstanceState == null)
+        viewModel.init(savedInstanceState == null, id)
     }
 
     override fun onResume() {

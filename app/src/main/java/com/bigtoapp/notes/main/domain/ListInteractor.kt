@@ -7,6 +7,4 @@ interface ListInteractor<T> {
     suspend fun all(): T
 
     suspend fun delete(id: String): T
-
-    fun edit(id: String)
 }
