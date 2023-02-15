@@ -8,7 +8,8 @@ import com.bigtoapp.notes.notes.data.MapperSameId
 data class CategoryData(
     @PrimaryKey
     val id: String,
-    val title: String
+    val title: String,
+    val color: Int
 ): MapperSameId<String> {
     override fun mapId(id: String): Boolean = this.id == id
 }

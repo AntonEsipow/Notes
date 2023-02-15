@@ -24,9 +24,9 @@ class CategoriesFragment: BaseFragment<CategoriesViewModel>() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)
         val addCategoryButton = view.findViewById<Button>(R.id.addCategoryButton)
         val notesButton = view.findViewById<Button>(R.id.notesButton)
-        val adapter = CategoriesAdapter(object: ItemActions {
+        val adapter = CategoriesAdapter(object: ItemCategoryActions {
             override fun delete(id: String) = viewModel.deleteCategory(id)
-            override fun edit(id: String) = viewModel.editCategory(id)
+            override fun edit(id: String, color: Int) = viewModel.editCategory(id, color)
         })
         recyclerView.adapter = adapter
 
@@ -49,6 +49,6 @@ class CategoriesFragment: BaseFragment<CategoriesViewModel>() {
         viewModel.observeProgress(this){
             progressBar.visibility = it
         }
-        viewModel.init(savedInstanceState == null)
+        viewModel.init()
     }
 }

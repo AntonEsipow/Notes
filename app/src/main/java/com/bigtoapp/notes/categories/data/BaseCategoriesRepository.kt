@@ -12,13 +12,13 @@ class BaseCategoriesRepository(
 
     private val mutex = Mutex()
 
-    override suspend fun insertCategory(id: String, title: String) = mutex.withLock {
-        val data = CategoryData(id, title)
+    override suspend fun insertCategory(id: String, title: String, color: Int) = mutex.withLock {
+        val data = CategoryData(id, title, color)
         dao.insertCategory(data)
     }
 
-    override suspend fun updateCategory(id: String, title: String) = mutex.withLock {
-        dao.updateCategory(id, title)
+    override suspend fun updateCategory(id: String, title: String, color: Int) = mutex.withLock {
+        dao.updateCategory(id, title, color)
     }
 
     override suspend fun delete(id: String) = mutex.withLock {
@@ -27,6 +27,6 @@ class BaseCategoriesRepository(
 
     override suspend fun all(): List<CategoryDomain> = mutex.withLock {
         val data = dao.allCategories()
-        return data.map { CategoryDomain(it.id, it.title) }
+        return data.map { CategoryDomain(it.id, it.title, it.color) }
     }
 }

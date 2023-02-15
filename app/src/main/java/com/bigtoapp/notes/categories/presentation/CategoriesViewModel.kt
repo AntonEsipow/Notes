@@ -16,11 +16,9 @@ class CategoriesViewModel(
     private val navigation: NavigationCommunication.Mutate
 ): ViewModel(), Init, ObserveCategories, CategoriesScreenOperations {
 
-    override fun init(isFirstRun: Boolean) {
-        if(isFirstRun){
-            handleRequest.handle(viewModelScope){
-                interactor.all()
-            }
+    override fun init() {
+        handleRequest.handle(viewModelScope){
+            interactor.all()
         }
     }
 
@@ -30,8 +28,8 @@ class CategoriesViewModel(
         interactor.delete(categoryId)
     }
 
-    override fun editCategory(categoryId: String) {
-        navigation.put(NavigationStrategy.ReplaceWithBundle(Screen.Category, categoryId))
+    override fun editCategory(categoryId: String, color: Int) {
+        navigation.put(NavigationStrategy.ReplaceWithCategoryBundle(Screen.Category, categoryId, color))
     }
 
     override fun navigateNotes() {
@@ -51,6 +49,8 @@ class CategoriesViewModel(
 interface CategoriesScreenOperations{
     fun addCategory()
     fun deleteCategory(categoryId: String)
-    fun editCategory(categoryId: String)
+
+    fun editCategory(categoryId: String, color: Int)
+
     fun navigateNotes()
 }

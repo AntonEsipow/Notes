@@ -17,6 +17,6 @@ interface CategoriesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCategory(categoryData: CategoryData)
 
-    @Query("UPDATE categories_table SET title = :title WHERE id = :id")
-    fun updateCategory(id: String, title: String)
+    @Query("UPDATE categories_table SET title = :title, color = :color WHERE id = :id")
+    fun updateCategory(id: String, title: String, color: Int)
 }

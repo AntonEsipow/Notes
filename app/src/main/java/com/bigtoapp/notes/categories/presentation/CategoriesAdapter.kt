@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.notes.R
@@ -12,7 +13,7 @@ import com.bigtoapp.notes.main.presentation.Mapper
 import com.bigtoapp.notes.notes.presentation.ItemActions
 
 class CategoriesAdapter(
-    private val categoryActions: ItemActions
+    private val categoryActions: ItemCategoryActions
 ): RecyclerView.Adapter<CategoriesViewHolder>(), Mapper.Unit<List<CategoryUi>> {
 
     private val list = mutableListOf<CategoryUi>()
@@ -38,19 +39,25 @@ class CategoriesAdapter(
 
 class CategoriesViewHolder(
     view: View,
-    private val categoryActions: ItemActions
+    private val categoryActions: ItemCategoryActions
 ): RecyclerView.ViewHolder(view){
 
     private val title = itemView.findViewById<TextView>(R.id.categoryTitleTextView)
     private val deleteButton = itemView.findViewById<Button>(R.id.deleteCategoryButton)
     private val updateButton = itemView.findViewById<Button>(R.id.updateCategoryButton)
-    private val mapper = CategoryItemUi(title)
+    private val viewCard = itemView.findViewById<CardView>(R.id.cardView)
+    private val mapper = CategoryItemUi(title, viewCard)
 
     fun bind(model: CategoryUi){
         model.map(mapper)
         deleteButton.setOnClickListener { categoryActions.delete(model.mapId()) }
-        updateButton.setOnClickListener { categoryActions.edit(model.mapId()) }
+        updateButton.setOnClickListener { categoryActions.edit(model.mapId(), model.mapColor()) }
     }
+}
+
+interface ItemCategoryActions {
+    fun delete(id: String)
+    fun edit(id: String, color: Int)
 }
 
 class DiffUtilCallback(

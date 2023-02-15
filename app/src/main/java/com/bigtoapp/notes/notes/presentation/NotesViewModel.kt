@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.*
 import com.bigtoapp.notes.notes.domain.NoteDomain
-import com.bigtoapp.notes.notes.domain.NotesInteractor
 
 class NotesViewModel(
     private val interactor: ListInteractor<List<NoteDomain>>,
@@ -16,11 +15,10 @@ class NotesViewModel(
     private val navigationCommunication: NavigationCommunication.Mutate
 ): ViewModel(), Init, ObserveNotes, NotesScreenOperations {
 
-    override fun init(isFirstRun: Boolean) {
-        if(isFirstRun)
-            handleRequest.handle(viewModelScope){
-                interactor.all()
-            }
+    override fun init() {
+        handleRequest.handle(viewModelScope){
+            interactor.all()
+        }
     }
 
     override fun addNote() = navigationCommunication.put(

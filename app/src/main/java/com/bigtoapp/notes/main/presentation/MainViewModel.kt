@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel(
     private val navigationCommunication: NavigationCommunication.Mutable
-): ViewModel(), Init, Communication.Observe<NavigationStrategy> {
+): ViewModel(), SingleInit, Communication.Observe<NavigationStrategy> {
 
-    override fun init(isFirstRun: Boolean) {
+    override fun singleInit(isFirstRun: Boolean) {
         if(isFirstRun){
             navigationCommunication.put(NavigationStrategy.Replace(Screen.Notes))
         }

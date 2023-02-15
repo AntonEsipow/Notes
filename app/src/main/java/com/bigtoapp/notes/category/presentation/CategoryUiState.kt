@@ -1,6 +1,10 @@
 package com.bigtoapp.notes.category.presentation
 
+import android.widget.SeekBar
 import com.bigtoapp.notes.categories.presentation.CategoryUi
+import com.bigtoapp.notes.category.color.ColorCommunication
+import com.bigtoapp.notes.category.color.ColorCommunications
+import com.bigtoapp.notes.category.color.ColorState
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -8,22 +12,39 @@ sealed class CategoryUiState{
 
     abstract fun apply(
         titleLayout: TextInputLayout,
-        titleEditText: TextInputEditText
+        titleEditText: TextInputEditText,
+        redBar: SeekBar,
+        greenBar: SeekBar,
+        blueBar: SeekBar
     )
 
-    object AddCategory: CategoryUiState() {
+    class AddCategory(
+        private val colorCommunication: ColorCommunications
+    ): CategoryUiState() {
         override fun apply(
             titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText
+            titleEditText: TextInputEditText,
+            redBar: SeekBar,
+            greenBar: SeekBar,
+            blueBar: SeekBar
         ) {
             titleEditText.setText("")
+            redBar.progress = 0
+            greenBar.progress = 0
+            blueBar.progress = 0
+            colorCommunication.showColor(ColorState())
         }
     }
 
-    data class EditCategory(private val categoryUi: CategoryUi): CategoryUiState() {
+    data class EditCategory(
+        private val categoryUi: CategoryUi
+        ): CategoryUiState() {
         override fun apply(
             titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText
+            titleEditText: TextInputEditText,
+            redBar: SeekBar,
+            greenBar: SeekBar,
+            blueBar: SeekBar
         ) {
             val mapper = EditCategoryUi(titleEditText)
             categoryUi.map(mapper)
@@ -37,7 +58,10 @@ sealed class CategoryUiState{
 
         override fun apply(
             titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText
+            titleEditText: TextInputEditText,
+            redBar: SeekBar,
+            greenBar: SeekBar,
+            blueBar: SeekBar
         ) = with(titleLayout) {
             isErrorEnabled = errorEnabled
             error = message

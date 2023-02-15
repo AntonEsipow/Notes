@@ -58,6 +58,24 @@ interface NavigationStrategy {
         }
     }
 
+    data class ReplaceWithCategoryBundle(
+        override val screen: Screen,
+        private val id: String,
+        private val color: Int
+    ): Abstract(screen) {
+        override fun FragmentTransaction.executeTransaction(containerId: Int): FragmentTransaction {
+
+            val bundle = Bundle()
+            bundle.apply { putString(BUNDLE_KEY, id); putInt(BUNDLE_COLOR, color) }
+
+            val fragment = screen.fragment().newInstance()
+            fragment.arguments = bundle
+
+            return replace(containerId, fragment)
+                .addToBackStack(screen.fragment().simpleName)
+        }
+    }
+
     object Back: NavigationStrategy {
         override fun navigate(fragmentManager: FragmentManager, containerId: Int) {
             fragmentManager.popBackStack()
@@ -67,5 +85,6 @@ interface NavigationStrategy {
     // todo refactor
     companion object {
         const val BUNDLE_KEY="KEY"
+        const val BUNDLE_COLOR="COLOR"
     }
 }

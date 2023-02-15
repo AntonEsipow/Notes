@@ -1,14 +1,11 @@
 package com.bigtoapp.notes.main.presentation
 
-import android.app.ProgressDialog.show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.sl.ProvideViewModel
-import com.bigtoapp.notes.notes.presentation.NotesFragment
 
 class MainActivity : AppCompatActivity(), ProvideViewModel {
 
@@ -20,7 +17,7 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
         viewModel.observe(this){ strategy ->
             strategy.navigate(supportFragmentManager, R.id.container)
         }
-        viewModel.init(savedInstanceState == null)
+        viewModel.singleInit(savedInstanceState == null)
     }
 
     override fun <T : ViewModel> provideViewModel(clazz: Class<T>, owner: ViewModelStoreOwner): T =

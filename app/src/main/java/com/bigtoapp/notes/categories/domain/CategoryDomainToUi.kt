@@ -6,5 +6,5 @@ import com.bigtoapp.notes.notes.presentation.DateFormatter
 import com.bigtoapp.notes.notes.presentation.NoteUi
 
 class CategoryDomainToUi(): CategoryDomain.Mapper<CategoryUi> {
-    override fun map(id: String, title: String) = CategoryUi(id, title)
+    override fun map(id: String, title: String, color: Int) = CategoryUi(id, title, color)
 }
