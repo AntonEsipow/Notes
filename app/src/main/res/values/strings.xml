@@ -26,6 +26,7 @@
     <string name="seek_bar_red">Red</string>
     <string name="seek_bar_green">Green</string>
     <string name="seek_bar_blue">Blue</string>
+    <string name="color_title_message">Color</string>
 
     <string name="calendar">Calendar</string>
 </resources>

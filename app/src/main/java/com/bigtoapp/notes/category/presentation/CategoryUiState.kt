@@ -2,9 +2,6 @@ package com.bigtoapp.notes.category.presentation
 
 import android.widget.SeekBar
 import com.bigtoapp.notes.categories.presentation.CategoryUi
-import com.bigtoapp.notes.category.color.ColorCommunication
-import com.bigtoapp.notes.category.color.ColorCommunications
-import com.bigtoapp.notes.category.color.ColorState
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -18,9 +15,7 @@ sealed class CategoryUiState{
         blueBar: SeekBar
     )
 
-    data class AddCategory(
-        private val colorCommunication: ColorCommunications
-    ): CategoryUiState() {
+    object AddCategory: CategoryUiState() {
         override fun apply(
             titleLayout: TextInputLayout,
             titleEditText: TextInputEditText,
@@ -32,7 +27,6 @@ sealed class CategoryUiState{
             redBar.progress = 0
             greenBar.progress = 0
             blueBar.progress = 0
-            colorCommunication.showColor(ColorState())
         }
     }
 

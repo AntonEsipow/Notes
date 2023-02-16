@@ -1,7 +1,5 @@
 package com.bigtoapp.notes.category.sl
 
-import com.bigtoapp.notes.category.color.ColorCommunication
-import com.bigtoapp.notes.category.color.ColorCommunications
 import com.bigtoapp.notes.category.domain.CategoryInteractor
 import com.bigtoapp.notes.category.presentation.CategoryCommunications
 import com.bigtoapp.notes.category.presentation.CategoryUiStateCommunication
@@ -23,9 +21,6 @@ class CategoryModule(private val core: Core): Module<CategoryViewModel> {
         return CategoryViewModel(
             core,
             communications,
-            ColorCommunications.Base(
-                ColorCommunication.Base()
-            ),
             CategoryInteractor.Base(
                 core.provideCategoriesRepository(),
                 Generate.RandomId()

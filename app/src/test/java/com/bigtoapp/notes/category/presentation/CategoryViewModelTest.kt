@@ -3,8 +3,6 @@ package com.bigtoapp.notes.category.presentation
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bigtoapp.notes.categories.presentation.CategoryUi
-import com.bigtoapp.notes.category.color.ColorCommunications
-import com.bigtoapp.notes.category.color.ColorState
 import com.bigtoapp.notes.category.domain.CategoryInteractor
 import com.bigtoapp.notes.main.CategoriesBaseTest
 import com.bigtoapp.notes.main.presentation.HandleRequest
@@ -19,7 +17,6 @@ class CategoryViewModelTest: CategoriesBaseTest() {
 
     private lateinit var interactor: TestCategoryInteractor
     private lateinit var communications: TestCategoryCommunications
-    private lateinit var colorCommunications: TestColorCommunications
     private lateinit var manageResources: TestManageResources
     private lateinit var viewModel: CategoryViewModel
     private lateinit var navigation: TestNavigationCommunication
@@ -30,11 +27,9 @@ class CategoryViewModelTest: CategoriesBaseTest() {
         interactor = TestCategoryInteractor()
         communications = TestCategoryCommunications()
         manageResources = TestManageResources()
-        colorCommunications = TestColorCommunications()
         viewModel = CategoryViewModel(
             manageResources,
             communications,
-            colorCommunications,
             interactor,
             HandleRequest.Base(
                 TestDispatcherList()
@@ -46,7 +41,7 @@ class CategoryViewModelTest: CategoriesBaseTest() {
     @Test
     fun `test display add category screen`() {
         viewModel.init(true, "")
-        assertEquals(CategoryUiState.AddCategory(colorCommunications), communications.stateCalledList[0])
+        assertEquals(CategoryUiState.AddCategory, communications.stateCalledList[0])
     }
 
     @Test
@@ -85,16 +80,7 @@ class CategoryViewModelTest: CategoriesBaseTest() {
         manageResources.makeExpectedAnswer("Enter something")
 
         viewModel.init(true, "")
-        assertEquals(CategoryUiState.AddCategory(colorCommunications), communications.stateCalledList[0])
-
-        assertEquals(ColorState(0,0,0), colorCommunications.testColorState)
-        viewModel.onRedChange(4)
-        viewModel.onBlueChange(5)
-
-        assertEquals(2, colorCommunications.colorStateCalledList.size)
-        assertEquals(2, colorCommunications.getListCalledCount)
-        assertEquals(ColorState(4,0,0), colorCommunications.colorStateCalledList[0])
-        assertEquals(ColorState(0,0,5), colorCommunications.colorStateCalledList[1])
+        assertEquals(CategoryUiState.AddCategory, communications.stateCalledList[0])
 
         viewModel.saveCategory("book", "", 123)
 
@@ -102,7 +88,7 @@ class CategoryViewModelTest: CategoriesBaseTest() {
         assertEquals(0, interactor.updateCategoryCalledCount)
 
         assertEquals(
-            CategoryUiState.AddCategory(colorCommunications),
+            CategoryUiState.AddCategory,
             communications.stateCalledList[1]
         )
     }
@@ -120,13 +106,6 @@ class CategoryViewModelTest: CategoriesBaseTest() {
             CategoryUiState.EditCategory(CategoryUi("2", "shop", 123)),
             communications.stateCalledList[0]
         )
-
-        colorCommunications.changeExpectedState(ColorState(1,2,3))
-        viewModel.onRedChange(4)
-
-        assertEquals(1, colorCommunications.colorStateCalledList.size)
-        assertEquals(ColorState(4,2,3), colorCommunications.colorStateCalledList[0])
-        assertEquals(1, colorCommunications.getListCalledCount)
 
         viewModel.saveCategory("book", "2", 123)
         assertEquals(1, interactor.updateCategoryCalledCount)
@@ -184,29 +163,6 @@ private class TestCategoryCommunications: CategoryCommunications {
     }
 
     override fun observeState(owner: LifecycleOwner, observer: Observer<CategoryUiState>) = Unit
-}
-
-private class TestColorCommunications: ColorCommunications {
-
-    var testColorState = ColorState()
-    var getListCalledCount = 0
-    val colorStateCalledList = mutableListOf<ColorState>()
-
-    fun changeExpectedState(state: ColorState){
-        testColorState = state
-    }
-
-    override fun showColor(state: ColorState) {
-        colorStateCalledList.add(state)
-    }
-
-    override fun observeColor(owner: LifecycleOwner, observer: Observer<ColorState>) = Unit
-
-    override fun emptyGet(): ColorState {
-        getListCalledCount++
-        return testColorState
-    }
-
 }
 
 private class TestManageResources : ManageResources {
