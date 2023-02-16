@@ -29,14 +29,14 @@ class NoteInteractorTest {
 
     @Test
     fun `test insert notes`() = runBlocking {
-        interactor.insertNote("shop", "fish", "3")
+        interactor.insertNote("shop", "fish", "3", "1")
         assertEquals(1, repository.insertNoteCalledCount)
         assertEquals(0, repository.updateNoteCalledCount)
         assertEquals("1", repository.idCalledList[0])
         assertEquals(1, repository.createdTimeCalledList[0])
         assertEquals(3, repository.insertDateCalledList[0])
 
-        interactor.insertNote("watch", "casio", "2")
+        interactor.insertNote("watch", "casio", "2", "1")
         assertEquals(2, repository.insertNoteCalledCount)
         assertEquals(0, repository.updateNoteCalledCount)
         assertEquals("2", repository.idCalledList[1])
@@ -46,7 +46,7 @@ class NoteInteractorTest {
 
     @Test
     fun `test update note`() = runBlocking {
-        interactor.updateNote("1","shop", "fish", "5")
+        interactor.updateNote("1","shop", "fish", "5", "1")
         assertEquals(1, repository.updateNoteCalledCount)
         assertEquals(0, repository.insertNoteCalledCount)
         assertEquals(5, repository.updateDateCalledList[0])
@@ -54,7 +54,7 @@ class NoteInteractorTest {
 
     @Test
     fun `test insert note no date`() = runBlocking {
-        interactor.insertNote("shop", "fish", "")
+        interactor.insertNote("shop", "fish", "", "1")
         assertEquals(1, repository.insertNoteCalledCount)
         assertEquals(0, repository.updateNoteCalledCount)
         assertEquals("1", repository.idCalledList[0])
@@ -77,7 +77,7 @@ private class TestNoteRepository: NoteRepository{
     val createdTimeCalledList = mutableListOf<Long>()
 
     override suspend fun insertNote(
-        id: String, title: String, subtitle: String, createdTime: Long, performDate: Long
+        id: String, title: String, subtitle: String, createdTime: Long, performDate: Long, categoryId: String
     ) {
         insertNoteCalledCount++
         idCalledList.add(id)
@@ -87,7 +87,7 @@ private class TestNoteRepository: NoteRepository{
     }
 
     override suspend fun updateNote(
-        id: String, title: String, subtitle: String, performDate: Long
+        id: String, title: String, subtitle: String, performDate: Long, categoryId: String
     ) {
         updateNoteCalledCount++
         updateDate = performDate

@@ -16,7 +16,15 @@ interface NotesDao {
     fun insertNote(noteData: NoteData)
 
     @Query(
-        "UPDATE notes_table SET title = :title, subtitle = :subtitle, performDate = :performDate WHERE id = :id"
+        "UPDATE notes_table " +
+                "SET title = :title, subtitle = :subtitle, " +
+                "performDate = :performDate, categoryId = :categoryId " +
+                "WHERE id = :id"
     )
-    fun updateNote(id: String, title: String, subtitle: String, performDate: Long)
+    fun updateNote(id: String, title: String, subtitle: String, performDate: Long, categoryId: String)
+
+    // todo think move to another dao
+    @Transaction
+    @Query("SELECT * FROM notes_table")
+    fun allNotesWithCategory(): List<NoteWithCategoryData>
 }

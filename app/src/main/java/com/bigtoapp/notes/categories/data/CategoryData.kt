@@ -12,4 +12,15 @@ data class CategoryData(
     val color: Int
 ): MapperSameId<String> {
     override fun mapId(id: String): Boolean = this.id == id
+
+    // todo think refactor
+    companion object {
+        const val DEFAULT_CATEGORY_ID = "1"
+        const val DEFAULT_CATEGORY_NAME = "DEF"
+        const val DEFAULT_CATEGORY_COLOR = 100
+
+        fun getDefaultCategory(): CategoryData {
+            return CategoryData(DEFAULT_CATEGORY_ID, DEFAULT_CATEGORY_NAME, DEFAULT_CATEGORY_COLOR)
+        }
+    }
 }

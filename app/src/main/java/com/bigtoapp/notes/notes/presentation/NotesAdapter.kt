@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.notes.R
@@ -46,7 +47,11 @@ class NotesViewHolder(
     private val date = itemView.findViewById<TextView>(R.id.dateTextView)
     private val deleteButton = itemView.findViewById<Button>(R.id.deleteNoteButton)
     private val updateButton = itemView.findViewById<Button>(R.id.updateNoteButton)
-    private val mapper = NoteItemUi(title, description, date)
+
+    private val categoryName = itemView.findViewById<TextView>(R.id.noteCategoryName)
+    private val card = itemView.findViewById<CardView>(R.id.noteCardView)
+
+    private val mapper = NoteItemUi(title, description, date, categoryName, card)
     private val mapId = NoteId()
 
     fun bind(model: NoteUi){

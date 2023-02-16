@@ -7,9 +7,9 @@ import java.util.*
 
 interface NoteInteractor {
 
-    suspend fun insertNote(title: String, subtitle: String, date: String)
+    suspend fun insertNote(title: String, subtitle: String, date: String, categoryId: String)
 
-    suspend fun updateNote(noteId: String, title: String, subtitle: String, date: String)
+    suspend fun updateNote(noteId: String, title: String, subtitle: String, date: String, categoryId: String)
 
     class Base(
         private val repository: NoteRepository,
@@ -17,14 +17,14 @@ interface NoteInteractor {
         private val dateFormatter: DateFormatter<Long, String>
     ):NoteInteractor {
 
-        override suspend fun insertNote(title: String, subtitle: String, date: String){
+        override suspend fun insertNote(title: String, subtitle: String, date: String, categoryId: String){
             val noteId = generate.generateId()
             val createdTime = generate.generateTime()
-            repository.insertNote(noteId, title, subtitle, createdTime, dateFormatter.format(date))
+            repository.insertNote(noteId, title, subtitle, createdTime, dateFormatter.format(date), categoryId)
         }
 
         override suspend fun updateNote(
-            noteId: String, title: String, subtitle: String, date: String
-        ) = repository.updateNote(noteId, title, subtitle, dateFormatter.format(date))
+            noteId: String, title: String, subtitle: String, date: String, categoryId: String
+        ) = repository.updateNote(noteId, title, subtitle, dateFormatter.format(date), categoryId)
     }
 }

@@ -1,12 +1,13 @@
 package com.bigtoapp.notes.notes.domain
 
+import com.bigtoapp.notes.main.NotesBaseTest
 import com.bigtoapp.notes.main.data.ListRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class NotesInteractorTest {
+class NotesInteractorTest: NotesBaseTest() {
 
     private lateinit var repository: TestNotesRepository
     private lateinit var interactor: NotesInteractor
@@ -21,17 +22,10 @@ class NotesInteractorTest {
 
     @Test
     fun `test all notes`() = runBlocking {
-        repository.changeExpectedList(
-            listOf(
-                NoteDomain(id = "1", title = "title", subtitle = "subtitle", 2L),
-                NoteDomain(id = "2", title = "book", subtitle = "description", 2L)
-            )
-        )
+        repository.changeExpectedList(listOf(noteDomain1, noteDomain2))
+
         val actual = interactor.all()
-        val expected = listOf(
-            NoteDomain(id = "1", title = "title", subtitle = "subtitle", 2L),
-            NoteDomain(id = "2", title = "book", subtitle = "description", 2L)
-        )
+        val expected = listOf(noteDomain1, noteDomain2)
         assertEquals(expected, actual)
         assertEquals(1, repository.allNotesCalledCount)
     }

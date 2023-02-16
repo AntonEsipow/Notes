@@ -50,14 +50,11 @@ class NoteViewModelTest: NotesBaseTest() {
 
     @Test
     fun `test display update note screen`() {
-        communications.changeExpectedList(listOf(
-            NoteUi("1", "title", "subtitle", "1"),
-            NoteUi("2", "shop", "buy apples", "2")
-        ))
+        communications.changeExpectedList(listOf(noteUi1, noteUi2))
 
         viewModel.init(true, "2")
         assertEquals(
-            NoteUiState.EditNote(NoteUi("2", "shop", "buy apples", "2")),
+            NoteUiState.EditNote(noteUi2),
             communications.stateCalledList[0]
         )
     }
@@ -65,34 +62,28 @@ class NoteViewModelTest: NotesBaseTest() {
     @Test
     fun `test no title error state`() = runBlocking {
         manageResources.makeExpectedAnswer("Enter something")
-        communications.changeExpectedList(listOf(
-            NoteUi("1", "title", "subtitle", "1"),
-            NoteUi("2", "shop", "buy apples", "2")
-        ))
+        communications.changeExpectedList(listOf(noteUi1, noteUi2))
 
         viewModel.init(true, "2")
         assertEquals(
-            NoteUiState.EditNote(NoteUi("2", "shop", "buy apples", "2")),
+            NoteUiState.EditNote(noteUi2),
             communications.stateCalledList[0]
         )
-        viewModel.saveNote("", "tom sawyer", "1", "2")
+        viewModel.saveNote("", "tom sawyer", "1", "2", "2")
         assertEquals(NoteUiState.ShowErrorTitle("Enter something"), communications.stateCalledList[1])
     }
 
     @Test
     fun `test no description error state`() = runBlocking {
         manageResources.makeExpectedAnswer("Enter something")
-        communications.changeExpectedList(listOf(
-            NoteUi("1", "title", "subtitle", "1"),
-            NoteUi("2", "shop", "buy apples", "2")
-        ))
+        communications.changeExpectedList(listOf(noteUi1, noteUi2))
 
         viewModel.init(true, "2")
         assertEquals(
-            NoteUiState.EditNote(NoteUi("2", "shop", "buy apples", "2")),
+            NoteUiState.EditNote(noteUi2),
             communications.stateCalledList[0]
         )
-        viewModel.saveNote("book", "", "1", "2")
+        viewModel.saveNote("book", "", "1", "2", "3")
         assertEquals(NoteUiState.ShowErrorDescription("Enter something"), communications.stateCalledList[1])
     }
 
@@ -106,7 +97,7 @@ class NoteViewModelTest: NotesBaseTest() {
             communications.stateCalledList[0]
         )
 
-        viewModel.saveNote("book", "tom sawyer", "3", "")
+        viewModel.saveNote("book", "tom sawyer", "3", "", "3")
         assertEquals(1, interactor.insertNoteCalledCount)
         assertEquals(0, interactor.updateNoteCalledCount)
 
@@ -119,18 +110,15 @@ class NoteViewModelTest: NotesBaseTest() {
     @Test
     fun `test update note`() = runBlocking {
         manageResources.makeExpectedAnswer("Enter something")
-        communications.changeExpectedList(listOf(
-            NoteUi("1", "title", "subtitle", "1"),
-            NoteUi("2", "shop", "buy apples", "2")
-        ))
+        communications.changeExpectedList(listOf(noteUi1, noteUi2))
 
         viewModel.init(true, "2")
         assertEquals(
-            NoteUiState.EditNote(NoteUi("2", "shop", "buy apples", "2")),
+            NoteUiState.EditNote(noteUi2),
             communications.stateCalledList[0]
         )
 
-        viewModel.saveNote("book", "tom sawyer", "2", "2")
+        viewModel.saveNote("book", "tom sawyer", "2", "2", "2")
         assertEquals(1, interactor.updateNoteCalledCount)
         assertEquals(0, interactor.insertNoteCalledCount)
         assertEquals("2", interactor.updateNoteIdCheck[0])
@@ -155,11 +143,11 @@ private class TestNoteInteractor: NoteInteractor {
     var updateNoteCalledCount = 0
     val updateNoteIdCheck = mutableListOf<String>()
 
-    override suspend fun insertNote(title: String, subtitle: String, date: String){
+    override suspend fun insertNote(title: String, subtitle: String, date: String, categoryId: String){
         insertNoteCalledCount++
     }
 
-    override suspend fun updateNote(noteId: String, title: String, subtitle: String, date: String){
+    override suspend fun updateNote(noteId: String, title: String, subtitle: String, date: String, categoryId: String){
         updateNoteCalledCount++
         updateNoteIdCheck.add(noteId)
     }

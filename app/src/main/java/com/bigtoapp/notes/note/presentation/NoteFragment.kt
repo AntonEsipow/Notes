@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.bigtoapp.notes.R
+import com.bigtoapp.notes.categories.data.CategoryData
 import com.bigtoapp.notes.main.presentation.BaseFragment
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.google.android.material.textfield.TextInputEditText
@@ -55,7 +56,9 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
                 titleEditText.text.toString(),
                 descriptionEditText.text.toString(),
                 dateText.text.toString(),
-                id
+                id,
+                // todo remove and add
+                CategoryData.DEFAULT_CATEGORY_ID
             )
         }
 

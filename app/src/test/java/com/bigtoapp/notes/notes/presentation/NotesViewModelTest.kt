@@ -1,6 +1,7 @@
 package com.bigtoapp.notes.notes.presentation
 
 import android.view.View
+import com.bigtoapp.notes.main.BaseTest
 import com.bigtoapp.notes.main.NotesBaseTest
 import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
@@ -57,9 +58,7 @@ class NotesViewModelTest: NotesBaseTest() {
 
     @Test
     fun `test init note`() = runBlocking {
-        interactor.changeExpectedList(
-            listOf(NoteDomain("1", "title", "subtitle", 1L))
-        )
+        interactor.changeExpectedList(listOf(noteDomain1))
         viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
@@ -73,20 +72,12 @@ class NotesViewModelTest: NotesBaseTest() {
 
         assertEquals(1, communications.timesShowList)
         assertEquals(1, communications.notesList.size)
-        assertEquals(
-            NoteUi(id = "1", header="title", description ="subtitle", performDate = "1"),
-            communications.notesList[0]
-        )
+        assertEquals(noteUi1, communications.notesList[0])
     }
 
     @Test
     fun `test init some notes`() = runBlocking {
-        interactor.changeExpectedList(
-            listOf(
-                NoteDomain("1", "title", "subtitle", 1L),
-                NoteDomain("2", "shop", "apple", 2L)
-            )
-        )
+        interactor.changeExpectedList(listOf(noteDomain1, noteDomain2))
         viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
@@ -100,24 +91,13 @@ class NotesViewModelTest: NotesBaseTest() {
 
         assertEquals(1, communications.timesShowList)
         assertEquals(2, communications.notesList.size)
-        assertEquals(
-            NoteUi("1", "title", "subtitle", "1"),
-            communications.notesList[0]
-        )
-        assertEquals(
-            NoteUi("2", "shop", "apple", "2"),
-            communications.notesList[1]
-        )
+        assertEquals(noteUi1, communications.notesList[0])
+        assertEquals(noteUi2, communications.notesList[1])
     }
 
     @Test
     fun `test delete note`() = runBlocking {
-        interactor.changeExpectedList(
-            listOf(
-                NoteDomain("1", "title", "subtitle", 1L),
-                NoteDomain("2", "shop", "apple", 2L)
-            )
-        )
+        interactor.changeExpectedList(listOf(noteDomain1, noteDomain2))
         viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
@@ -131,20 +111,10 @@ class NotesViewModelTest: NotesBaseTest() {
 
         assertEquals(1, communications.timesShowList)
         assertEquals(2, communications.notesList.size)
-        assertEquals(
-            NoteUi("1", "title", "subtitle", "1"),
-            communications.notesList[0]
-        )
-        assertEquals(
-            NoteUi("2", "shop", "apple", "2"),
-            communications.notesList[1]
-        )
+        assertEquals(noteUi1, communications.notesList[0])
+        assertEquals(noteUi2, communications.notesList[1])
 
-        interactor.changeExpectedList(
-            listOf(
-                NoteDomain("2", "shop", "apple", 1L)
-            )
-        )
+        interactor.changeExpectedList(listOf(noteDomain2))
         viewModel.deleteNote("1")
 
         assertEquals(View.VISIBLE, communications.progressCalledList[2])
@@ -155,19 +125,12 @@ class NotesViewModelTest: NotesBaseTest() {
         assertEquals(1, interactor.deleteNoteCalledList.size)
 
         assertEquals(NotesUiState.Notes, communications.stateCalledList[1])
-        assertEquals(
-            NoteUi("2","shop", "apple", "1"),
-            communications.notesList[0]
-        )
+        assertEquals(noteUi2, communications.notesList[0])
     }
 
     @Test
     fun `test delete last note`() = runBlocking {
-        interactor.changeExpectedList(
-            listOf(
-                NoteDomain("1", "title", "subtitle", 1L)
-            )
-        )
+        interactor.changeExpectedList(listOf(noteDomain1))
         viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
@@ -181,10 +144,7 @@ class NotesViewModelTest: NotesBaseTest() {
 
         assertEquals(1, communications.timesShowList)
         assertEquals(1, communications.notesList.size)
-        assertEquals(
-            NoteUi("1", "title", "subtitle", "1"),
-            communications.notesList[0]
-        )
+        assertEquals(noteUi1, communications.notesList[0])
 
         interactor.changeExpectedList(emptyList())
         viewModel.deleteNote("1")

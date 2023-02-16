@@ -12,7 +12,8 @@ data class NoteData(
     val subtitle: String,
     @ColumnInfo(name = "created_time")
     val createdTime: Long,
-    val performDate: Long
+    val performDate: Long,
+    val categoryId: String
 ): MapperSameId<String> {
 
     override fun mapId(id: String): Boolean = this.id == id

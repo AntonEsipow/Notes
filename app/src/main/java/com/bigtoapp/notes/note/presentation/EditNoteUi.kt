@@ -10,7 +10,15 @@ class EditNoteUi(
     private val dateField: TextView
 ): NoteUi.Mapper<Unit> {
 
-    override fun map(id: String, header: String, description: String, performDate: String) {
+    override fun map(
+        id: String,
+        header: String,
+        description: String,
+        performDate: String,
+        categoryId: String,
+        categoryName: String,
+        categoryColor: Int
+    ) {
         titleField.setText(header)
         descriptionField.setText(description)
         dateField.text = performDate

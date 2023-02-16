@@ -37,7 +37,7 @@ class NoteViewModel(
         }
     }
 
-    override fun saveNote(title: String, subtitle: String, date: String, noteId: String) {
+    override fun saveNote(title: String, subtitle: String, date: String, noteId: String, categoryId: String) {
         if(title.isEmpty())
             communications.showState(
                 NoteUiState.ShowErrorTitle(manageResources.string(R.string.title_error_message)))
@@ -47,12 +47,12 @@ class NoteViewModel(
         else {
             if(noteId.isEmpty()){
                 handleRequest.handle(viewModelScope){
-                    interactor.insertNote(title, subtitle, date)
+                    interactor.insertNote(title, subtitle, date, categoryId)
                 }
                 communications.showState(NoteUiState.AddNote)
             } else {
                 handleRequest.handle(viewModelScope){
-                    interactor.updateNote(noteId, title, subtitle, date)
+                    interactor.updateNote(noteId, title, subtitle, date, categoryId)
                 }
                 navigationCommunication.put(NavigationStrategy.Back)
             }
@@ -79,7 +79,7 @@ class NoteViewModel(
 }
 
 interface NoteScreenOperations{
-    fun saveNote(title: String, subtitle: String, date: String, noteId: String)
+    fun saveNote(title: String, subtitle: String, date: String, noteId: String, categoryId: String)
 }
 
 interface PerformDateOperations{
