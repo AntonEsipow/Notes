@@ -18,7 +18,7 @@ sealed class CategoryUiState{
         blueBar: SeekBar
     )
 
-    class AddCategory(
+    data class AddCategory(
         private val colorCommunication: ColorCommunications
     ): CategoryUiState() {
         override fun apply(

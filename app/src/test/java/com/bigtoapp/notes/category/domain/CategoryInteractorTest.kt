@@ -24,12 +24,12 @@ class CategoryInteractorTest {
 
     @Test
     fun `test insert categories`() = runBlocking {
-        interactor.insertCategory("shop")
+        interactor.insertCategory("shop", 2)
         Assert.assertEquals(1, repository.insertCategoryCalledCount)
         Assert.assertEquals(0, repository.updateCategoryCalledCount)
         Assert.assertEquals("1", repository.idCalledList[0])
 
-        interactor.insertCategory("watch")
+        interactor.insertCategory("watch", 3)
         Assert.assertEquals(2, repository.insertCategoryCalledCount)
         Assert.assertEquals(0, repository.updateCategoryCalledCount)
         Assert.assertEquals("2", repository.idCalledList[1])
@@ -37,7 +37,7 @@ class CategoryInteractorTest {
 
     @Test
     fun `test update category`() = runBlocking {
-        interactor.updateCategory("1","shop")
+        interactor.updateCategory("1","shop", 2)
         Assert.assertEquals(1, repository.updateCategoryCalledCount)
         Assert.assertEquals(0, repository.insertCategoryCalledCount)
     }
@@ -50,12 +50,12 @@ private class TestCategoryRepository: CategoryRepository {
 
     val idCalledList = mutableListOf<String>()
 
-    override suspend fun insertCategory(id: String, title: String) {
+    override suspend fun insertCategory(id: String, title: String, color: Int) {
         insertCategoryCalledCount++
         idCalledList.add(id)
     }
 
-    override suspend fun updateCategory(id: String, title: String) {
+    override suspend fun updateCategory(id: String, title: String, color: Int) {
         updateCategoryCalledCount++
     }
 }

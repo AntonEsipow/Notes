@@ -23,13 +23,13 @@ class BaseCategoriesRepositoryTest {
     @Test
     fun `test all categories`(): Unit = runBlocking {
         dao.changeExpectedData(listOf(
-            CategoryData("1", "title"),
-            CategoryData("2", "book")
+            CategoryData("1", "title", 3),
+            CategoryData("2", "book", 3)
         ))
         val actual = repository.all()
         val expected = listOf(
-            CategoryDomain("1", "title"),
-            CategoryDomain("2", "book")
+            CategoryDomain("1", "title", 3),
+            CategoryDomain("2", "book", 3)
         )
         assertEquals(expected, actual)
         assertEquals(1, dao.allCategoriesCalledCount)
@@ -38,17 +38,17 @@ class BaseCategoriesRepositoryTest {
     @Test
     fun `test insert category`(): Unit = runBlocking{
         dao.changeExpectedData(listOf(
-            CategoryData("1", "title"),
-            CategoryData("2", "book")
+            CategoryData("1", "title", 3),
+            CategoryData("2", "book", 3)
         ))
-        repository.insertCategory("3", "shop")
+        repository.insertCategory("3", "shop", 3)
         assertEquals(1, dao.insertCategoryCalledCount)
 
         val actual = repository.all()
         val expected = listOf(
-            CategoryDomain("1", "title"),
-            CategoryDomain("2", "book"),
-            CategoryDomain("3", "shop")
+            CategoryDomain("1", "title", 3),
+            CategoryDomain("2", "book", 3),
+            CategoryDomain("3", "shop", 3)
         )
         assertEquals(expected, actual)
     }
@@ -56,16 +56,16 @@ class BaseCategoriesRepositoryTest {
     @Test
     fun `test update category`(): Unit = runBlocking{
         dao.changeExpectedData(listOf(
-            CategoryData("1", "title"),
-            CategoryData("2", "book")
+            CategoryData("1", "title", 3),
+            CategoryData("2", "book", 3)
         ))
-        repository.updateCategory("2", "shop")
+        repository.updateCategory("2", "shop", 5)
         assertEquals(1, dao.updateCategoryCalledCount)
 
         val actual = repository.all()
         val expected = listOf(
-            CategoryDomain("1", "title"),
-            CategoryDomain("2", "shop")
+            CategoryDomain("1", "title", 3),
+            CategoryDomain("2", "shop", 5)
         )
         assertEquals(expected, actual)
     }
@@ -73,15 +73,15 @@ class BaseCategoriesRepositoryTest {
     @Test
     fun `test delete category`(): Unit = runBlocking{
         dao.changeExpectedData(listOf(
-            CategoryData("1", "title"),
-            CategoryData("2", "book")
+            CategoryData("1", "title", 3),
+            CategoryData("2", "book", 3)
         ))
         repository.delete("1")
         assertEquals("1", dao.deleteCategoryCalledList[0])
 
         val actual = repository.all()
         val expected = listOf(
-            CategoryDomain("2", "book")
+            CategoryDomain("2", "book", 3)
         )
         assertEquals(expected, actual)
     }
@@ -106,11 +106,11 @@ private class TestCategoryDao: CategoriesDao {
         data.add(categoryData)
     }
 
-    override fun updateCategory(id: String, title: String) {
+    override fun updateCategory(id: String, title: String, color: Int) {
         updateCategoryCalledCount++
         val item = data.find { it.mapId(id) }
         val index = data.indexOf(item)
-        val categoryData = CategoryData(id, title)
+        val categoryData = CategoryData(id, title, color)
         data[index] = categoryData
     }
 

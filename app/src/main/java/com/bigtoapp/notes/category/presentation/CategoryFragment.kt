@@ -13,8 +13,6 @@ import com.bigtoapp.notes.category.color.MapGreen
 import com.bigtoapp.notes.category.color.MapRed
 import com.bigtoapp.notes.main.presentation.BaseFragment
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
-import com.bigtoapp.notes.main.presentation.NavigationStrategy.Companion.BUNDLE_KEY
-import com.bigtoapp.notes.note.presentation.NoteFragment
 import com.bigtoapp.notes.note.presentation.SimpleTextWatcher
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -67,14 +65,13 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
         }
 
         if(savedInstanceState != null){
-            val color = savedInstanceState.getInt(BUNDLE_KEY)
+            val color = savedInstanceState.getInt(COLOR_STATE)
             viewModel.setCategoryColor(color){ red, green, blue ->
                 redSeekBar.progress = red
                 greenSeekBar.progress = green
                 blueSeekBar.progress = blue
             }
-            val title = savedInstanceState.getString(BUNDLE_TITLE)
-            titleEditText.setText(title)
+            titleEditText.setText(savedInstanceState.getString(COLOR_TITLE))
         }
 
         viewModel.observeState(this){
@@ -82,12 +79,10 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
         }
 
         saveNoteButton.setOnClickListener {
-
             val red = redSeekBar.progress
             val green = greenSeekBar.progress
             val blue = blueSeekBar.progress
             color = Color.rgb(red, green, blue)
-
             viewModel.saveCategory(titleEditText.text.toString(), id, color)
         }
 
@@ -128,8 +123,8 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
         val green = greenSeekBar.progress
         val blue = blueSeekBar.progress
         val color = Color.rgb(red, green, blue)
-        outState.putInt(BUNDLE_KEY, color)
-        outState.putString(BUNDLE_TITLE, titleEditText.text.toString())
+        outState.putInt(COLOR_STATE, color)
+        outState.putString(COLOR_TITLE, titleEditText.text.toString())
     }
 
     private class SeekBarListener(
@@ -141,8 +136,8 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
     }
 
     companion object{
-        private const val BUNDLE_KEY = "Saved state"
-        private const val BUNDLE_TITLE = "Saved title"
+        private const val COLOR_STATE = "Saved state"
+        private const val COLOR_TITLE = "Saved title"
     }
 }
 

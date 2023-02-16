@@ -82,10 +82,6 @@ interface NoteScreenOperations{
     fun saveNote(title: String, subtitle: String, date: String, noteId: String)
 }
 
-interface InitWithId{
-    fun init(isFirstRun: Boolean, id: String)
-}
-
 interface PerformDateOperations{
     fun changePerformDate(parentFragmentManager: FragmentManager, view: TextView)
 }

@@ -40,7 +40,7 @@ class NotesViewModelTest: CategoriesBaseTest() {
     @Test
     fun `test init no categories`() = runBlocking {
         interactor.changeExpectedList(emptyList())
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initCategoriesCalledCount)
@@ -57,9 +57,9 @@ class NotesViewModelTest: CategoriesBaseTest() {
     @Test
     fun `test init category`() = runBlocking {
         interactor.changeExpectedList(
-            listOf(CategoryDomain("1", "title"))
+            listOf(CategoryDomain("1", "title", 3))
         )
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initCategoriesCalledCount)
@@ -73,25 +73,25 @@ class NotesViewModelTest: CategoriesBaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(1, communications.categoriesList.size)
         assertEquals(
-            CategoryUi(id = "1", header="title"),
+            CategoryUi(id = "1", header="title", 3),
             communications.categoriesList[0]
         )
 
-        viewModel.init(isFirstRun = false)
-        assertEquals(2, communications.progressCalledList.size)
-        assertEquals(1, interactor.initCategoriesCalledCount)
-        assertEquals(1, communications.timesShowList)
+        viewModel.init()
+        assertEquals(4, communications.progressCalledList.size)
+        assertEquals(2, interactor.initCategoriesCalledCount)
+        assertEquals(2, communications.timesShowList)
     }
 
     @Test
     fun `test init some categories`() = runBlocking {
         interactor.changeExpectedList(
             listOf(
-                CategoryDomain("1", "title"),
-                CategoryDomain("2", "shop")
+                CategoryDomain("1", "title", 3),
+                CategoryDomain("2", "shop", 3)
             )
         )
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initCategoriesCalledCount)
@@ -105,29 +105,29 @@ class NotesViewModelTest: CategoriesBaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(2, communications.categoriesList.size)
         assertEquals(
-            CategoryUi("1", "title"),
+            CategoryUi("1", "title", 3),
             communications.categoriesList[0]
         )
         assertEquals(
-            CategoryUi("2", "shop"),
+            CategoryUi("2", "shop", 3),
             communications.categoriesList[1]
         )
 
-        viewModel.init(isFirstRun = false)
-        assertEquals(2, communications.progressCalledList.size)
-        assertEquals(1, interactor.initCategoriesCalledCount)
-        assertEquals(1, communications.timesShowList)
+        viewModel.init()
+        assertEquals(4, communications.progressCalledList.size)
+        assertEquals(2, interactor.initCategoriesCalledCount)
+        assertEquals(2, communications.timesShowList)
     }
 
     @Test
     fun `test delete category`() = runBlocking {
         interactor.changeExpectedList(
             listOf(
-                CategoryDomain("1", "title"),
-                CategoryDomain("2", "shop")
+                CategoryDomain("1", "title", 3),
+                CategoryDomain("2", "shop", 3)
             )
         )
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initCategoriesCalledCount)
@@ -141,17 +141,17 @@ class NotesViewModelTest: CategoriesBaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(2, communications.categoriesList.size)
         assertEquals(
-            CategoryUi("1", "title"),
+            CategoryUi("1", "title", 3),
             communications.categoriesList[0]
         )
         assertEquals(
-            CategoryUi("2", "shop"),
+            CategoryUi("2", "shop", 3),
             communications.categoriesList[1]
         )
 
         interactor.changeExpectedList(
             listOf(
-                CategoryDomain("2", "shop")
+                CategoryDomain("2", "shop", 3)
             )
         )
         viewModel.deleteCategory("1")
@@ -165,7 +165,7 @@ class NotesViewModelTest: CategoriesBaseTest() {
 
         assertEquals(CategoriesUiState.Categories, communications.stateCalledList[1])
         assertEquals(
-            CategoryUi("2","shop"),
+            CategoryUi("2","shop", 3),
             communications.categoriesList[0]
         )
     }
@@ -174,10 +174,10 @@ class NotesViewModelTest: CategoriesBaseTest() {
     fun `test delete last category`() = runBlocking {
         interactor.changeExpectedList(
             listOf(
-                CategoryDomain("1", "title")
+                CategoryDomain("1", "title", 3)
             )
         )
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initCategoriesCalledCount)
@@ -191,7 +191,7 @@ class NotesViewModelTest: CategoriesBaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(1, communications.categoriesList.size)
         assertEquals(
-            CategoryUi("1", "title"),
+            CategoryUi("1", "title", 3),
             communications.categoriesList[0]
         )
 
@@ -211,10 +211,13 @@ class NotesViewModelTest: CategoriesBaseTest() {
 
     @Test
     fun `test navigation edit category`() {
-        viewModel.editCategory("12345")
+        viewModel.editCategory("12345", 3)
 
         assertEquals(1, navigation.count)
-        assertEquals(NavigationStrategy.ReplaceWithBundle(Screen.Category, "12345"), navigation.strategy)
+        assertEquals(
+            NavigationStrategy.ReplaceWithCategoryBundle(Screen.Category, "12345", 3),
+            navigation.strategy
+        )
     }
 
     @Test

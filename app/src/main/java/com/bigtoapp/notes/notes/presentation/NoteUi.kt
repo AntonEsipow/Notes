@@ -7,7 +7,7 @@ data class NoteUi(
     private val header: String,
     private val description: String,
     private val performDate: String
-): Mapper<Boolean, NoteUi>, MapId{
+): Mapper<Boolean, NoteUi>{
 
     fun <T> map(mapper: Mapper<T>): T = mapper.map(id, header, description, performDate)
 
@@ -15,14 +15,11 @@ data class NoteUi(
         fun map(id: String, header: String, description: String, performDate: String): T
     }
 
-    override fun mapId() = id
-
     override fun map(source: NoteUi): Boolean = source.id == id
 }
 
-// todo refactor
-interface MapId{
-    fun mapId(): String
+class NoteId: NoteUi.Mapper<String>{
+    override fun map(id: String, header: String, description: String, performDate: String) = id
 }
 
 class SameId(private val source: String): NoteUi.Mapper<Boolean>{

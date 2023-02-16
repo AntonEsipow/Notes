@@ -22,6 +22,10 @@
     <string name="pick_date">Pick Date</string>
 
     <string name="save_category">Save category</string>
+    <string name="colors_palette">Low (R, G, B)</string>
+    <string name="seek_bar_red">Red</string>
+    <string name="seek_bar_green">Green</string>
+    <string name="seek_bar_blue">Blue</string>
 
     <string name="calendar">Calendar</string>
 </resources>

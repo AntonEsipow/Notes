@@ -47,11 +47,12 @@ class NotesViewHolder(
     private val deleteButton = itemView.findViewById<Button>(R.id.deleteNoteButton)
     private val updateButton = itemView.findViewById<Button>(R.id.updateNoteButton)
     private val mapper = NoteItemUi(title, description, date)
+    private val mapId = NoteId()
 
     fun bind(model: NoteUi){
         model.map(mapper)
-        deleteButton.setOnClickListener { noteActions.delete(model.mapId()) }
-        updateButton.setOnClickListener { noteActions.edit(model.mapId()) }
+        deleteButton.setOnClickListener { noteActions.delete(model.map(mapId)) }
+        updateButton.setOnClickListener { noteActions.edit(model.map(mapId)) }
     }
 }
 

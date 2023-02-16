@@ -7,3 +7,7 @@ interface SingleInit {
 interface Init{
     fun init()
 }
+
+interface InitWithId{
+    fun init(isFirstRun: Boolean, id: String)
+}

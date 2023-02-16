@@ -1,5 +1,6 @@
 package com.bigtoapp.notes.categories.presentation
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,11 +48,13 @@ class CategoriesViewHolder(
     private val updateButton = itemView.findViewById<Button>(R.id.updateCategoryButton)
     private val viewCard = itemView.findViewById<CardView>(R.id.cardView)
     private val mapper = CategoryItemUi(title, viewCard)
+    private val mapId = MapCategoryId()
+    private val mapColor = MapCategoryColor()
 
     fun bind(model: CategoryUi){
         model.map(mapper)
-        deleteButton.setOnClickListener { categoryActions.delete(model.mapId()) }
-        updateButton.setOnClickListener { categoryActions.edit(model.mapId(), model.mapColor()) }
+        deleteButton.setOnClickListener { categoryActions.delete(model.map(mapId)) }
+        updateButton.setOnClickListener { categoryActions.edit(model.map(mapId), model.map(mapColor)) }
     }
 }
 

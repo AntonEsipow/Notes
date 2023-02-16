@@ -23,14 +23,14 @@ class CategoriesInteractorTest {
     fun `test all categories`() = runBlocking {
         repository.changeExpectedList(
             listOf(
-                CategoryDomain(id = "1", title = "title"),
-                CategoryDomain(id = "2", title = "book")
+                CategoryDomain(id = "1", title = "title", 3),
+                CategoryDomain(id = "2", title = "book", 3)
             )
         )
         val actual = interactor.all()
         val expected = listOf(
-            CategoryDomain(id = "1", title = "title"),
-            CategoryDomain(id = "2", title = "book")
+            CategoryDomain(id = "1", title = "title", 3),
+            CategoryDomain(id = "2", title = "book", 3)
         )
         assertEquals(expected, actual)
         assertEquals(1, repository.allCategoriesCalledCount)

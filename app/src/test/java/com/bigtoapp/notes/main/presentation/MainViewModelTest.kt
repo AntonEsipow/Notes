@@ -1,7 +1,6 @@
 package com.bigtoapp.notes.main.presentation
 
 import com.bigtoapp.notes.main.BaseTest
-import com.bigtoapp.notes.main.NotesBaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -12,11 +11,11 @@ class MainViewModelTest: BaseTest() {
         val navigation = TestNavigationCommunication()
         val mainViewModel = MainViewModel(navigation)
 
-        mainViewModel.init(true)
+        mainViewModel.singleInit(true)
         assertEquals(1, navigation.count)
         assertEquals(NavigationStrategy.Replace(Screen.Notes), navigation.strategy)
 
-        mainViewModel.init(false)
+        mainViewModel.singleInit(false)
         assertEquals(1, navigation.count)
     }
 }

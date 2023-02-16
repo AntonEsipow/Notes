@@ -48,7 +48,7 @@ interface NavigationStrategy {
         override fun FragmentTransaction.executeTransaction(containerId: Int): FragmentTransaction {
 
             val bundle = Bundle()
-            bundle.apply { putString(BUNDLE_KEY, id) }
+            bundle.apply { putString(BUNDLE_ID, id) }
 
             val fragment = screen.fragment().newInstance()
             fragment.arguments = bundle
@@ -66,7 +66,7 @@ interface NavigationStrategy {
         override fun FragmentTransaction.executeTransaction(containerId: Int): FragmentTransaction {
 
             val bundle = Bundle()
-            bundle.apply { putString(BUNDLE_KEY, id); putInt(BUNDLE_COLOR, color) }
+            bundle.apply { putString(BUNDLE_ID, id); putInt(BUNDLE_COLOR, color) }
 
             val fragment = screen.fragment().newInstance()
             fragment.arguments = bundle
@@ -84,7 +84,7 @@ interface NavigationStrategy {
 
     // todo refactor
     companion object {
-        const val BUNDLE_KEY="KEY"
+        const val BUNDLE_ID="KEY"
         const val BUNDLE_COLOR="COLOR"
     }
 }

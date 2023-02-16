@@ -21,7 +21,7 @@ abstract class BaseFragment<T: ViewModel>: Fragment() {
         viewModel = (requireActivity() as ProvideViewModel).provideViewModel(viewModelClass, this)
 
         if(arguments!=null){
-            id = requireArguments().getString(NavigationStrategy.BUNDLE_KEY, "")
+            id = requireArguments().getString(NavigationStrategy.BUNDLE_ID, "")
         }
     }
 

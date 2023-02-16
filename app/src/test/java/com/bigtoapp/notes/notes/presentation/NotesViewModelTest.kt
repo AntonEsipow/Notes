@@ -7,7 +7,6 @@ import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.Screen
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.domain.NoteDomainToUi
-import com.bigtoapp.notes.notes.domain.NotesInteractor
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -42,7 +41,7 @@ class NotesViewModelTest: NotesBaseTest() {
     @Test
     fun `test init no notes`() = runBlocking {
         interactor.changeExpectedList(emptyList())
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initNotesCalledCount)
@@ -61,7 +60,7 @@ class NotesViewModelTest: NotesBaseTest() {
         interactor.changeExpectedList(
             listOf(NoteDomain("1", "title", "subtitle", 1L))
         )
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initNotesCalledCount)
@@ -88,7 +87,7 @@ class NotesViewModelTest: NotesBaseTest() {
                 NoteDomain("2", "shop", "apple", 2L)
             )
         )
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initNotesCalledCount)
@@ -119,7 +118,7 @@ class NotesViewModelTest: NotesBaseTest() {
                 NoteDomain("2", "shop", "apple", 2L)
             )
         )
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initNotesCalledCount)
@@ -169,7 +168,7 @@ class NotesViewModelTest: NotesBaseTest() {
                 NoteDomain("1", "title", "subtitle", 1L)
             )
         )
-        viewModel.init(isFirstRun = true)
+        viewModel.init()
 
         assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initNotesCalledCount)
