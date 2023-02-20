@@ -13,26 +13,13 @@ class BaseNotesRepository(
 
     private val mutex = Mutex()
 
-    override suspend fun insertNote(
-        id: String, title: String, subtitle: String, createdTime: Long, performDate: Long, categoryId: String
-    ) =
-        mutex.withLock {
-        val data = NoteData(
-            id = id,
-            title = title,
-            subtitle = subtitle,
-            createdTime = createdTime,
-            performDate = performDate,
-            categoryId = categoryId
-        )
-        dao.insertNote(data)
+    override suspend fun insertNote(noteData: NoteData) = mutex.withLock {
+        dao.insertNote(noteData)
     }
 
-    override suspend fun updateNote(
-        id: String, title: String, subtitle: String, performDate: Long, categoryId: String
-    ) = mutex.withLock {
-            dao.updateNote(id, title, subtitle, performDate, categoryId)
-        }
+    override suspend fun updateNote(noteData: NoteData) = mutex.withLock {
+        dao.updateNote(noteData)
+    }
 
     // todo think refactor
     override suspend fun all(): List<NoteDomain> = mutex.withLock {

@@ -6,7 +6,7 @@ import com.bigtoapp.notes.categories.data.CategoryData
 
 data class NoteWithCategoryData(
     @Embedded
-    val noteData: NoteData,
+    var noteData: NoteData,
     @Relation(
         parentColumn = "categoryId",
         entityColumn = "id"

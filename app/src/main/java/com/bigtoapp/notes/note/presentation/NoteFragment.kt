@@ -2,14 +2,13 @@ package com.bigtoapp.notes.note.presentation
 
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.categories.data.CategoryData
 import com.bigtoapp.notes.main.presentation.BaseFragment
-import com.bigtoapp.notes.main.presentation.NavigationStrategy
+import com.bigtoapp.notes.main.presentation.SimpleTextWatcher
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -35,11 +34,6 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         val saveNoteButton = view.findViewById<Button>(R.id.saveNoteButton)
         val datePicker = view.findViewById<Button>(R.id.datePicker)
         dateText = view.findViewById(R.id.dateText)
-
-        if (savedInstanceState != null) {
-            val date = savedInstanceState.getString(BUNDLE_KEY, DEFAULT_VAL_DATE)!!
-            dateText.text = date
-        }
 
         viewModel.observeState(this){
             it.apply(
@@ -69,6 +63,12 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         viewModel.init(savedInstanceState == null, id)
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        val date = savedInstanceState?.getString(BUNDLE_KEY, DEFAULT_VAL_DATE)!!
+        dateText.text = date
+        super.onViewStateRestored(savedInstanceState)
+    }
+
     override fun onResume() {
         titleEditText.addTextChangedListener(watcher)
         descriptionEditText.addTextChangedListener(watcher)
@@ -90,10 +90,4 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         private const val BUNDLE_KEY = "Date"
         private const val DEFAULT_VAL_DATE = ""
     }
-}
-
-abstract class SimpleTextWatcher : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-    override fun afterTextChanged(s: Editable?) = Unit
 }

@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.*
+import com.bigtoapp.notes.note.domain.InsertedDomainNote
 import com.bigtoapp.notes.note.domain.NoteInteractor
+import com.bigtoapp.notes.note.domain.UpdatedDomainNote
 import com.bigtoapp.notes.notes.presentation.DateFormatter
 import com.bigtoapp.notes.notes.presentation.SameId
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -37,6 +39,7 @@ class NoteViewModel(
         }
     }
 
+    // todo think refactor
     override fun saveNote(title: String, subtitle: String, date: String, noteId: String, categoryId: String) {
         if(title.isEmpty())
             communications.showState(
@@ -46,13 +49,15 @@ class NoteViewModel(
                 NoteUiState.ShowErrorDescription(manageResources.string(R.string.subtitle_error_message)))
         else {
             if(noteId.isEmpty()){
+                val note = InsertedDomainNote(title, subtitle, date, categoryId)
                 handleRequest.handle(viewModelScope){
-                    interactor.insertNote(title, subtitle, date, categoryId)
+                    interactor.insertNote(note)
                 }
                 communications.showState(NoteUiState.AddNote)
             } else {
+                val note = UpdatedDomainNote(noteId, title, subtitle, date, categoryId)
                 handleRequest.handle(viewModelScope){
-                    interactor.updateNote(noteId, title, subtitle, date, categoryId)
+                    interactor.updateNote(note)
                 }
                 navigationCommunication.put(NavigationStrategy.Back)
             }

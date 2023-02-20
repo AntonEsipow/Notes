@@ -1,15 +1,12 @@
 package com.bigtoapp.notes.note.domain
 
-import com.bigtoapp.notes.notes.data.NoteData
-import com.bigtoapp.notes.notes.domain.NoteDomain
 import com.bigtoapp.notes.notes.presentation.DateFormatter
-import java.util.*
 
 interface NoteInteractor {
 
-    suspend fun insertNote(title: String, subtitle: String, date: String, categoryId: String)
+    suspend fun insertNote(insertedDomainNote: InsertedDomainNote)
 
-    suspend fun updateNote(noteId: String, title: String, subtitle: String, date: String, categoryId: String)
+    suspend fun updateNote(updatedDomainNote: UpdatedDomainNote)
 
     class Base(
         private val repository: NoteRepository,
@@ -17,14 +14,15 @@ interface NoteInteractor {
         private val dateFormatter: DateFormatter<Long, String>
     ):NoteInteractor {
 
-        override suspend fun insertNote(title: String, subtitle: String, date: String, categoryId: String){
-            val noteId = generate.generateId()
-            val createdTime = generate.generateTime()
-            repository.insertNote(noteId, title, subtitle, createdTime, dateFormatter.format(date), categoryId)
+        override suspend fun insertNote(insertedDomainNote: InsertedDomainNote){
+            val mapper = InsertDomainToData(generate, dateFormatter)
+            val dataNote = insertedDomainNote.map(mapper)
+            repository.insertNote(dataNote)
         }
 
-        override suspend fun updateNote(
-            noteId: String, title: String, subtitle: String, date: String, categoryId: String
-        ) = repository.updateNote(noteId, title, subtitle, dateFormatter.format(date), categoryId)
+        override suspend fun updateNote(updatedDomainNote: UpdatedDomainNote) {
+            val mapper = UpdateDomainToDataNote(generate, dateFormatter)
+            repository.updateNote(updatedDomainNote.map(mapper))
+        }
     }
 }

@@ -1,14 +1,15 @@
 package com.bigtoapp.notes.notes.data
 
 import com.bigtoapp.notes.categories.data.CategoryData
-import com.bigtoapp.notes.main.NotesBaseTest
+import com.bigtoapp.notes.main.BaseTest
+import com.bigtoapp.notes.main.NotesModelsForTests
 import com.bigtoapp.notes.notes.domain.NoteDomain
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class BaseNotesRepositoryTest: NotesBaseTest() {
+class BaseNotesRepositoryTest(): NotesModelsForTests() {
 
     private lateinit var dao: TestNotesDao
     private lateinit var repository: BaseNotesRepository
@@ -39,7 +40,7 @@ class BaseNotesRepositoryTest: NotesBaseTest() {
         dao.changeExpectedNoteWithCategoryData(listOf(
             noteWithCategoryData1, noteWithCategoryData2
         ))
-        repository.insertNote("3", "shop", "fish", 1L, 3L, "1")
+        repository.insertNote(noteData3)
         assertEquals(1, dao.insertNoteCalledCount)
 
         val actual = repository.all()
@@ -54,7 +55,7 @@ class BaseNotesRepositoryTest: NotesBaseTest() {
         dao.changeExpectedNoteWithCategoryData(listOf(
             noteWithCategoryData1, noteWithCategoryData2
         ))
-        repository.updateNote("2", "shop", "fish", 4L, "1")
+        repository.updateNote(noteData2)
         assertEquals(1, dao.updateNoteCalledCount)
 
         val actual = repository.all()
@@ -81,7 +82,7 @@ class BaseNotesRepositoryTest: NotesBaseTest() {
     }
 }
 
-private class TestNotesDao: NotesDao {
+private class TestNotesDao: NotesModelsForTests(), NotesDao {
 
     var allNotesCalledCount = 0
     var updateNoteCalledCount = 0
@@ -102,12 +103,12 @@ private class TestNotesDao: NotesDao {
         noteWithCategoryData.add(NoteWithCategoryData(noteData, categoryData2))
     }
 
-    override fun updateNote(id: String, title: String, subtitle: String, performDate: Long, categoryId: String) {
+    override fun updateNote(noteData: NoteData) {
         updateNoteCalledCount++
-        val item = noteWithCategoryData.find { it.noteData.mapId(id) }
+        val item = noteWithCategoryData.find { it.noteData.mapId(noteData.id) }
         val index = noteWithCategoryData.indexOf(item)
-        val noteData = noteWithCategoryData2
-        noteWithCategoryData[index] = noteData
+        val noteData = noteWithCategoryData2.noteData
+        noteWithCategoryData[index].noteData = noteData
     }
 
     override fun allNotes(): List<NoteData> {
@@ -125,14 +126,4 @@ private class TestNotesDao: NotesDao {
         allNotesWithCategoryCalledCount++
         return noteWithCategoryData
     }
-
-    protected val noteData2 = NoteData(
-        "2", "shop", "apple", 1L, 2L, "2"
-    )
-    private val categoryData2 = CategoryData(
-        "2", "book", 11
-    )
-    protected val noteWithCategoryData2 = NoteWithCategoryData(
-        noteData2, categoryData2
-    )
 }

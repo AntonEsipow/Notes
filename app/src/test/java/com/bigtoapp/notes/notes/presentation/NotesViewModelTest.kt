@@ -1,8 +1,9 @@
 package com.bigtoapp.notes.notes.presentation
 
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.bigtoapp.notes.main.BaseTest
-import com.bigtoapp.notes.main.NotesBaseTest
 import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.Screen
@@ -13,12 +14,25 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class NotesViewModelTest: NotesBaseTest() {
+class NotesViewModelTest: BaseTest() {
 
     private lateinit var interactor: TestNotesInteractor
     private lateinit var communications: TestNotesCommunications
     private lateinit var viewModel: NotesViewModel
     private lateinit var navigation: TestNavigationCommunication
+
+    private val noteDomain2 = NoteDomain(
+        "2", "shop", "apple", 2L, "2", "book", 11
+    )
+    private val noteUi2 = NoteUi(
+        "2", "shop", "apple", "2", "2", "book", 11
+    )
+    private val noteDomain1 = NoteDomain(
+        "1", "title", "subtitle", 1L, "1", "shop", 10
+    )
+    private val noteUi1 = NoteUi(
+        "1","title", "subtitle", "1","1", "shop", 10
+    )
 
     @Before
     fun setUp(){
@@ -204,4 +218,34 @@ private class TestNotesInteractor: ListInteractor<List<NoteDomain>> {
         deleteNoteCalledList.add(id)
         return notesList
     }
+}
+
+private class TestNotesCommunications: NotesCommunications {
+
+    val progressCalledList = mutableListOf<Int>()
+    val stateCalledList = mutableListOf<NotesUiState>()
+    val notesList = mutableListOf<NoteUi>()
+    var timesShowList = 0
+
+    override fun showProgress(show: Int){
+        progressCalledList.add(show)
+    }
+
+    override fun showState(notesUiState: NotesUiState){
+        stateCalledList.add(notesUiState)
+    }
+
+    override fun showList(list: List<NoteUi>) {
+        timesShowList++
+        notesList.clear()
+        notesList.addAll(list)
+    }
+
+    override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) = Unit
+    override fun observeState(owner: LifecycleOwner, observer: Observer<NotesUiState>) = Unit
+    override fun observeList(owner: LifecycleOwner, observer: Observer<List<NoteUi>>) = Unit
+}
+
+private class TestDateToUi: DateFormatter<String, Long>{
+    override fun format(value: Long): String = value.toString()
 }

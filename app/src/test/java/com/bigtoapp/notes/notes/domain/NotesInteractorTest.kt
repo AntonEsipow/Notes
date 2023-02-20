@@ -1,16 +1,23 @@
 package com.bigtoapp.notes.notes.domain
 
-import com.bigtoapp.notes.main.NotesBaseTest
+import com.bigtoapp.notes.main.BaseTest
 import com.bigtoapp.notes.main.data.ListRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class NotesInteractorTest: NotesBaseTest() {
+class NotesInteractorTest: BaseTest() {
 
     private lateinit var repository: TestNotesRepository
     private lateinit var interactor: NotesInteractor
+
+    private val noteDomain1 = NoteDomain(
+        "1", "title", "subtitle", 1L, "1", "shop", 10
+    )
+    private val noteDomain2 = NoteDomain(
+        "2", "shop", "apple", 2L, "2", "book", 11
+    )
 
     @Before
     fun setUp(){

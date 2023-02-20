@@ -29,37 +29,55 @@ class NoteInteractorTest {
 
     @Test
     fun `test insert notes`() = runBlocking {
-        interactor.insertNote("shop", "fish", "3", "1")
+        interactor.insertNote(
+            InsertedDomainNote("buy", "milk", "2", "1")
+        )
         assertEquals(1, repository.insertNoteCalledCount)
         assertEquals(0, repository.updateNoteCalledCount)
-        assertEquals("1", repository.idCalledList[0])
-        assertEquals(1, repository.createdTimeCalledList[0])
-        assertEquals(3, repository.insertDateCalledList[0])
+        assertEquals(
+            NoteData("1", "buy", "milk", 1, 2, "1"),
+            repository.insertNoteList[0]
+        )
 
-        interactor.insertNote("watch", "casio", "2", "1")
+        interactor.insertNote(
+            InsertedDomainNote("watch", "casio", "2", "1")
+        )
         assertEquals(2, repository.insertNoteCalledCount)
         assertEquals(0, repository.updateNoteCalledCount)
-        assertEquals("2", repository.idCalledList[1])
-        assertEquals(2, repository.createdTimeCalledList[1])
-        assertEquals(2, repository.insertDateCalledList[1])
+        assertEquals(
+            NoteData("2","watch", "casio", 2, 2, "1"),
+            repository.insertNoteList[1]
+        )
+        assertEquals(2, repository.insertNoteList.size)
+
     }
 
     @Test
     fun `test update note`() = runBlocking {
-        interactor.updateNote("1","shop", "fish", "5", "1")
+        interactor.updateNote(
+            UpdatedDomainNote("1","shop", "fish", "5", "1")
+        )
+        assertEquals(
+            NoteData("1","shop", "fish", 1, 5, "1"),
+            repository.updateNoteList[0]
+        )
         assertEquals(1, repository.updateNoteCalledCount)
         assertEquals(0, repository.insertNoteCalledCount)
-        assertEquals(5, repository.updateDateCalledList[0])
+        assertEquals(1, repository.updateNoteList.size)
     }
 
     @Test
     fun `test insert note no date`() = runBlocking {
-        interactor.insertNote("shop", "fish", "", "1")
+        interactor.insertNote(
+            InsertedDomainNote("watch", "casio", "", "1")
+        )
+        assertEquals(
+            NoteData("1","watch", "casio", 1, 1, "1"),
+            repository.insertNoteList[0]
+        )
         assertEquals(1, repository.insertNoteCalledCount)
         assertEquals(0, repository.updateNoteCalledCount)
-        assertEquals("1", repository.idCalledList[0])
-        assertEquals(1, repository.createdTimeCalledList[0])
-        assertEquals(1, repository.insertDateCalledList[0])
+        assertEquals(1, repository.insertNoteList.size)
     }
 }
 
@@ -68,30 +86,17 @@ private class TestNoteRepository: NoteRepository{
     var insertNoteCalledCount = 0
     var updateNoteCalledCount = 0
 
-    private var insertDate = 0L
-    private var updateDate = 0L
-    val insertDateCalledList = mutableListOf<Long>()
-    val updateDateCalledList = mutableListOf<Long>()
+    val insertNoteList = mutableListOf<NoteData>()
+    val updateNoteList = mutableListOf<NoteData>()
 
-    val idCalledList = mutableListOf<String>()
-    val createdTimeCalledList = mutableListOf<Long>()
-
-    override suspend fun insertNote(
-        id: String, title: String, subtitle: String, createdTime: Long, performDate: Long, categoryId: String
-    ) {
+    override suspend fun insertNote(noteData: NoteData) {
         insertNoteCalledCount++
-        idCalledList.add(id)
-        createdTimeCalledList.add(createdTime)
-        insertDate = performDate
-        insertDateCalledList.add(insertDate)
+        insertNoteList.add(noteData)
     }
 
-    override suspend fun updateNote(
-        id: String, title: String, subtitle: String, performDate: Long, categoryId: String
-    ) {
+    override suspend fun updateNote(noteData: NoteData) {
         updateNoteCalledCount++
-        updateDate = performDate
-        updateDateCalledList.add(updateDate)
+        updateNoteList.add(noteData)
     }
 }
 

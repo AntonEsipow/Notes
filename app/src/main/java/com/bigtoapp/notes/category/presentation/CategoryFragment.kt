@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.BaseFragment
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
-import com.bigtoapp.notes.note.presentation.SimpleTextWatcher
+import com.bigtoapp.notes.main.presentation.SimpleTextWatcher
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -72,18 +72,6 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
             }
         }
 
-        if(savedInstanceState != null){
-            val color = savedInstanceState.getInt(COLOR_STATE)
-            viewModel.setCategoryColor(color){ red, green, blue, viewColor, titleText ->
-                redSeekBar.progress = red
-                greenSeekBar.progress = green
-                blueSeekBar.progress = blue
-                colorView.setBackgroundColor(viewColor)
-                title.text = titleText
-            }
-            titleEditText.setText(savedInstanceState.getString(COLOR_TITLE))
-        }
-
         viewModel.observeState(this){
             it.apply(titleInputLayout, titleEditText, redSeekBar, greenSeekBar, blueSeekBar)
         }
@@ -101,6 +89,21 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
         viewModel.init(savedInstanceState == null, id)
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.run {
+            val color = getInt(COLOR_STATE)
+            viewModel.setCategoryColor(color){ red, green, blue, viewColor, titleText ->
+                redSeekBar.progress = red
+                greenSeekBar.progress = green
+                blueSeekBar.progress = blue
+                colorView.setBackgroundColor(viewColor)
+                title.text = titleText
+            }
+            titleEditText.setText(getString(COLOR_TITLE))
+        }
+    }
+
     override fun onResume() {
         titleEditText.addTextChangedListener(watcher)
         super.onResume()
@@ -112,11 +115,13 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
         val color = viewModel
             .setColor(redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress)
-        outState.putInt(COLOR_STATE, color)
-        outState.putString(COLOR_TITLE, titleEditText.text.toString())
+        outState.run {
+            putInt(COLOR_STATE, color)
+            putString(COLOR_TITLE, titleEditText.text.toString())
+        }
+        super.onSaveInstanceState(outState)
     }
 
     companion object{

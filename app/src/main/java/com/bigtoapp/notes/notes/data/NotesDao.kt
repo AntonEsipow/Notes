@@ -15,13 +15,8 @@ interface NotesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNote(noteData: NoteData)
 
-    @Query(
-        "UPDATE notes_table " +
-                "SET title = :title, subtitle = :subtitle, " +
-                "performDate = :performDate, categoryId = :categoryId " +
-                "WHERE id = :id"
-    )
-    fun updateNote(id: String, title: String, subtitle: String, performDate: Long, categoryId: String)
+    @Update
+    fun updateNote(noteData: NoteData)
 
     // todo think move to another dao
     @Transaction
