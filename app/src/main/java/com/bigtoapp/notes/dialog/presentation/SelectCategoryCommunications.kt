@@ -2,48 +2,34 @@ package com.bigtoapp.notes.dialog.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.bigtoapp.notes.categories.data.CategoryData
 import com.bigtoapp.notes.categories.presentation.*
+import com.bigtoapp.notes.main.communications.MutableObserve
+import com.bigtoapp.notes.main.communications.MutableShow
 import com.bigtoapp.notes.main.presentation.Communication
 
-interface SelectCategoryCommunications: ObserveSelectCategory {
+interface MutableSelectCommunications: MutableObserve<CategoryUi, SelectCategoryUiState>,
+    MutableShow<CategoryUi, SelectCategoryUiState>
 
-    fun showProgress(show: Int)
+class SelectCategoryCommunications(
+    private val progress: ProgressSelectCategoryCommunication,
+    private val state: SelectCategoryUiStateCommunication,
+    private val categoryList: CategoriesListCommunication
+): MutableSelectCommunications {
 
-    fun showList(list: List<CategoryUi>)
+    override fun showProgress(show: Int) = progress.put(show)
 
-    fun showState(uiState: SelectCategoryUiState)
+    override fun showList(showList: List<CategoryUi>) = categoryList.put(showList)
 
-    class Base(
-        private val progress: ProgressSelectCategoryCommunication,
-        private val state: SelectCategoryUiStateCommunication,
-        private val categoryList: CategoriesListCommunication
-    ): SelectCategoryCommunications {
+    override fun showState(showState: SelectCategoryUiState) = state.put(showState)
 
-        override fun showProgress(show: Int) = progress.put(show)
+    override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) =
+        progress.observe(owner, observer)
 
-        override fun showList(list: List<CategoryUi>) = categoryList.put(list)
+    override fun observeState(owner: LifecycleOwner, observer: Observer<SelectCategoryUiState>) =
+        state.observe(owner, observer)
 
-        override fun showState(uiState: SelectCategoryUiState) = state.put(uiState)
-
-        override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) =
-            progress.observe(owner, observer)
-
-        override fun observeState(owner: LifecycleOwner, observer: Observer<SelectCategoryUiState>) =
-            state.observe(owner, observer)
-
-        override fun observeList(owner: LifecycleOwner, observer: Observer<List<CategoryUi>>) =
-            categoryList.observe(owner, observer)
-    }
-}
-
-interface ObserveSelectCategory {
-
-    fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>)
-
-    fun observeState(owner: LifecycleOwner, observer: Observer<SelectCategoryUiState>)
-
-    fun observeList(owner: LifecycleOwner, observer: Observer<List<CategoryUi>>)
+    override fun observeList(owner: LifecycleOwner, observer: Observer<List<CategoryUi>>) =
+        categoryList.observe(owner, observer)
 }
 
 interface ProgressSelectCategoryCommunication: Communication.Mutable<Int>{

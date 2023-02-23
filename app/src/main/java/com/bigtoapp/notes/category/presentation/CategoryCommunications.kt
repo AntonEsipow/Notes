@@ -4,29 +4,25 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bigtoapp.notes.categories.presentation.CategoriesListCommunication
 import com.bigtoapp.notes.categories.presentation.CategoryUi
+import com.bigtoapp.notes.main.communications.ObserveState
+import com.bigtoapp.notes.main.communications.ShowState
 import com.bigtoapp.notes.main.presentation.Communication
 import com.bigtoapp.notes.note.presentation.GetList
 
-interface CategoryCommunications: ObserveCategory, GetList<CategoryUi> {
+interface MutableCategoryCommunications: ObserveState<CategoryUiState>, GetList<CategoryUi>,
+        ShowState<CategoryUiState>
 
-    fun showState(uiState: CategoryUiState)
+class CategoryCommunications(
+    private val categoryList: CategoriesListCommunication,
+    private val state: CategoryUiStateCommunication
+): MutableCategoryCommunications {
 
-    class Base(
-        private val categoryList: CategoriesListCommunication,
-        private val state: CategoryUiStateCommunication
-    ): CategoryCommunications {
+    override fun showState(showState: CategoryUiState) = state.put(showState)
 
-        override fun showState(uiState: CategoryUiState) = state.put(uiState)
+    override fun observeState(owner: LifecycleOwner, observer: Observer<CategoryUiState>) =
+        state.observe(owner, observer)
 
-        override fun observeState(owner: LifecycleOwner, observer: Observer<CategoryUiState>) =
-            state.observe(owner, observer)
-
-        override fun getList(): List<CategoryUi> = categoryList.get()
-    }
-}
-
-interface ObserveCategory {
-    fun observeState(owner: LifecycleOwner, observer: Observer<CategoryUiState>)
+    override fun getList(): List<CategoryUi> = categoryList.get()
 }
 
 interface CategoryUiStateCommunication: Communication.Mutable<CategoryUiState>{

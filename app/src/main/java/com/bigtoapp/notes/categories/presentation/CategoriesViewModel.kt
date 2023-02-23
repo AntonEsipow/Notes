@@ -4,17 +4,17 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bigtoapp.notes.categories.domain.CategoriesInteractor
 import com.bigtoapp.notes.categories.domain.CategoryDomain
+import com.bigtoapp.notes.main.communications.MutableObserve
 import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.*
 
 class CategoriesViewModel(
     private val interactor: ListInteractor<List<CategoryDomain>>,
-    private val communications: CategoriesCommunications,
+    private val communications: MutableCategoriesCommunications,
     private val handleRequest: HandleRequest<List<CategoryDomain>>,
     private val navigation: NavigationCommunication.Mutate
-): ViewModel(), Init, ObserveCategories, CategoriesScreenOperations {
+): ViewModel(), Init, MutableObserve<CategoryUi, CategoriesUiState>, CategoriesScreenOperations {
 
     override fun init() {
         handleRequest.handle(viewModelScope){
@@ -49,8 +49,6 @@ class CategoriesViewModel(
 interface CategoriesScreenOperations{
     fun addCategory()
     fun deleteCategory(categoryId: String)
-
     fun editCategory(categoryId: String, color: Int)
-
     fun navigateNotes()
 }

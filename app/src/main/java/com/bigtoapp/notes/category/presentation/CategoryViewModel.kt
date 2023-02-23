@@ -11,17 +11,18 @@ import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.categories.presentation.SameCategory
 import com.bigtoapp.notes.category.domain.CategoryInteractor
+import com.bigtoapp.notes.main.communications.ObserveState
 import com.bigtoapp.notes.main.presentation.*
 import com.bigtoapp.notes.note.presentation.*
 import kotlin.math.roundToInt
 
 class CategoryViewModel(
     private val manageResources: ManageResources,
-    private val communications: CategoryCommunications,
+    private val communications: MutableCategoryCommunications,
     private val interactor: CategoryInteractor,
     private val handleRequest: HandleRequest<Unit>,
     private val navigationCommunication: NavigationCommunication.Mutate
-): ViewModel(), CategoryScreenOperations, ClearError, ObserveCategory,
+): ViewModel(), CategoryScreenOperations, ClearError, ObserveState<CategoryUiState>,
     SetColors, InitWithId {
 
     override fun init(isFirstRun: Boolean, id: String) {

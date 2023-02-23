@@ -1,6 +1,5 @@
 package com.bigtoapp.notes.note.presentation
 
-import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -8,22 +7,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.categories.data.CategoryData
-import com.bigtoapp.notes.categories.presentation.CategoryUi
 import com.bigtoapp.notes.categories.presentation.MapCategoryId
-import com.bigtoapp.notes.categories.presentation.MapCategoryName
 import com.bigtoapp.notes.dialog.presentation.SelectedCategoryCommunications
+import com.bigtoapp.notes.main.communications.ObserveState
 import com.bigtoapp.notes.main.presentation.*
 import com.bigtoapp.notes.note.domain.InsertedDomainNote
 import com.bigtoapp.notes.note.domain.NoteInteractor
 import com.bigtoapp.notes.note.domain.UpdatedDomainNote
 import com.bigtoapp.notes.notes.presentation.DateFormatter
+import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.bigtoapp.notes.notes.presentation.SameId
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 
 class NoteViewModel(
     private val manageResources: ManageResources,
-    private val communications: NoteCommunications,
+    private val communications: MutableNoteCommunication,
     private val selectedCategory: SelectedCategoryCommunications,
     private val interactor: NoteInteractor,
     private val handleRequest: HandleRequest<Unit>,
@@ -31,7 +30,8 @@ class NoteViewModel(
     private val dateFormatter: DateFormatter<String, Long>,
     private val dialog: Dialog<MaterialDatePicker<Long>>,
     private val bottomDialog: Dialog<BottomSheetDialogFragment>
-): ViewModel(), ClearError, ObserveNote, PerformDateOperations, NoteScreenOperations, InitWithId {
+): ViewModel(), ClearError, ObserveState<NoteUiState>, PerformDateOperations,
+    NoteScreenOperations, InitWithId {
 
     override fun init(isFirstRun: Boolean, id: String) {
         if(isFirstRun) {

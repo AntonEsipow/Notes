@@ -10,7 +10,7 @@ class NotesModule(private val core: Core): Module<NotesViewModel> {
 
     override fun viewModel(): NotesViewModel {
 
-        val communications = NotesCommunications.Base(
+        val communications = NotesCommunications(
             ProgressCommunication.Base(),
             NotesUiStateCommunication.Base(),
             core.provideNotesListCommunication()
@@ -24,7 +24,10 @@ class NotesModule(private val core: Core): Module<NotesViewModel> {
             HandleNotesRequest(
                 core.provideDispatchers(),
                 communications,
-                NoteDomainToUi(DateToUi())
+                NoteDomainToUi(DateToUi()),
+                DomainNotesState(
+                    communications
+                )
             ),
             core.provideNavigation()
         )

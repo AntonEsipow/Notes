@@ -10,7 +10,7 @@ class CategoriesModule(private val core: Core): Module<CategoriesViewModel> {
 
     override fun viewModel(): CategoriesViewModel {
 
-        val communication = CategoriesCommunications.Base(
+        val communication = CategoriesCommunications(
             ProgressCategoryCommunication.Base(),
             CategoriesUiStateCommunication.Base(),
             core.provideCategoriesListCommunication()
@@ -24,7 +24,10 @@ class CategoriesModule(private val core: Core): Module<CategoriesViewModel> {
             HandleCategoriesRequest(
                 core.provideDispatchers(),
                 communication,
-                CategoryDomainToUi()
+                CategoryDomainToUi(),
+                DomainCategoryState(
+                    communication
+                )
             ),
             core.provideNavigation()
         )

@@ -3,6 +3,7 @@ package com.bigtoapp.notes.dialog.presentation
 import android.view.View
 import com.bigtoapp.notes.categories.domain.CategoryDomain
 import com.bigtoapp.notes.categories.presentation.CategoryUi
+import com.bigtoapp.notes.main.communications.MutableShow
 import com.bigtoapp.notes.main.presentation.DispatchersList
 import com.bigtoapp.notes.main.presentation.HandleRequest
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class HandleSelectCategoryRequest(
     private val dispatchers: DispatchersList,
-    private val communications: SelectCategoryCommunications,
+    private val communications: MutableShow<CategoryUi, SelectCategoryUiState>,
     private val mapper: CategoryDomain.Mapper<CategoryUi>,
     private val showState: ShowScreenState<List<CategoryDomain>>
 ): HandleRequest<List<CategoryDomain>> {

@@ -13,14 +13,14 @@ class CategoryModule(private val core: Core): Module<CategoryViewModel> {
 
     override fun viewModel(): CategoryViewModel {
 
-//        val communications = CategoryCommunications.Base(
-//            core.provideCategoriesListCommunication(),
-//            CategoryUiStateCommunication.Base()
-//        )
+        val communications = CategoryCommunications(
+            core.provideCategoriesListCommunication(),
+            CategoryUiStateCommunication.Base()
+        )
 
         return CategoryViewModel(
             core,
-            core.provideCategoryCommunications(),
+            communications,
             CategoryInteractor.Base(
                 core.provideCategoriesRepository(),
                 Generate.RandomId()

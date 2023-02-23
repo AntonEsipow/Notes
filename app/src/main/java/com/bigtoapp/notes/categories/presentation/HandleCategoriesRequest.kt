@@ -2,19 +2,18 @@ package com.bigtoapp.notes.categories.presentation
 
 import android.view.View
 import com.bigtoapp.notes.categories.domain.CategoryDomain
+import com.bigtoapp.notes.dialog.presentation.ShowScreenState
+import com.bigtoapp.notes.main.communications.MutableShow
 import com.bigtoapp.notes.main.presentation.DispatchersList
 import com.bigtoapp.notes.main.presentation.HandleRequest
-import com.bigtoapp.notes.notes.domain.NoteDomain
-import com.bigtoapp.notes.notes.presentation.NoteUi
-import com.bigtoapp.notes.notes.presentation.NotesCommunications
-import com.bigtoapp.notes.notes.presentation.NotesUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class HandleCategoriesRequest(
     private val dispatchers: DispatchersList,
-    private val communications: CategoriesCommunications,
-    private val mapper: CategoryDomain.Mapper<CategoryUi>
+    private val communications: MutableShow<CategoryUi, CategoriesUiState>,
+    private val mapper: CategoryDomain.Mapper<CategoryUi>,
+    private val showState: ShowScreenState<List<CategoryDomain>>
 ): HandleRequest<List<CategoryDomain>> {
 
     override fun handle(coroutineScope: CoroutineScope, block: suspend () -> List<CategoryDomain>) {
@@ -22,13 +21,7 @@ class HandleCategoriesRequest(
         coroutineScope.launch(dispatchers.io()) {
             val list = block.invoke()
             communications.showProgress(View.GONE)
-            // todo move out of here
-            communications.showState(
-                if(list.isEmpty())
-                    CategoriesUiState.NoCategories
-                else
-                    CategoriesUiState.Categories
-            )
+            showState.showState(list)
             communications.showList(list.map { it.map(mapper) })
         }
     }

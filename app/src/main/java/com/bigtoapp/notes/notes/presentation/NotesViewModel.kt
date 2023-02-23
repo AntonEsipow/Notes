@@ -4,16 +4,17 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bigtoapp.notes.main.communications.MutableObserve
 import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.*
 import com.bigtoapp.notes.notes.domain.NoteDomain
 
 class NotesViewModel(
     private val interactor: ListInteractor<List<NoteDomain>>,
-    private val communications: NotesCommunications,
+    private val communications: MutableNotesCommunications,
     private val handleRequest: HandleRequest<List<NoteDomain>>,
     private val navigationCommunication: NavigationCommunication.Mutate
-): ViewModel(), Init, ObserveNotes, NotesScreenOperations {
+): ViewModel(), Init, MutableObserve<NoteUi, NotesUiState>, NotesScreenOperations {
 
     override fun init() {
         handleRequest.handle(viewModelScope){
