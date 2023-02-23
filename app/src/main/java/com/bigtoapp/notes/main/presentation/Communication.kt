@@ -18,7 +18,11 @@ class Communication {
         fun get(): T
     }
 
-    interface Mutable<T>: Observe<T>, Put<T>, Get<T>
+    interface EmptyGet<T>{
+        fun emptyGet(): T?
+    }
+
+    interface Mutable<T>: Observe<T>, Put<T>, Get<T>, EmptyGet<T>
 
     abstract class Abstract<T>(
         protected val liveData: MutableLiveData<T> = MutableLiveData()
@@ -28,6 +32,8 @@ class Communication {
             liveData.observe(owner, observer)
 
         override fun get(): T = liveData.value!!
+
+        override fun emptyGet(): T? = liveData.value
     }
 
     abstract class Ui<T>(

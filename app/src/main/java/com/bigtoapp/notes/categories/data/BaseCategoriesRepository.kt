@@ -2,13 +2,13 @@ package com.bigtoapp.notes.categories.data
 
 import com.bigtoapp.notes.categories.domain.CategoryDomain
 import com.bigtoapp.notes.category.domain.CategoryRepository
-import com.bigtoapp.notes.main.data.ListRepository
+import com.bigtoapp.notes.main.data.MutableListRepository
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class BaseCategoriesRepository(
     private val dao: CategoriesDao
-): ListRepository<List<CategoryDomain>>, CategoryRepository {
+): MutableListRepository<List<CategoryDomain>>, CategoryRepository {
 
     private val mutex = Mutex()
 

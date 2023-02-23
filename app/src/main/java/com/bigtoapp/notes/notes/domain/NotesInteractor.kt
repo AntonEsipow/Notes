@@ -1,10 +1,10 @@
 package com.bigtoapp.notes.notes.domain
 
-import com.bigtoapp.notes.main.data.ListRepository
+import com.bigtoapp.notes.main.data.MutableListRepository
 import com.bigtoapp.notes.main.domain.ListInteractor
 
 class NotesInteractor(
-    private val repository: ListRepository<List<NoteDomain>>
+    private val repository: MutableListRepository<List<NoteDomain>>
 ): ListInteractor<List<NoteDomain>> {
 
     override suspend fun all() = repository.all()

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/selectCategoryTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Category"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_margin="@dimen/margin_small"/>
+
+    <ProgressBar
+        android:id="@+id/progressSelect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:translationZ="100dp"
+        android:visibility="visible"
+        tools:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/selectCategoryRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        tools:itemCount="2"
+        tools:listitem="@layout/select_category_item" />
+
+    <Button
+        android:id="@+id/confirmCategoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_category"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_margin="@dimen/margin_small"/>
+
+</LinearLayout>

@@ -6,7 +6,6 @@ import com.bigtoapp.notes.categories.presentation.CategoriesListCommunication
 import com.bigtoapp.notes.categories.presentation.CategoryUi
 import com.bigtoapp.notes.main.presentation.Communication
 import com.bigtoapp.notes.note.presentation.GetList
-import com.bigtoapp.notes.note.presentation.ObserveNote
 
 interface CategoryCommunications: ObserveCategory, GetList<CategoryUi> {
 

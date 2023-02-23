@@ -6,7 +6,9 @@ import com.bigtoapp.notes.categories.sl.CategoriesModule
 import com.bigtoapp.notes.category.presentation.CategoryViewModel
 import com.bigtoapp.notes.category.sl.CategoryModule
 import com.bigtoapp.notes.main.presentation.MainViewModel
+import com.bigtoapp.notes.dialog.presentation.SelectCategoryViewModel
 import com.bigtoapp.notes.note.presentation.NoteViewModel
+import com.bigtoapp.notes.dialog.sl.CategoryDialogModule
 import com.bigtoapp.notes.note.sl.NoteModule
 import com.bigtoapp.notes.notes.presentation.NotesViewModel
 import com.bigtoapp.notes.notes.sl.NotesModule
@@ -31,6 +33,7 @@ interface DependencyContainer {
             NoteViewModel::class.java -> NoteModule(core)
             CategoriesViewModel::class.java -> CategoriesModule(core)
             CategoryViewModel::class.java -> CategoryModule(core)
+            SelectCategoryViewModel::class.java -> CategoryDialogModule(core)
             else -> dependencyContainer.module(clazz)
         }
     }

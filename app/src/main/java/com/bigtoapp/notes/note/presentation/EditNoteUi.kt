@@ -7,7 +7,8 @@ import com.google.android.material.textfield.TextInputEditText
 class EditNoteUi(
     private val titleField: TextInputEditText,
     private val descriptionField: TextInputEditText,
-    private val dateField: TextView
+    private val dateField: TextView,
+    private val categoryText: TextView
 ): NoteUi.Mapper<Unit> {
 
     override fun map(
@@ -22,5 +23,6 @@ class EditNoteUi(
         titleField.setText(header)
         descriptionField.setText(description)
         dateField.text = performDate
+        categoryText.text = categoryName
     }
 }

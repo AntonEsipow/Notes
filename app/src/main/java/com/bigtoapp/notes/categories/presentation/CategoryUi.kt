@@ -25,6 +25,10 @@ class MapCategoryId: CategoryUi.Mapper<String>{
     override fun map(id: String, header: String, color: Int) = id
 }
 
+class MapCategoryName: CategoryUi.Mapper<String>{
+    override fun map(id: String, header: String, color: Int) = header
+}
+
 class MapCategoryColor: CategoryUi.Mapper<Int>{
     override fun map(id: String, header: String, color: Int) = color
 }

@@ -5,12 +5,14 @@ import android.text.Editable
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.categories.data.CategoryData
 import com.bigtoapp.notes.main.presentation.BaseFragment
 import com.bigtoapp.notes.main.presentation.SimpleTextWatcher
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.time.Duration
 
 class NoteFragment: BaseFragment<NoteViewModel>() {
 
@@ -34,6 +36,8 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         val saveNoteButton = view.findViewById<Button>(R.id.saveNoteButton)
         val datePicker = view.findViewById<Button>(R.id.datePicker)
         dateText = view.findViewById(R.id.dateText)
+        val categoryTextView = view.findViewById<TextView>(R.id.categoryNameText)
+        val selectCategoryButton = view.findViewById<Button>(R.id.selectCategoryButton)
 
         viewModel.observeState(this){
             it.apply(
@@ -41,7 +45,8 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
                 titleEditText,
                 descriptionInputLayout,
                 descriptionEditText,
-                dateText
+                dateText,
+                categoryTextView
             )
         }
 
@@ -50,21 +55,23 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
                 titleEditText.text.toString(),
                 descriptionEditText.text.toString(),
                 dateText.text.toString(),
-                id,
-                // todo remove and add
-                CategoryData.DEFAULT_CATEGORY_ID
+                id
             )
         }
 
         datePicker.setOnClickListener {
-            viewModel.changePerformDate(childFragmentManager, dateText)
+            viewModel.changePerformDate(parentFragmentManager)
+        }
+
+        selectCategoryButton.setOnClickListener {
+            viewModel.selectCategory(parentFragmentManager)
         }
 
         viewModel.init(savedInstanceState == null, id)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        val date = savedInstanceState?.getString(BUNDLE_KEY, DEFAULT_VAL_DATE)!!
+        val date = savedInstanceState?.getString(BUNDLE_KEY, DEFAULT_VAL_DATE)
         dateText.text = date
         super.onViewStateRestored(savedInstanceState)
     }
