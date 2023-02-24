@@ -1,9 +1,6 @@
 package com.bigtoapp.notes.category.presentation
 
-import android.annotation.SuppressLint
 import android.graphics.Color
-import android.view.View
-import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -74,12 +71,11 @@ class CategoryViewModel(
         colorCallback(redValue, greenValue, blueValue, categoryColor, text)
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun updateBackground(redValue: Int, greenValue: Int, blueValue: Int, title: TextView, view: View) {
+    override fun updateBackground(redValue: Int, greenValue: Int, blueValue: Int, callback:(String, Int) -> Unit) {
         val color = Color.rgb(redValue, greenValue, blueValue)
-        val message = manageResources.string(R.string.color_title_message)
-        title.text = "$message ($redValue, $greenValue, $blueValue)"
-        view.setBackgroundColor(color)
+        val title = manageResources.string(R.string.color_title_message)
+        val message = "$title ($redValue, $greenValue, $blueValue)"
+        callback(message, color)
     }
 
     override fun setColor(redValue: Int, greenValue: Int, blueValue: Int): Int =
@@ -92,6 +88,6 @@ interface CategoryScreenOperations{
 
 interface SetColors{
     fun setCategoryColor(categoryColor: Int, colorCallback: (Int, Int, Int, Int, String) -> Unit)
-    fun updateBackground(redValue: Int, greenValue: Int, blueValue: Int, title: TextView, view: View)
+    fun updateBackground(redValue: Int, greenValue: Int, blueValue: Int, callback:(String, Int) -> Unit)
     fun setColor(redValue: Int, greenValue: Int, blueValue:Int): Int
 }

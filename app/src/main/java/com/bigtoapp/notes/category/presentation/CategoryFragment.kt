@@ -27,8 +27,11 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
     private val colorWatcher = object : SeekBarOperations() {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) =
             viewModel.updateBackground(
-                redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress, title, colorView
-            )
+                redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress
+            ){ message, color ->
+                title.text = message
+                colorView.setBackgroundColor(color)
+            }
     }
 
     private var isInEdit = false
@@ -53,8 +56,11 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
         blueSeekBar = view.findViewById(R.id.blueSeekBar)
 
         viewModel.updateBackground(
-            redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress, title, colorView
-        )
+            redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress
+        ){ message, color ->
+            title.text = message
+            colorView.setBackgroundColor(color)
+        }
 
         if(arguments!=null){
             isInEdit = true
@@ -63,12 +69,12 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
 
         if(isInEdit){
             val colorInt = color
-            viewModel.setCategoryColor(colorInt){ red, green, blue, viewColor, titleText ->
+            viewModel.setCategoryColor(colorInt){ red, green, blue, viewColor, message ->
                 redSeekBar.progress = red
                 greenSeekBar.progress = green
                 blueSeekBar.progress = blue
                 colorView.setBackgroundColor(viewColor)
-                title.text = titleText
+                title.text = message
             }
         }
 
@@ -79,7 +85,7 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
         saveNoteButton.setOnClickListener {
             color = viewModel
                 .setColor(redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress)
-            viewModel.saveCategory(titleEditText.text.toString(), id, color)
+            viewModel.saveCategory(titleEditText.text.toString().trim(), id, color)
         }
 
         redSeekBar.setOnSeekBarChangeListener(colorWatcher)

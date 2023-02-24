@@ -22,6 +22,7 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
     private lateinit var titleEditText: TextInputEditText
     private lateinit var descriptionEditText: TextInputEditText
     private lateinit var dateText: TextView
+    private lateinit var categoryText: TextView
 
     private val watcher = object : SimpleTextWatcher() {
         override fun afterTextChanged(s: Editable?) = viewModel.clearError()
@@ -36,7 +37,7 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         val saveNoteButton = view.findViewById<Button>(R.id.saveNoteButton)
         val datePicker = view.findViewById<Button>(R.id.datePicker)
         dateText = view.findViewById(R.id.dateText)
-        val categoryTextView = view.findViewById<TextView>(R.id.categoryNameText)
+        categoryText = view.findViewById(R.id.categoryNameText)
         val selectCategoryButton = view.findViewById<Button>(R.id.selectCategoryButton)
 
         viewModel.observeState(this){
@@ -46,14 +47,14 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
                 descriptionInputLayout,
                 descriptionEditText,
                 dateText,
-                categoryTextView
+                categoryText
             )
         }
 
         saveNoteButton.setOnClickListener {
             viewModel.saveNote(
-                titleEditText.text.toString(),
-                descriptionEditText.text.toString(),
+                titleEditText.text.toString().trim(),
+                descriptionEditText.text.toString().trim(),
                 dateText.text.toString(),
                 id
             )
@@ -71,9 +72,13 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        val date = savedInstanceState?.getString(BUNDLE_KEY, DEFAULT_VAL_DATE)
-        dateText.text = date
         super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.run {
+            val date = getString(BUNDLE_DATE)
+            val category = getString(BUNDLE_CATEGORY)
+            dateText.text = date
+            categoryText.text = category
+        }
     }
 
     override fun onResume() {
@@ -90,11 +95,14 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(BUNDLE_KEY, dateText.text.toString())
+        outState.run {
+            putString(BUNDLE_DATE, dateText.text.toString())
+            putString(BUNDLE_CATEGORY, categoryText.text.toString())
+        }
     }
 
     companion object {
-        private const val BUNDLE_KEY = "Date"
-        private const val DEFAULT_VAL_DATE = ""
+        private const val BUNDLE_DATE = "Date"
+        private const val BUNDLE_CATEGORY = "Category"
     }
 }
