@@ -15,7 +15,6 @@ interface CacheModule {
                 ToDoRoomDatabase::class.java,
                 "todo_database"
             )
-                .fallbackToDestructiveMigration()
                 .build()
         }
 

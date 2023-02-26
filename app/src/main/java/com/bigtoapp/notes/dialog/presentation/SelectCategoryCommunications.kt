@@ -7,18 +7,18 @@ import com.bigtoapp.notes.main.communications.MutableObserve
 import com.bigtoapp.notes.main.communications.MutableShow
 import com.bigtoapp.notes.main.presentation.Communication
 
-interface MutableSelectCommunications: MutableObserve<CategoryUi, SelectCategoryUiState>,
-    MutableShow<CategoryUi, SelectCategoryUiState>
+interface MutableSelectCommunications: MutableObserve<SelectedCategoryUi, SelectCategoryUiState>,
+    MutableShow<SelectedCategoryUi, SelectCategoryUiState>
 
 class SelectCategoryCommunications(
     private val progress: ProgressSelectCategoryCommunication,
     private val state: SelectCategoryUiStateCommunication,
-    private val categoryList: CategoriesListCommunication
+    private val categoryList: SelectCategoryUiCommunication
 ): MutableSelectCommunications {
 
     override fun showProgress(show: Int) = progress.put(show)
 
-    override fun showList(showList: List<CategoryUi>) = categoryList.put(showList)
+    override fun showList(showList: List<SelectedCategoryUi>) = categoryList.put(showList)
 
     override fun showState(showState: SelectCategoryUiState) = state.put(showState)
 
@@ -28,7 +28,7 @@ class SelectCategoryCommunications(
     override fun observeState(owner: LifecycleOwner, observer: Observer<SelectCategoryUiState>) =
         state.observe(owner, observer)
 
-    override fun observeList(owner: LifecycleOwner, observer: Observer<List<CategoryUi>>) =
+    override fun observeList(owner: LifecycleOwner, observer: Observer<List<SelectedCategoryUi>>) =
         categoryList.observe(owner, observer)
 }
 
@@ -38,4 +38,8 @@ interface ProgressSelectCategoryCommunication: Communication.Mutable<Int>{
 
 interface SelectCategoryUiStateCommunication: Communication.Mutable<SelectCategoryUiState>{
     class Base: Communication.Post<SelectCategoryUiState>(), SelectCategoryUiStateCommunication
+}
+
+interface SelectCategoryUiCommunication: Communication.Mutable<List<SelectedCategoryUi>>{
+    class Base: Communication.Post<List<SelectedCategoryUi>>(), SelectCategoryUiCommunication
 }

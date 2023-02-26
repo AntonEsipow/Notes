@@ -1,5 +1,6 @@
 package com.bigtoapp.notes.notes.presentation
 
+import com.bigtoapp.notes.dialog.presentation.SelectedCategoryUi
 import com.bigtoapp.notes.main.presentation.Mapper
 
 data class NoteUi(
@@ -38,4 +39,16 @@ class SameId(private val source: String): NoteUi.Mapper<Boolean>{
         performDate: String,
         categoryId: String, categoryName: String, categoryColor: Int
     ) = source == id
+}
+
+class MapSelectedCategory: NoteUi.Mapper<SelectedCategoryUi>{
+    override fun map(
+        id: String,
+        header: String,
+        description: String,
+        performDate: String,
+        categoryId: String,
+        categoryName: String,
+        categoryColor: Int
+    ) = SelectedCategoryUi(categoryId, categoryName, categoryColor)
 }

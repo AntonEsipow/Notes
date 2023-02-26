@@ -6,8 +6,8 @@ import com.bigtoapp.notes.main.presentation.Communication
 
 interface SelectedCategoryCommunications {
 
-    fun getSelectedCategory(): CategoryUi
-    fun setSelectedCategory(category : CategoryUi)
+    fun getSelectedCategory(): SelectedCategoryUi
+    fun setSelectedCategory(category : SelectedCategoryUi)
 
     class Base(
         private val selectedCategory: SelectedCategory
@@ -16,12 +16,12 @@ interface SelectedCategoryCommunications {
         override fun getSelectedCategory() =
             selectedCategory.emptyGet() ?: CategoryData.getDefaultCategory()
 
-        override fun setSelectedCategory(category: CategoryUi) {
+        override fun setSelectedCategory(category: SelectedCategoryUi) {
             selectedCategory.put(category)
         }
     }
 }
 
-interface SelectedCategory: Communication.Mutable<CategoryUi>{
-    class Base: Communication.Ui<CategoryUi>(), SelectedCategory
+interface SelectedCategory: Communication.Mutable<SelectedCategoryUi>{
+    class Base: Communication.Ui<SelectedCategoryUi>(), SelectedCategory
 }

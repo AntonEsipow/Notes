@@ -6,17 +6,21 @@ sealed class SelectCategoryUiState {
 
     abstract fun apply(titleText: TextView)
 
-    object DefaultCategory: SelectCategoryUiState(){
+    abstract class Abstract(
+        private val message: String
+    ): SelectCategoryUiState(){
         override fun apply(titleText: TextView) {
-            // todo refactor
-            titleText.text = "Default"
+            titleText.text = message
         }
     }
 
-    object Categories: SelectCategoryUiState(){
+    data class DefaultCategory(private val message: String): Abstract(message)
+
+    data class Categories(private val message: String): Abstract(message)
+
+    data class SelectedCategory(private val category: SelectedCategoryUi): SelectCategoryUiState(){
         override fun apply(titleText: TextView) {
-            // todo refactor
-            titleText.text = "Categories"
+            titleText.text = category.map(MapSelectedCategoryName())
         }
     }
 }

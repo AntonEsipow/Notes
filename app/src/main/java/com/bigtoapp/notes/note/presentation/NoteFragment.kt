@@ -1,9 +1,11 @@
 package com.bigtoapp.notes.note.presentation
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.bigtoapp.notes.R
@@ -23,6 +25,7 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
     private lateinit var descriptionEditText: TextInputEditText
     private lateinit var dateText: TextView
     private lateinit var categoryText: TextView
+    private lateinit var noteLayout: LinearLayout
 
     private val watcher = object : SimpleTextWatcher() {
         override fun afterTextChanged(s: Editable?) = viewModel.clearError()
@@ -39,6 +42,7 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         dateText = view.findViewById(R.id.dateText)
         categoryText = view.findViewById(R.id.categoryNameText)
         val selectCategoryButton = view.findViewById<Button>(R.id.selectCategoryButton)
+        noteLayout = view.findViewById(R.id.noteLayout)
 
         viewModel.observeState(this){
             it.apply(
@@ -47,7 +51,8 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
                 descriptionInputLayout,
                 descriptionEditText,
                 dateText,
-                categoryText
+                categoryText,
+                noteLayout
             )
         }
 
@@ -76,8 +81,10 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         savedInstanceState?.run {
             val date = getString(BUNDLE_DATE)
             val category = getString(BUNDLE_CATEGORY)
+            val color = getInt(BUNDLE_COLOR)
             dateText.text = date
             categoryText.text = category
+            noteLayout.setBackgroundColor(color)
         }
     }
 
@@ -95,14 +102,17 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        val color = (noteLayout.background as ColorDrawable).color
         outState.run {
             putString(BUNDLE_DATE, dateText.text.toString())
             putString(BUNDLE_CATEGORY, categoryText.text.toString())
+            putInt(BUNDLE_COLOR, color)
         }
     }
 
     companion object {
         private const val BUNDLE_DATE = "Date"
         private const val BUNDLE_CATEGORY = "Category"
+        private const val BUNDLE_COLOR = "Color"
     }
 }

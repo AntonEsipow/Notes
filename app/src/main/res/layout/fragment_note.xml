@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/noteLayout"
     android:orientation="vertical">
 
     <LinearLayout
@@ -62,6 +63,7 @@
         android:id="@+id/titleInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_margin="@dimen/margin_small"
         android:hint="@string/title_hint">
 
@@ -76,6 +78,7 @@
         android:id="@+id/descriptionInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_margin="@dimen/margin_small"
         android:hint="@string/description_hint">
 

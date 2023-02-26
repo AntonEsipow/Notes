@@ -21,13 +21,19 @@ class SelectCategoryFragment: BaseDialogFragment<SelectCategoryViewModel>() {
         val confirmButton = view.findViewById<Button>(R.id.confirmCategoryButton)
         val processBar = view.findViewById<ProgressBar>(R.id.progressSelect)
         val selectCategoryRecycler = view.findViewById<RecyclerView>(R.id.selectCategoryRecyclerView)
+        val setDefaultCategoryButton = view.findViewById<Button>(R.id.setDefaultCategoryButton)
         val adapter = SelectCategoryAdapter(object : SelectedCategoryItem {
-            override fun setSelectedItem(categoryUi: CategoryUi) = viewModel.setSelectedCategory(categoryUi)
+            override fun setSelectedItem(categoryUi: SelectedCategoryUi) = viewModel.setSelectedCategory(categoryUi)
         })
         selectCategoryRecycler.adapter = adapter
 
         confirmButton.setOnClickListener {
             dismiss()
+        }
+
+        setDefaultCategoryButton.setOnClickListener {
+            viewModel.setDefaultCategory()
+            adapter.setDefaultCategory()
         }
 
         viewModel.observeState(this){

@@ -21,7 +21,9 @@
     <string name="save_note">Save note</string>
     <string name="pick_date">Pick Date</string>
     <string name="select_category">Category</string>
+    <string name="set_default_category">Default Category</string>
     <string name="confirm_category">Select</string>
+    <string name="categories_state">Categories</string>
 
     <string name="save_category">Save category</string>
     <string name="colors_palette">Low (R, G, B)</string>

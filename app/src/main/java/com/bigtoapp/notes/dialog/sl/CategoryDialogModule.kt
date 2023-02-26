@@ -16,13 +16,14 @@ class CategoryDialogModule(
         val communications = SelectCategoryCommunications(
             ProgressSelectCategoryCommunication.Base(),
             SelectCategoryUiStateCommunication.Base(),
-            core.provideCategoriesListCommunication()
+            SelectCategoryUiCommunication.Base()
         )
 
         return SelectCategoryViewModel(
             SelectCategoryInteractor.Base(
                 core.provideCategoriesRepository()
             ),
+            communications,
             communications,
             NoteStateCommunication(
                 core.provideNoteStateCommunication(),
@@ -34,11 +35,13 @@ class CategoryDialogModule(
             HandleSelectCategoryRequest(
                 core.provideDispatchers(),
                 communications,
-                CategoryDomainToUi(),
+                MapCategoryDomainToSelected(),
                 SelectDomainCategoryState(
-                    communications
+                    communications,
+                    core
                 )
-            )
+            ),
+            core
         )
     }
 }

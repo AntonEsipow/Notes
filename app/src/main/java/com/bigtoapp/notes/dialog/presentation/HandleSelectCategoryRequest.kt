@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 
 class HandleSelectCategoryRequest(
     private val dispatchers: DispatchersList,
-    private val communications: MutableShow<CategoryUi, SelectCategoryUiState>,
-    private val mapper: CategoryDomain.Mapper<CategoryUi>,
+    private val communications: MutableShow<SelectedCategoryUi, SelectCategoryUiState>,
+    private val mapper: CategoryDomain.Mapper<SelectedCategoryUi>,
     private val showState: ShowScreenState<List<CategoryDomain>>
 ): HandleRequest<List<CategoryDomain>> {
 
@@ -25,4 +25,9 @@ class HandleSelectCategoryRequest(
             communications.showList(list.map { it.map(mapper) })
         }
     }
+}
+
+class MapCategoryDomainToSelected: CategoryDomain.Mapper<SelectedCategoryUi>{
+    override fun map(id: String, title: String, color: Int) =
+        SelectedCategoryUi(id,title,color)
 }

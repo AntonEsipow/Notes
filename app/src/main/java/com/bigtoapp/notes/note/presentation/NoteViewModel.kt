@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.categories.data.CategoryData
-import com.bigtoapp.notes.categories.presentation.MapCategoryId
+import com.bigtoapp.notes.dialog.presentation.MapSelectedCategoryId
 import com.bigtoapp.notes.dialog.presentation.SelectedCategoryCommunications
 import com.bigtoapp.notes.main.communications.ObserveState
 import com.bigtoapp.notes.main.presentation.*
@@ -15,7 +15,7 @@ import com.bigtoapp.notes.note.domain.InsertedDomainNote
 import com.bigtoapp.notes.note.domain.NoteInteractor
 import com.bigtoapp.notes.note.domain.UpdatedDomainNote
 import com.bigtoapp.notes.notes.presentation.DateFormatter
-import com.bigtoapp.notes.notes.presentation.NoteUi
+import com.bigtoapp.notes.notes.presentation.MapSelectedCategory
 import com.bigtoapp.notes.notes.presentation.SameId
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -42,18 +42,17 @@ class NoteViewModel(
                 val noteList = communications.getList()
                 val mapper = SameId(id)
                 val noteDetails = noteList.find { it.map(mapper) }!!
+                val category = noteDetails.map(MapSelectedCategory())
+                selectedCategory.setSelectedCategory(category)
                 communications.showState(NoteUiState.EditNote(noteDetails))
             }
         }
     }
 
-    // todo think refactor
     override fun saveNote(title: String, subtitle: String, date: String, noteId: String) {
 
-        // todo check how to clear category data
         val category = selectedCategory.getSelectedCategory()
-        val categoryId = category.map(MapCategoryId())
-        selectedCategory.setSelectedCategory(CategoryData.getDefaultCategory())
+        val categoryId = category.map(MapSelectedCategoryId())
 
         if(title.isEmpty())
             communications.showState(
@@ -62,18 +61,19 @@ class NoteViewModel(
             communications.showState(
                 NoteUiState.ShowErrorDescription(manageResources.string(R.string.subtitle_error_message)))
         else {
-            // todo refactor
             if(noteId.isEmpty()){
                 val note = InsertedDomainNote(title, subtitle, date, categoryId)
                 handleRequest.handle(viewModelScope){
                     interactor.insertNote(note)
                 }
+                selectedCategory.setSelectedCategory(CategoryData.getDefaultCategory())
                 communications.showState(NoteUiState.AddNote)
             } else {
                 val note = UpdatedDomainNote(noteId, title, subtitle, date, categoryId)
                 handleRequest.handle(viewModelScope){
                     interactor.updateNote(note)
                 }
+                selectedCategory.setSelectedCategory(CategoryData.getDefaultCategory())
                 navigationCommunication.put(NavigationStrategy.Back)
             }
         }
@@ -97,7 +97,7 @@ class NoteViewModel(
     override fun observeState(owner: LifecycleOwner, observer: Observer<NoteUiState>) =
         communications.observeState(owner, observer)
 
-    override fun clearError() = communications.showState(NoteUiState.ClearError())
+    override fun clearError() = communications.showState(NoteUiState.ClearError)
 
     companion object {
         private const val DATE_PICKER_TAG = "MATERIAL_DATE_PICKER"
