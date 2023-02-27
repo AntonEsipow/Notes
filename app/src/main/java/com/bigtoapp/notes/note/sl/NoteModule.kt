@@ -17,26 +17,46 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
 
         val formatter = DateToUi()
 
+        val communications = NoteStateCommunication(
+            core.provideNoteStateCommunication(),
+            core.provideNotesListCommunication()
+        )
+
+        val interactor = NoteInteractor.Base(
+            core.provideNotesRepository(),
+            Generate.IdAndCurrentTime(),
+            DateToDomain(
+                Generate.CalendarTime(formatter)
+            )
+        )
+
+        val handleRequest = HandleRequest.Base(
+            core.provideDispatchers()
+        )
+
+        val selectCategory = SelectedCategoryCommunications.Base(
+            core.provideSelectedCategory()
+        )
+
         return NoteViewModel(
-            core,
-            NoteStateCommunication(
-                core.provideNoteStateCommunication(),
-                core.provideNotesListCommunication()
+            communications,
+            NoteErrorState.Base(
+                communications,
+                core
             ),
-            SelectedCategoryCommunications.Base(
-                core.provideSelectedCategory()
+            HandleInsertNote.Base(
+                interactor,
+                handleRequest,
+                communications,
+                selectCategory
             ),
-            NoteInteractor.Base(
-                core.provideNotesRepository(),
-                Generate.IdAndCurrentTime(),
-                DateToDomain(
-                    Generate.CalendarTime(formatter)
-                )
+            HandleUpdateNote.Base(
+                interactor,
+                handleRequest,
+                core.provideNavigation(),
+                selectCategory
             ),
-            HandleRequest.Base(
-                core.provideDispatchers()
-            ),
-            core.provideNavigation(),
+            selectCategory,
             formatter,
             DatePicker(core),
             SelectCategory()

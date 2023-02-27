@@ -36,7 +36,6 @@ class CategoryViewModel(
         }
     }
 
-    // todo think refactor
     override fun saveCategory(title: String, categoryId: String, color: Int) {
         if(title.isEmpty())
             communications.showState(

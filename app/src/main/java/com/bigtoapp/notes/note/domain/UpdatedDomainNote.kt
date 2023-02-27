@@ -1,6 +1,5 @@
 package com.bigtoapp.notes.note.domain
 
-import com.bigtoapp.notes.note.domain.Generate
 import com.bigtoapp.notes.notes.data.NoteData
 import com.bigtoapp.notes.notes.presentation.DateFormatter
 

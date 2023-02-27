@@ -1,13 +1,13 @@
 package com.bigtoapp.notes.dialog.presentation
 
-import com.bigtoapp.notes.main.presentation.Mapper
+import com.bigtoapp.notes.main.presentation.adapter.ItemUi
 
 class SelectedCategoryUi(
     private val id: String,
     private val header: String,
     private val color: Int,
     private var selected: Boolean = false
-): Mapper<Boolean, SelectedCategoryUi> {
+): ItemUi {
 
     fun <T> map(mapper: Mapper<T>): T = mapper.map(id, header, color, selected)
 
@@ -15,9 +15,9 @@ class SelectedCategoryUi(
         fun map(id: String, header: String, color: Int, selected: Boolean): T
     }
 
-    override fun map(source: SelectedCategoryUi): Boolean = source.id == id
-
     fun changeSelected(isSelected: Boolean){ selected = isSelected}
+
+    override fun id() = id
 }
 
 class MapSelectedCategoryId: SelectedCategoryUi.Mapper<String>{

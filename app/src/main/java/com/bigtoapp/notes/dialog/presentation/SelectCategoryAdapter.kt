@@ -1,16 +1,15 @@
 package com.bigtoapp.notes.dialog.presentation
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.notes.R
-import com.bigtoapp.notes.categories.presentation.CategoryItemUi
-import com.bigtoapp.notes.categories.presentation.CategoryUi
 import com.bigtoapp.notes.main.presentation.Mapper
+import com.bigtoapp.notes.main.presentation.adapter.DiffUtilCallback
 
 class SelectCategoryAdapter(
     private val selectedCategoryItem: SelectedCategoryItem
@@ -38,8 +37,11 @@ class SelectCategoryAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun map(source: List<SelectedCategoryUi>) {
+        val diff = DiffUtilCallback(list, source)
+        val result = DiffUtil.calculateDiff(diff)
         list.clear()
         list.addAll(source)
+        result.dispatchUpdatesTo(this)
     }
 
     override fun setDefaultCategory(){

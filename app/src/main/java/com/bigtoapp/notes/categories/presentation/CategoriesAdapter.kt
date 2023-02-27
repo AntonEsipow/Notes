@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.Mapper
+import com.bigtoapp.notes.main.presentation.adapter.DiffUtilCallback
 import com.bigtoapp.notes.notes.presentation.ItemActions
 
 class CategoriesAdapter(
@@ -61,20 +62,4 @@ class CategoriesViewHolder(
 interface ItemCategoryActions {
     fun delete(id: String)
     fun edit(id: String, color: Int)
-}
-
-class DiffUtilCallback(
-    private val oldList: List<CategoryUi>,
-    private val newList: List<CategoryUi>
-) : DiffUtil.Callback() {
-
-    override fun getOldListSize() = oldList.size
-
-    override fun getNewListSize() = newList.size
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-        oldList[oldItemPosition].map(newList[newItemPosition])
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-        oldList[oldItemPosition].equals(newList[newItemPosition])
 }

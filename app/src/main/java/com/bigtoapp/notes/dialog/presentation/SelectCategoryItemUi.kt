@@ -2,7 +2,6 @@ package com.bigtoapp.notes.dialog.presentation
 
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import com.bigtoapp.notes.categories.presentation.CategoryUi
 
 class SelectCategoryItemUi(
     private val head: TextView,
