@@ -19,7 +19,7 @@ class CategoriesFragment: BaseFragment<CategoriesViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val progressBar = view.findViewById<ProgressBar>(R.id.progressCategory)
+        val progressBar = view.findViewById<View>(R.id.progressCategory)
         val emptyState = view.findViewById<TextView>(R.id.categoryEmptyState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)
         val addCategoryButton = view.findViewById<Button>(R.id.addCategoryButton)

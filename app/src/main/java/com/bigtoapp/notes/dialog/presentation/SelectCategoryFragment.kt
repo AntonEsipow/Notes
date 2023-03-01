@@ -19,7 +19,7 @@ class SelectCategoryFragment: BaseDialogFragment<SelectCategoryViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         val categoryTitle = view.findViewById<TextView>(R.id.selectCategoryTitleText)
         val confirmButton = view.findViewById<Button>(R.id.confirmCategoryButton)
-        val processBar = view.findViewById<ProgressBar>(R.id.progressSelect)
+        val processBar = view.findViewById<View>(R.id.progressSelect)
         val selectCategoryRecycler = view.findViewById<RecyclerView>(R.id.selectCategoryRecyclerView)
         val setDefaultCategoryButton = view.findViewById<Button>(R.id.setDefaultCategoryButton)
         val adapter = SelectCategoryAdapter(object : SelectedCategoryItem {

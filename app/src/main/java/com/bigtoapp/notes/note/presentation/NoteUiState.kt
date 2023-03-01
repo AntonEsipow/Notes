@@ -3,6 +3,8 @@ package com.bigtoapp.notes.note.presentation
 import android.graphics.Color
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bigtoapp.notes.main.views.CustomTextInputEditText
+import com.bigtoapp.notes.main.views.CustomTextInputLayout
 import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -10,8 +12,8 @@ import com.google.android.material.textfield.TextInputLayout
 sealed class NoteUiState{
 
     abstract fun apply(
-        titleLayout: TextInputLayout,
-        titleEditText: TextInputEditText,
+        titleLayout: CustomTextInputLayout,
+        titleEditText: CustomTextInputEditText,
         descriptionLayout: TextInputLayout,
         descriptionEditText: TextInputEditText,
         dateText: TextView,
@@ -21,15 +23,15 @@ sealed class NoteUiState{
 
     object AddNote: NoteUiState(){
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
             descriptionEditText: TextInputEditText,
             dateText: TextView,
             categoryName: TextView,
             noteLayout: LinearLayout
         ) {
-            titleEditText.setText("")
+            titleEditText.showText("")
             descriptionEditText.setText("")
             dateText.text = ""
             categoryName.text = ""
@@ -39,8 +41,8 @@ sealed class NoteUiState{
 
     data class EditNote(private val noteUi: NoteUi): NoteUiState(){
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
             descriptionEditText: TextInputEditText,
             dateText: TextView,
@@ -55,8 +57,8 @@ sealed class NoteUiState{
 
     data class EditDate(private val date: String): NoteUiState(){
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
             descriptionEditText: TextInputEditText,
             dateText: TextView,
@@ -72,8 +74,8 @@ sealed class NoteUiState{
         private val color: Int
         ): NoteUiState(){
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
             descriptionEditText: TextInputEditText,
             dateText: TextView,
@@ -86,20 +88,21 @@ sealed class NoteUiState{
         }
     }
 
+    // todo think abstract
     data class ShowErrorTitle(
         private val message: String
         ): NoteUiState() {
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
             descriptionEditText: TextInputEditText,
             dateText: TextView,
             categoryName: TextView,
             noteLayout: LinearLayout
-        ) {
-            titleLayout.isErrorEnabled = true
-            titleLayout.error = message
+        ) = with(titleLayout){
+            changeErrorEnabled(true)
+            showError(message)
         }
     }
 
@@ -107,31 +110,31 @@ sealed class NoteUiState{
         private val message: String
         ): NoteUiState(){
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
             descriptionEditText: TextInputEditText,
             dateText: TextView,
             categoryName: TextView,
             noteLayout: LinearLayout
-        ) {
-            descriptionLayout.isErrorEnabled = true
-            descriptionLayout.error = message
+        ) = with(descriptionLayout){
+            isErrorEnabled = true
+            error = message
         }
     }
 
     object ClearError : NoteUiState() {
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
             descriptionEditText: TextInputEditText,
             dateText: TextView,
             categoryName: TextView,
             noteLayout: LinearLayout
         ) {
-            titleLayout.isErrorEnabled = false
-            titleLayout.error = ""
+            titleLayout.changeErrorEnabled(false)
+            titleLayout.showError("")
             descriptionLayout.isErrorEnabled = false
             descriptionLayout.error = ""
         }

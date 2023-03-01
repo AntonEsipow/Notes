@@ -3,25 +3,25 @@ package com.bigtoapp.notes.note.presentation
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.bigtoapp.notes.R
-import com.bigtoapp.notes.categories.data.CategoryData
-import com.bigtoapp.notes.main.presentation.BaseFragment
+import com.bigtoapp.notes.main.presentation.MenuBaseFragment
 import com.bigtoapp.notes.main.presentation.SimpleTextWatcher
+import com.bigtoapp.notes.main.views.BaseCustomTextInputEditText
+import com.bigtoapp.notes.main.views.BaseCustomTextInputLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import java.time.Duration
 
-class NoteFragment: BaseFragment<NoteViewModel>() {
+class NoteFragment: MenuBaseFragment<NoteViewModel>() {
 
     override val layoutId = R.layout.fragment_note
     override val viewModelClass: Class<NoteViewModel> = NoteViewModel::class.java
+    override val menuId: Int = R.menu.menu_add_note
 
-    private lateinit var titleEditText: TextInputEditText
+    private lateinit var titleEditText: BaseCustomTextInputEditText
     private lateinit var descriptionEditText: TextInputEditText
     private lateinit var dateText: TextView
     private lateinit var categoryText: TextView
@@ -33,15 +33,12 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val titleInputLayout = view.findViewById<TextInputLayout>(R.id.titleInputLayout)
+        val titleInputLayout = view.findViewById<BaseCustomTextInputLayout>(R.id.titleInputLayout)
         titleEditText = view.findViewById(R.id.titleEditText)
         val descriptionInputLayout = view.findViewById<TextInputLayout>(R.id.descriptionInputLayout)
         descriptionEditText = view.findViewById(R.id.descriptionEditText)
-        val saveNoteButton = view.findViewById<Button>(R.id.saveNoteButton)
-        val datePicker = view.findViewById<Button>(R.id.datePicker)
         dateText = view.findViewById(R.id.dateText)
         categoryText = view.findViewById(R.id.categoryNameText)
-        val selectCategoryButton = view.findViewById<Button>(R.id.selectCategoryButton)
         noteLayout = view.findViewById(R.id.noteLayout)
 
         viewModel.observeState(this){
@@ -54,23 +51,6 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
                 categoryText,
                 noteLayout
             )
-        }
-
-        saveNoteButton.setOnClickListener {
-            viewModel.saveNote(
-                titleEditText.text.toString().trim(),
-                descriptionEditText.text.toString().trim(),
-                dateText.text.toString(),
-                id
-            )
-        }
-
-        datePicker.setOnClickListener {
-            viewModel.changePerformDate(parentFragmentManager)
-        }
-
-        selectCategoryButton.setOnClickListener {
-            viewModel.selectCategory(parentFragmentManager)
         }
 
         viewModel.init(savedInstanceState == null, id)
@@ -98,6 +78,29 @@ class NoteFragment: BaseFragment<NoteViewModel>() {
         super.onPause()
         titleEditText.removeTextChangedListener(watcher)
         descriptionEditText.removeTextChangedListener(watcher)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menuEditPerformDate -> {
+                viewModel.changePerformDate(parentFragmentManager)
+                true
+            }
+            R.id.menuEditCategory -> {
+                viewModel.selectCategory(parentFragmentManager)
+                true
+            }
+            R.id.menuNoteSave -> {
+                viewModel.saveNote(
+                    titleEditText.text.toString().trim(),
+                    descriptionEditText.text.toString().trim(),
+                    dateText.text.toString(),
+                    id
+                )
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

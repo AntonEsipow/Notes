@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.bigtoapp.notes.main.views.BaseCustomTextInputLayout
             android:id="@+id/categoryInputLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -18,12 +18,12 @@
             android:layout_margin="@dimen/margin_small"
             android:hint="@string/title_hint">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.bigtoapp.notes.main.views.BaseCustomTextInputEditText
                 android:id="@+id/categoryEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.bigtoapp.notes.main.views.BaseCustomTextInputLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -125,16 +125,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@id/blueSliderTextView" />
-
-        <Button
-            android:id="@+id/saveCategoryButton"
-            android:layout_margin="@dimen/margin_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/save_category"
-            android:layout_marginTop="@dimen/margin_medium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/blueSliderTextView"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,23 +2,24 @@ package com.bigtoapp.notes.category.presentation
 
 import android.os.Bundle
 import android.text.Editable
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import com.bigtoapp.notes.R
-import com.bigtoapp.notes.main.presentation.BaseFragment
+import com.bigtoapp.notes.main.presentation.MenuBaseFragment
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.SimpleTextWatcher
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import com.bigtoapp.notes.main.views.BaseCustomTextInputEditText
+import com.bigtoapp.notes.main.views.BaseCustomTextInputLayout
 
-class CategoryFragment: BaseFragment<CategoryViewModel>() {
+class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
 
     override val layoutId = R.layout.fragment_category
     override val viewModelClass = CategoryViewModel::class.java
+    override val menuId: Int = R.menu.menu_add_category
 
-    private lateinit var titleEditText: TextInputEditText
+    private lateinit var titleEditText: BaseCustomTextInputEditText
 
     private val watcher = object : SimpleTextWatcher() {
         override fun afterTextChanged(s: Editable?) = viewModel.clearError()
@@ -45,9 +46,8 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val titleInputLayout = view.findViewById<TextInputLayout>(R.id.categoryInputLayout)
+        val titleInputLayout = view.findViewById<BaseCustomTextInputLayout>(R.id.categoryInputLayout)
         titleEditText = view.findViewById(R.id.categoryEditText)
-        val saveNoteButton = view.findViewById<Button>(R.id.saveCategoryButton)
 
         colorView = view.findViewById(R.id.colorView)
         title = view.findViewById(R.id.titleTextView)
@@ -82,12 +82,6 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
             it.apply(titleInputLayout, titleEditText, redSeekBar, greenSeekBar, blueSeekBar)
         }
 
-        saveNoteButton.setOnClickListener {
-            color = viewModel
-                .setColor(redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress)
-            viewModel.saveCategory(titleEditText.text.toString().trim(), id, color)
-        }
-
         redSeekBar.setOnSeekBarChangeListener(colorWatcher)
         greenSeekBar.setOnSeekBarChangeListener(colorWatcher)
         blueSeekBar.setOnSeekBarChangeListener(colorWatcher)
@@ -118,6 +112,18 @@ class CategoryFragment: BaseFragment<CategoryViewModel>() {
     override fun onPause() {
         super.onPause()
         titleEditText.removeTextChangedListener(watcher)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menuCategorySave -> {
+                color = viewModel
+                    .setColor(redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress)
+                viewModel.saveCategory(titleEditText.text.toString().trim(), id, color)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

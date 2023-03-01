@@ -33,4 +33,7 @@
     <string name="color_title_message">Color</string>
 
     <string name="calendar">Calendar</string>
+    <string name="done">Done</string>
+    <string name="perform_date">Perform Date</string>
+    <string name="category">Category</string>
 </resources>

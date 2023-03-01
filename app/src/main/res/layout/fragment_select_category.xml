@@ -14,7 +14,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:layout_margin="@dimen/margin_small"/>
 
-    <ProgressBar
+    <com.bigtoapp.notes.main.views.CustomProgressBar
         android:id="@+id/progressSelect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

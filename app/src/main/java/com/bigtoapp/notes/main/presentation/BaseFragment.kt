@@ -14,15 +14,9 @@ abstract class BaseFragment<T: ViewModel>: Fragment() {
     protected abstract val viewModelClass: Class<T>
     protected abstract val layoutId: Int
 
-    protected var id = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = (requireActivity() as ProvideViewModel).provideViewModel(viewModelClass, this)
-
-        if(arguments!=null){
-            id = requireArguments().getString(NavigationStrategy.BUNDLE_ID, "")
-        }
     }
 
     override fun onCreateView(

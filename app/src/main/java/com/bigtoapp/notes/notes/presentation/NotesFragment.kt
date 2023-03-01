@@ -16,7 +16,7 @@ class NotesFragment : BaseFragment<NotesViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+        val progressBar = view.findViewById<View>(R.id.progressBar)
         val emptyState = view.findViewById<TextView>(R.id.emptyStateTextView)
         val recyclerView = view.findViewById<RecyclerView>(R.id.notesRecyclerView)
         val addNoteButton = view.findViewById<Button>(R.id.addNoteButton)

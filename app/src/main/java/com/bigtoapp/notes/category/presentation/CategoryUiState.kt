@@ -2,14 +2,16 @@ package com.bigtoapp.notes.category.presentation
 
 import android.widget.SeekBar
 import com.bigtoapp.notes.categories.presentation.CategoryUi
+import com.bigtoapp.notes.main.views.CustomTextInputEditText
+import com.bigtoapp.notes.main.views.CustomTextInputLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 sealed class CategoryUiState{
 
     abstract fun apply(
-        titleLayout: TextInputLayout,
-        titleEditText: TextInputEditText,
+        titleLayout: CustomTextInputLayout,
+        titleEditText: CustomTextInputEditText,
         redBar: SeekBar,
         greenBar: SeekBar,
         blueBar: SeekBar
@@ -17,13 +19,13 @@ sealed class CategoryUiState{
 
     object AddCategory: CategoryUiState() {
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             redBar: SeekBar,
             greenBar: SeekBar,
             blueBar: SeekBar
         ) {
-            titleEditText.setText("")
+            titleEditText.showText("")
             redBar.progress = 0
             greenBar.progress = 0
             blueBar.progress = 0
@@ -34,8 +36,8 @@ sealed class CategoryUiState{
         private val categoryUi: CategoryUi
         ): CategoryUiState() {
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             redBar: SeekBar,
             greenBar: SeekBar,
             blueBar: SeekBar
@@ -51,14 +53,14 @@ sealed class CategoryUiState{
     ) : CategoryUiState() {
 
         override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: TextInputEditText,
+            titleLayout: CustomTextInputLayout,
+            titleEditText: CustomTextInputEditText,
             redBar: SeekBar,
             greenBar: SeekBar,
             blueBar: SeekBar
         ) = with(titleLayout) {
-            isErrorEnabled = errorEnabled
-            error = message
+            changeErrorEnabled(errorEnabled)
+            showError(message)
         }
     }
 

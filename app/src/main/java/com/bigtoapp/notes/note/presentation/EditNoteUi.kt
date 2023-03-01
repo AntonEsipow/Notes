@@ -2,11 +2,12 @@ package com.bigtoapp.notes.note.presentation
 
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bigtoapp.notes.main.views.CustomTextInputEditText
 import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.google.android.material.textfield.TextInputEditText
 
 class EditNoteUi(
-    private val titleField: TextInputEditText,
+    private val titleField: CustomTextInputEditText,
     private val descriptionField: TextInputEditText,
     private val dateField: TextView,
     private val categoryText: TextView,
@@ -22,7 +23,7 @@ class EditNoteUi(
         categoryName: String,
         categoryColor: Int
     ) {
-        titleField.setText(header)
+        titleField.showText(header)
         descriptionField.setText(description)
         dateField.text = performDate
         categoryText.text = categoryName
