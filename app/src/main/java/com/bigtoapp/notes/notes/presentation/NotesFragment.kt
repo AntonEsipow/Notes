@@ -1,6 +1,7 @@
 package com.bigtoapp.notes.notes.presentation
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
@@ -8,19 +9,22 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.BaseFragment
+import com.bigtoapp.notes.main.presentation.MenuBaseFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class NotesFragment : BaseFragment<NotesViewModel>() {
+class NotesFragment : MenuBaseFragment<NotesViewModel>() {
 
     override val layoutId = R.layout.fragment_notes
     override val viewModelClass = NotesViewModel::class.java
+    override val menuId = R.menu.menu_categories
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_notes)
         val progressBar = view.findViewById<View>(R.id.progressBar)
         val emptyState = view.findViewById<TextView>(R.id.emptyStateTextView)
         val recyclerView = view.findViewById<RecyclerView>(R.id.notesRecyclerView)
-        val addNoteButton = view.findViewById<Button>(R.id.addNoteButton)
-        val navigateCategoriesButton = view.findViewById<Button>(R.id.categoriesButton)
+        val addNoteButton = view.findViewById<FloatingActionButton>(R.id.addNoteButton)
         val adapter = NotesAdapter(object: ItemActions {
             override fun delete(id: String) = viewModel.deleteNote(id)
             override fun edit(id: String) = viewModel.editNote(id)
@@ -29,10 +33,6 @@ class NotesFragment : BaseFragment<NotesViewModel>() {
 
         addNoteButton.setOnClickListener {
             viewModel.addNote()
-        }
-
-        navigateCategoriesButton.setOnClickListener {
-            viewModel.navigateCategories()
         }
 
         viewModel.observeState(this){
@@ -47,5 +47,13 @@ class NotesFragment : BaseFragment<NotesViewModel>() {
             progressBar.visibility = it
         }
         viewModel.init()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if(item.itemId == R.id.menuCategories){
+            viewModel.navigateCategories()
+            true
+        }
+        else super.onOptionsItemSelected(item)
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bigtoapp.notes.R
 import com.bigtoapp.notes.categories.domain.CategoryDomain
 import com.bigtoapp.notes.main.communications.MutableObserve
 import com.bigtoapp.notes.main.domain.ListInteractor
@@ -13,8 +14,10 @@ class CategoriesViewModel(
     private val interactor: ListInteractor<List<CategoryDomain>>,
     private val communications: MutableCategoriesCommunications,
     private val handleRequest: HandleRequest<List<CategoryDomain>>,
-    private val navigation: NavigationCommunication.Mutate
-): ViewModel(), Init, MutableObserve<CategoryUi, CategoriesUiState>, CategoriesScreenOperations {
+    private val navigation: NavigationCommunication.Mutate,
+    private val manageResources: ManageResources
+): ViewModel(), Init, MutableObserve<CategoryUi, CategoriesUiState>, CategoriesScreenOperations,
+    SetFragmentTitle{
 
     override fun init() {
         handleRequest.handle(viewModelScope){
@@ -35,6 +38,8 @@ class CategoriesViewModel(
     override fun navigateNotes() {
         navigation.put(NavigationStrategy.Replace(Screen.Notes))
     }
+
+    override fun setFragmentTitle(value: Int) = manageResources.string(value)
 
     override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) =
         communications.observeProgress(owner, observer)

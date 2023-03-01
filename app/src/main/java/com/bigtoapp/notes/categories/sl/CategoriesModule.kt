@@ -29,7 +29,8 @@ class CategoriesModule(private val core: Core): Module<CategoriesViewModel> {
                     communication
                 )
             ),
-            core.provideNavigation()
+            core.provideNavigation(),
+            core
         )
     }
 }

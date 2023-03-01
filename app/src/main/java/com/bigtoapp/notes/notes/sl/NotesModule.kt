@@ -29,7 +29,8 @@ class NotesModule(private val core: Core): Module<NotesViewModel> {
                     communications
                 )
             ),
-            core.provideNavigation()
+            core.provideNavigation(),
+            core
         )
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bigtoapp.notes.R
 import com.bigtoapp.notes.dialog.presentation.MapSelectedCategoryId
 import com.bigtoapp.notes.dialog.presentation.SelectedCategoryCommunications
 import com.bigtoapp.notes.main.communications.ObserveState
@@ -19,20 +20,21 @@ import com.google.android.material.datepicker.MaterialDatePicker
 
 class NoteViewModel(
     private val communications: MutableNoteCommunication,
-    private val noteErrorState: NoteErrorState,
     private val handleInsert: HandleInsertNote,
     private val handleUpdate: HandleUpdateNote,
     private val selectedCategory: SelectedCategoryCommunications,
     private val dateFormatter: DateFormatter<String, Long>,
     private val dialog: Dialog<MaterialDatePicker<Long>>,
-    private val bottomDialog: Dialog<BottomSheetDialogFragment>
+    private val bottomDialog: Dialog<BottomSheetDialogFragment>,
+    private val showAddNoteState: ShowAddNoteState,
+    private val manageResources: ManageResources
 ): ViewModel(), ClearError, ObserveState<NoteUiState>, PerformDateOperations,
-    NoteScreenOperations, InitWithId {
+    NoteScreenOperations, InitWithId, SetFragmentTitle {
 
     override fun init(isFirstRun: Boolean, id: String) {
         if(isFirstRun) {
             if(id.isEmpty())
-                communications.showState(NoteUiState.AddNote)
+                showAddNoteState.showAddNote()
             else {
                 // we get liveData value that already exist to avoid going to DB again
                 val noteList = communications.getList()
@@ -50,8 +52,8 @@ class NoteViewModel(
         val category = selectedCategory.getSelectedCategory()
         val categoryId = category.map(MapSelectedCategoryId())
 
-        if(title.isEmpty() || subtitle.isEmpty())
-            noteErrorState.showError(title, subtitle)
+        if(title.isEmpty())
+            communications.showState(NoteUiState.ShowErrorTitle(manageResources.string(R.string.title_error_message)))
         else if(noteId.isEmpty()){
             val note = InsertedDomainNote(title, subtitle, date, categoryId)
             handleInsert.handleInsert(note, viewModelScope)
@@ -75,6 +77,8 @@ class NoteViewModel(
             communications.showState(NoteUiState.EditDate(date))
         }
     }
+
+    override fun setFragmentTitle(value: Int) = manageResources.string(value)
 
     override fun observeState(owner: LifecycleOwner, observer: Observer<NoteUiState>) =
         communications.observeState(owner, observer)

@@ -1,53 +1,54 @@
 package com.bigtoapp.notes.note.presentation
 
 import android.graphics.Color
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bigtoapp.notes.main.views.CustomTextInputEditText
-import com.bigtoapp.notes.main.views.CustomTextInputLayout
 import com.bigtoapp.notes.notes.presentation.NoteUi
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 sealed class NoteUiState{
 
     abstract fun apply(
-        titleLayout: CustomTextInputLayout,
+        titleLayout: TextInputLayout,
         titleEditText: CustomTextInputEditText,
         descriptionLayout: TextInputLayout,
-        descriptionEditText: TextInputEditText,
+        descriptionEditText: CustomTextInputEditText,
         dateText: TextView,
         categoryName: TextView,
-        noteLayout: LinearLayout
+        noteLayout: ConstraintLayout
     )
 
-    object AddNote: NoteUiState(){
+    data class AddNote(
+        private val dateMessage: String,
+        private val categoryMessage: String
+    ): NoteUiState(){
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText,
+            descriptionEditText: CustomTextInputEditText,
             dateText: TextView,
             categoryName: TextView,
-            noteLayout: LinearLayout
+            noteLayout: ConstraintLayout
         ) {
             titleEditText.showText("")
-            descriptionEditText.setText("")
-            dateText.text = ""
-            categoryName.text = ""
+            descriptionEditText.showText("")
+            dateText.text = dateMessage
+            categoryName.text = categoryMessage
             noteLayout.setBackgroundColor(Color.WHITE)
         }
     }
 
     data class EditNote(private val noteUi: NoteUi): NoteUiState(){
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText,
+            descriptionEditText: CustomTextInputEditText,
             dateText: TextView,
             categoryName: TextView,
-            noteLayout: LinearLayout
+            noteLayout: ConstraintLayout
         ) {
             val mapper = EditNoteUi(titleEditText, descriptionEditText, dateText, categoryName, noteLayout)
             noteUi.map(mapper)
@@ -57,13 +58,13 @@ sealed class NoteUiState{
 
     data class EditDate(private val date: String): NoteUiState(){
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText,
+            descriptionEditText: CustomTextInputEditText,
             dateText: TextView,
             categoryName: TextView,
-            noteLayout: LinearLayout
+            noteLayout: ConstraintLayout
         ) {
             dateText.text = date
         }
@@ -74,13 +75,13 @@ sealed class NoteUiState{
         private val color: Int
         ): NoteUiState(){
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText,
+            descriptionEditText: CustomTextInputEditText,
             dateText: TextView,
             categoryName: TextView,
-            noteLayout: LinearLayout
+            noteLayout: ConstraintLayout
         ) {
             categoryName.text = category
             noteLayout.setBackgroundColor(color)
@@ -93,15 +94,14 @@ sealed class NoteUiState{
         private val message: String
         ): NoteUiState() {
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText,
+            descriptionEditText: CustomTextInputEditText,
             dateText: TextView,
             categoryName: TextView,
-            noteLayout: LinearLayout
-        ) = with(titleLayout){
-            changeErrorEnabled(true)
+            noteLayout: ConstraintLayout
+        ) = with(titleEditText){
             showError(message)
         }
     }
@@ -110,33 +110,27 @@ sealed class NoteUiState{
         private val message: String
         ): NoteUiState(){
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText,
+            descriptionEditText: CustomTextInputEditText,
             dateText: TextView,
             categoryName: TextView,
-            noteLayout: LinearLayout
-        ) = with(descriptionLayout){
-            isErrorEnabled = true
-            error = message
+            noteLayout: ConstraintLayout
+        ) = with(descriptionEditText){
+            showError(message)
         }
     }
 
     object ClearError : NoteUiState() {
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             descriptionLayout: TextInputLayout,
-            descriptionEditText: TextInputEditText,
+            descriptionEditText: CustomTextInputEditText,
             dateText: TextView,
             categoryName: TextView,
-            noteLayout: LinearLayout
-        ) {
-            titleLayout.changeErrorEnabled(false)
-            titleLayout.showError("")
-            descriptionLayout.isErrorEnabled = false
-            descriptionLayout.error = ""
-        }
+            noteLayout: ConstraintLayout
+        ){}
     }
 }

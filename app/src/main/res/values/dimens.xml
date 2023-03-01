@@ -6,4 +6,6 @@
 
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="padding_medium">16dp</dimen>
+
+    <dimen name="recycler_bottom_padding">80dp</dimen>
 </resources>

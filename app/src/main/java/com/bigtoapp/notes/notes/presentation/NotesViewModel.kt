@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.communications.MutableObserve
 import com.bigtoapp.notes.main.domain.ListInteractor
 import com.bigtoapp.notes.main.presentation.*
@@ -13,8 +14,9 @@ class NotesViewModel(
     private val interactor: ListInteractor<List<NoteDomain>>,
     private val communications: MutableNotesCommunications,
     private val handleRequest: HandleRequest<List<NoteDomain>>,
-    private val navigationCommunication: NavigationCommunication.Mutate
-): ViewModel(), Init, MutableObserve<NoteUi, NotesUiState>, NotesScreenOperations {
+    private val navigationCommunication: NavigationCommunication.Mutate,
+    private val manageResources: ManageResources
+): ViewModel(), Init, MutableObserve<NoteUi, NotesUiState>, NotesScreenOperations, SetFragmentTitle {
 
     override fun init() {
         handleRequest.handle(viewModelScope){
@@ -37,6 +39,8 @@ class NotesViewModel(
     override fun navigateCategories() {
         navigationCommunication.put(NavigationStrategy.Replace(Screen.Categories))
     }
+
+    override fun setFragmentTitle(value: Int) = manageResources.string(value)
 
     override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) =
         communications.observeProgress(owner, observer)

@@ -9,12 +9,14 @@ abstract class MenuBaseFragment<T: ViewModel>: BaseFragment<T>() {
 
     protected var id = ""
     protected abstract val menuId: Int
+    protected var isInEdit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
         if(arguments!=null){
+            isInEdit = true
             id = requireArguments().getString(NavigationStrategy.BUNDLE_ID, "")
         }
     }

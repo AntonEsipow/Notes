@@ -20,7 +20,7 @@ class CategoryViewModel(
     private val handleRequest: HandleRequest<Unit>,
     private val navigationCommunication: NavigationCommunication.Mutate
 ): ViewModel(), CategoryScreenOperations, ClearError, ObserveState<CategoryUiState>,
-    SetColors, InitWithId {
+    SetColors, InitWithId, SetFragmentTitle {
 
     override fun init(isFirstRun: Boolean, id: String) {
         if(isFirstRun){
@@ -58,7 +58,7 @@ class CategoryViewModel(
     override fun observeState(owner: LifecycleOwner, observer: Observer<CategoryUiState>) =
         communications.observeState(owner, observer)
 
-    override fun clearError() = communications.showState(CategoryUiState.ClearError())
+    override fun clearError() = communications.showState(CategoryUiState.ClearError)
 
     override fun setCategoryColor(categoryColor: Int, colorCallback: (Int, Int, Int, Int, String) -> Unit) {
         val color = Color.valueOf(categoryColor)
@@ -79,6 +79,8 @@ class CategoryViewModel(
 
     override fun setColor(redValue: Int, greenValue: Int, blueValue: Int): Int =
         Color.rgb(redValue, greenValue, blueValue)
+
+    override fun setFragmentTitle(value: Int) = manageResources.string(value)
 }
 
 interface CategoryScreenOperations{

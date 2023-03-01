@@ -3,14 +3,12 @@ package com.bigtoapp.notes.category.presentation
 import android.widget.SeekBar
 import com.bigtoapp.notes.categories.presentation.CategoryUi
 import com.bigtoapp.notes.main.views.CustomTextInputEditText
-import com.bigtoapp.notes.main.views.CustomTextInputLayout
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 sealed class CategoryUiState{
 
     abstract fun apply(
-        titleLayout: CustomTextInputLayout,
+        titleLayout: TextInputLayout,
         titleEditText: CustomTextInputEditText,
         redBar: SeekBar,
         greenBar: SeekBar,
@@ -19,7 +17,7 @@ sealed class CategoryUiState{
 
     object AddCategory: CategoryUiState() {
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             redBar: SeekBar,
             greenBar: SeekBar,
@@ -36,7 +34,7 @@ sealed class CategoryUiState{
         private val categoryUi: CategoryUi
         ): CategoryUiState() {
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             redBar: SeekBar,
             greenBar: SeekBar,
@@ -47,23 +45,28 @@ sealed class CategoryUiState{
         }
     }
 
-    abstract class AbstractError(
-        private val message: String,
-        private val errorEnabled: Boolean
+    data class ShowError(
+        private val message: String
     ) : CategoryUiState() {
 
         override fun apply(
-            titleLayout: CustomTextInputLayout,
+            titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
             redBar: SeekBar,
             greenBar: SeekBar,
             blueBar: SeekBar
-        ) = with(titleLayout) {
-            changeErrorEnabled(errorEnabled)
+        ) = with(titleEditText) {
             showError(message)
         }
     }
 
-    data class ShowError(private val text: String) : AbstractError(text, true)
-    class ClearError : AbstractError("", false)
+    object ClearError : CategoryUiState(){
+        override fun apply(
+            titleLayout: TextInputLayout,
+            titleEditText: CustomTextInputEditText,
+            redBar: SeekBar,
+            greenBar: SeekBar,
+            blueBar: SeekBar
+        ) {}
+    }
 }

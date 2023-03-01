@@ -26,7 +26,8 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
             core.provideNotesRepository(),
             Generate.IdAndCurrentTime(),
             DateToDomain(
-                Generate.CalendarTime(formatter)
+                Generate.CalendarTime(formatter),
+                core
             )
         )
 
@@ -38,16 +39,17 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
             core.provideSelectedCategory()
         )
 
+        val showState = ShowAddNoteState.Base(
+            communications,
+            core
+        )
+
         return NoteViewModel(
             communications,
-            NoteErrorState.Base(
-                communications,
-                core
-            ),
             HandleInsertNote.Base(
                 interactor,
                 handleRequest,
-                communications,
+                showState,
                 selectCategory
             ),
             HandleUpdateNote.Base(
@@ -59,7 +61,9 @@ class NoteModule(private val core: Core): Module<NoteViewModel> {
             selectCategory,
             formatter,
             DatePicker(core),
-            SelectCategory()
+            SelectCategory(),
+            showState,
+            core
         )
     }
 }

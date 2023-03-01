@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Category"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:layout_margin="@dimen/margin_small"/>
 
     <com.bigtoapp.notes.main.views.CustomProgressBar
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:translationZ="100dp"
+        android:translationZ="1dp"
         android:visibility="visible"
         tools:visibility="gone" />
 
@@ -41,6 +41,7 @@
         <Button
             android:id="@+id/setDefaultCategoryButton"
             android:layout_width="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_height="wrap_content"
             android:text="@string/set_default_category"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -51,6 +52,7 @@
             android:id="@+id/confirmCategoryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
             android:text="@string/confirm_category"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_margin="@dimen/margin_small"/>

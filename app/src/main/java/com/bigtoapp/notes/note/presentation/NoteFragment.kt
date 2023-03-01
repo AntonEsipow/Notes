@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.MenuBaseFragment
+import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.SimpleTextWatcher
 import com.bigtoapp.notes.main.views.BaseCustomTextInputEditText
-import com.bigtoapp.notes.main.views.BaseCustomTextInputLayout
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class NoteFragment: MenuBaseFragment<NoteViewModel>() {
@@ -22,10 +21,10 @@ class NoteFragment: MenuBaseFragment<NoteViewModel>() {
     override val menuId: Int = R.menu.menu_add_note
 
     private lateinit var titleEditText: BaseCustomTextInputEditText
-    private lateinit var descriptionEditText: TextInputEditText
+    private lateinit var descriptionEditText: BaseCustomTextInputEditText
     private lateinit var dateText: TextView
     private lateinit var categoryText: TextView
-    private lateinit var noteLayout: LinearLayout
+    private lateinit var noteLayout: ConstraintLayout
 
     private val watcher = object : SimpleTextWatcher() {
         override fun afterTextChanged(s: Editable?) = viewModel.clearError()
@@ -33,13 +32,18 @@ class NoteFragment: MenuBaseFragment<NoteViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val titleInputLayout = view.findViewById<BaseCustomTextInputLayout>(R.id.titleInputLayout)
+        val titleInputLayout = view.findViewById<TextInputLayout>(R.id.titleInputLayout)
         titleEditText = view.findViewById(R.id.titleEditText)
         val descriptionInputLayout = view.findViewById<TextInputLayout>(R.id.descriptionInputLayout)
         descriptionEditText = view.findViewById(R.id.descriptionEditText)
         dateText = view.findViewById(R.id.dateText)
         categoryText = view.findViewById(R.id.categoryNameText)
         noteLayout = view.findViewById(R.id.noteLayout)
+
+        fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_add_note)
+        if(isInEdit){
+            fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_edit_note)
+        }
 
         viewModel.observeState(this){
             it.apply(

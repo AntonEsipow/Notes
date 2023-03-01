@@ -1,9 +1,11 @@
 package com.bigtoapp.notes.note.presentation
 
+import com.bigtoapp.notes.R
 import com.bigtoapp.notes.categories.data.CategoryData
 import com.bigtoapp.notes.dialog.presentation.SelectedCategoryCommunications
 import com.bigtoapp.notes.main.communications.ShowState
 import com.bigtoapp.notes.main.presentation.HandleRequest
+import com.bigtoapp.notes.main.presentation.ManageResources
 import com.bigtoapp.notes.main.presentation.NavigationCommunication
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.note.domain.InsertedDomainNote
@@ -18,7 +20,7 @@ interface HandleInsertNote {
     class Base(
         private val interactor: NoteInteractor,
         private val handleRequest: HandleRequest<Unit>,
-        private val communications: ShowState<NoteUiState>,
+        private val showAddNoteState: ShowAddNoteState,
         private val selectedCategory: SelectedCategoryCommunications
     ): HandleInsertNote{
         override fun handleInsert(note: InsertedDomainNote, scope: CoroutineScope) {
@@ -26,7 +28,7 @@ interface HandleInsertNote {
                 interactor.insertNote(note)
             }
             selectedCategory.setSelectedCategory(CategoryData.getDefaultCategory())
-            communications.showState(NoteUiState.AddNote)
+            showAddNoteState.showAddNote()
         }
     }
 }
@@ -47,6 +49,25 @@ interface HandleUpdateNote{
             }
             selectedCategory.setSelectedCategory(CategoryData.getDefaultCategory())
             navigationCommunication.put(NavigationStrategy.Back)
+        }
+    }
+}
+
+interface ShowAddNoteState{
+    fun showAddNote()
+
+    class Base(
+        private val communications: ShowState<NoteUiState>,
+        private val manageResources: ManageResources
+    ): ShowAddNoteState{
+
+        override fun showAddNote() {
+            communications.showState(
+                NoteUiState.AddNote(
+                    manageResources.string(R.string.select_date),
+                    manageResources.string(R.string.choose_category)
+                )
+            )
         }
     }
 }

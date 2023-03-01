@@ -9,21 +9,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.bigtoapp.notes.main.views.BaseCustomTextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/categoryInputLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
+            app:boxBackgroundMode="none"
+            app:hintEnabled="false"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:hint="@string/title_hint">
+            android:layout_margin="@dimen/margin_small">
 
             <com.bigtoapp.notes.main.views.BaseCustomTextInputEditText
                 android:id="@+id/categoryEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="@string/title_hint"
+                android:maxLength="20"
+                android:maxLines="1"/>
 
-        </com.bigtoapp.notes.main.views.BaseCustomTextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

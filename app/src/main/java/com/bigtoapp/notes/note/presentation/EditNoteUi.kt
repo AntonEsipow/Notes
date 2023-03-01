@@ -1,17 +1,16 @@
 package com.bigtoapp.notes.note.presentation
 
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bigtoapp.notes.main.views.CustomTextInputEditText
 import com.bigtoapp.notes.notes.presentation.NoteUi
-import com.google.android.material.textfield.TextInputEditText
 
 class EditNoteUi(
     private val titleField: CustomTextInputEditText,
-    private val descriptionField: TextInputEditText,
+    private val descriptionField: CustomTextInputEditText,
     private val dateField: TextView,
     private val categoryText: TextView,
-    private val noteLayout: LinearLayout
+    private val noteLayout: ConstraintLayout
 ): NoteUi.Mapper<Unit> {
 
     override fun map(
@@ -24,7 +23,7 @@ class EditNoteUi(
         categoryColor: Int
     ) {
         titleField.showText(header)
-        descriptionField.setText(description)
+        descriptionField.showText(description)
         dateField.text = performDate
         categoryText.text = categoryName
 

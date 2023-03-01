@@ -13,6 +13,7 @@ abstract class BaseFragment<T: ViewModel>: Fragment() {
     protected lateinit var viewModel: T
     protected abstract val viewModelClass: Class<T>
     protected abstract val layoutId: Int
+    protected lateinit var fragmentTitle: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,4 +25,9 @@ abstract class BaseFragment<T: ViewModel>: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(layoutId, container, false)
+
+    override fun onStart() {
+        (activity as MainActivity).supportActionBar?.title = fragmentTitle
+        super.onStart()
+    }
 }

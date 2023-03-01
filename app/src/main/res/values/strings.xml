@@ -10,14 +10,16 @@
     <string name="delete_note">Delete</string>
     <string name="edit_note">Edit</string>
 
-    <string name="title_error_message">Enter title</string>
-    <string name="subtitle_error_message">Enter description</string>
+    <string name="title_error_message">* Enter Title</string>
+    <string name="subtitle_error_message">* Enter description</string>
+    <string name="select_date">Select Perform Date</string>
+    <string name="choose_category">Choose Category</string>
 
     <string name="empty_state_note" type="string">No notes, click the button to add note!</string>
     <string name="empty_state_category" type="string">No categories, click the button to add note!</string>
 
-    <string name="title_hint">Title</string>
-    <string name="description_hint">Description</string>
+    <string name="title_hint">Enter Title</string>
+    <string name="description_hint">Enter Description</string>
     <string name="save_note">Save note</string>
     <string name="pick_date">Pick Date</string>
     <string name="select_category">Category</string>
@@ -36,4 +38,11 @@
     <string name="done">Done</string>
     <string name="perform_date">Perform Date</string>
     <string name="category">Category</string>
+
+    <string name="fragment_notes">Notes</string>
+    <string name="fragment_add_note">Create Note</string>
+    <string name="fragment_edit_note">Edit Note</string>
+    <string name="fragment_categories">Categories</string>
+    <string name="fragment_add_category">Create Category</string>
+    <string name="fragment_edit_category">Edit Category</string>
 </resources>

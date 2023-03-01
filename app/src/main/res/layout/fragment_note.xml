@@ -1,70 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/noteLayout"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end">
+        android:layout_margin="@dimen/margin_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="21/03/24" />
 
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="21/03/24"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:layout_margin="@dimen/margin_small"
-            android:gravity="end"/>
+    <TextView
+        android:id="@+id/categoryNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        android:gravity="end"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Category" />
 
-        <TextView
-            android:id="@+id/categoryNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Category"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:layout_margin="@dimen/margin_small"
-            android:gravity="end"/>
-
-    </LinearLayout>
-
-    <com.bigtoapp.notes.main.views.BaseCustomTextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/titleInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_margin="@dimen/margin_small"
-        android:hint="@string/title_hint">
+        app:boxBackgroundMode="none"
+        app:hintEnabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryNameText">
 
         <com.bigtoapp.notes.main.views.BaseCustomTextInputEditText
             android:id="@+id/titleEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="@string/title_hint"
+            android:maxLength="36"
+            android:maxLines="1" />
 
-    </com.bigtoapp.notes.main.views.BaseCustomTextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/descriptionInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_margin="@dimen/margin_small"
-        android:hint="@string/description_hint">
+        android:layout_height="0dp"
+        app:boxBackgroundMode="none"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleInputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.bigtoapp.notes.main.views.BaseCustomTextInputEditText
             android:id="@+id/descriptionEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="start"
-            android:lines="10"
-            android:inputType="textMultiLine|textCapSentences" />
+            android:hint="@string/description_hint"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lineSpacingMultiplier="1.5" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

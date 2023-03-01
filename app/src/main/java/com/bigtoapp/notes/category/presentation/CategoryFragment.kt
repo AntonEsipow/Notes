@@ -11,7 +11,7 @@ import com.bigtoapp.notes.main.presentation.MenuBaseFragment
 import com.bigtoapp.notes.main.presentation.NavigationStrategy
 import com.bigtoapp.notes.main.presentation.SimpleTextWatcher
 import com.bigtoapp.notes.main.views.BaseCustomTextInputEditText
-import com.bigtoapp.notes.main.views.BaseCustomTextInputLayout
+import com.google.android.material.textfield.TextInputLayout
 
 class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
 
@@ -35,7 +35,6 @@ class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
             }
     }
 
-    private var isInEdit = false
     private var color = 0
 
     private lateinit var redSeekBar: SeekBar
@@ -46,9 +45,8 @@ class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val titleInputLayout = view.findViewById<BaseCustomTextInputLayout>(R.id.categoryInputLayout)
+        val titleInputLayout = view.findViewById<TextInputLayout>(R.id.categoryInputLayout)
         titleEditText = view.findViewById(R.id.categoryEditText)
-
         colorView = view.findViewById(R.id.colorView)
         title = view.findViewById(R.id.titleTextView)
         redSeekBar = view.findViewById(R.id.redSeekBar)
@@ -63,11 +61,12 @@ class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
         }
 
         if(arguments!=null){
-            isInEdit = true
             color = requireArguments().getInt(NavigationStrategy.BUNDLE_COLOR)
         }
 
+        fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_add_category)
         if(isInEdit){
+            fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_edit_category)
             val colorInt = color
             viewModel.setCategoryColor(colorInt){ red, green, blue, viewColor, message ->
                 redSeekBar.progress = red
