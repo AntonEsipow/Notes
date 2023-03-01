@@ -35,8 +35,6 @@ class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
             }
     }
 
-    private var color = 0
-
     private lateinit var redSeekBar: SeekBar
     private lateinit var greenSeekBar: SeekBar
     private lateinit var blueSeekBar: SeekBar
@@ -53,6 +51,8 @@ class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
         greenSeekBar = view.findViewById(R.id.greenSeekBar)
         blueSeekBar = view.findViewById(R.id.blueSeekBar)
 
+        fragmentTitle = viewModel.setFragmentTitle(isInEdit)
+
         viewModel.updateBackground(
             redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress
         ){ message, color ->
@@ -60,15 +60,9 @@ class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
             colorView.setBackgroundColor(color)
         }
 
-        if(arguments!=null){
-            color = requireArguments().getInt(NavigationStrategy.BUNDLE_COLOR)
-        }
-
-        fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_add_category)
         if(isInEdit){
-            fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_edit_category)
-            val colorInt = color
-            viewModel.setCategoryColor(colorInt){ red, green, blue, viewColor, message ->
+            val color = requireArguments().getInt(NavigationStrategy.BUNDLE_COLOR)
+            viewModel.setCategoryColor(color){ red, green, blue, viewColor, message ->
                 redSeekBar.progress = red
                 greenSeekBar.progress = green
                 blueSeekBar.progress = blue
@@ -116,7 +110,7 @@ class CategoryFragment: MenuBaseFragment<CategoryViewModel>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.menuCategorySave -> {
-                color = viewModel
+                val color = viewModel
                     .setColor(redSeekBar.progress, greenSeekBar.progress, blueSeekBar.progress)
                 viewModel.saveCategory(titleEditText.text.toString().trim(), id, color)
                 true

@@ -40,7 +40,7 @@ class NotesViewModel(
         navigationCommunication.put(NavigationStrategy.Replace(Screen.Categories))
     }
 
-    override fun setFragmentTitle(value: Int) = manageResources.string(value)
+    override fun setFragmentTitle() = manageResources.string(R.string.fragment_notes)
 
     override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) =
         communications.observeProgress(owner, observer)

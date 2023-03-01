@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_small"
-    app:cardBackgroundColor="@color/teal_200"
+    tools:cardBackgroundColor="@color/day_primary"
     android:id="@+id/cardView"
     app:cardCornerRadius="@dimen/item_corner_radius">
 
@@ -30,7 +30,7 @@
 
             <Button
                 android:id="@+id/deleteCategoryButton"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/Theme.Notes.Buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_small"
@@ -38,7 +38,7 @@
 
             <Button
                 android:id="@+id/updateCategoryButton"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/Theme.Notes.Buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_small"

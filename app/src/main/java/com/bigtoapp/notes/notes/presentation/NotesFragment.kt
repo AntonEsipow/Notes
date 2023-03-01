@@ -20,7 +20,7 @@ class NotesFragment : MenuBaseFragment<NotesViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_notes)
+        fragmentTitle = viewModel.setFragmentTitle()
         val progressBar = view.findViewById<View>(R.id.progressBar)
         val emptyState = view.findViewById<TextView>(R.id.emptyStateTextView)
         val recyclerView = view.findViewById<RecyclerView>(R.id.notesRecyclerView)

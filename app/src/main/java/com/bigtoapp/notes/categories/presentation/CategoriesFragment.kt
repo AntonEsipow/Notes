@@ -23,7 +23,7 @@ class CategoriesFragment: MenuBaseFragment<CategoriesViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_categories)
+        fragmentTitle = viewModel.setFragmentTitle()
         val progressBar = view.findViewById<View>(R.id.progressCategory)
         val emptyState = view.findViewById<TextView>(R.id.categoryEmptyState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)

@@ -40,10 +40,7 @@ class NoteFragment: MenuBaseFragment<NoteViewModel>() {
         categoryText = view.findViewById(R.id.categoryNameText)
         noteLayout = view.findViewById(R.id.noteLayout)
 
-        fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_add_note)
-        if(isInEdit){
-            fragmentTitle = viewModel.setFragmentTitle(R.string.fragment_edit_note)
-        }
+        fragmentTitle = viewModel.setFragmentTitle(isInEdit)
 
         viewModel.observeState(this){
             it.apply(

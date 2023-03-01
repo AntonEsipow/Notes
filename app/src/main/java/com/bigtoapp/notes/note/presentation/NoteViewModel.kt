@@ -29,7 +29,7 @@ class NoteViewModel(
     private val showAddNoteState: ShowAddNoteState,
     private val manageResources: ManageResources
 ): ViewModel(), ClearError, ObserveState<NoteUiState>, PerformDateOperations,
-    NoteScreenOperations, InitWithId, SetFragmentTitle {
+    NoteScreenOperations, InitWithId, SetMutableTitles {
 
     override fun init(isFirstRun: Boolean, id: String) {
         if(isFirstRun) {
@@ -78,7 +78,12 @@ class NoteViewModel(
         }
     }
 
-    override fun setFragmentTitle(value: Int) = manageResources.string(value)
+    override fun setFragmentTitle(isInEdit: Boolean) =
+        if(isInEdit)
+            manageResources.string(R.string.fragment_edit_note)
+        else
+            manageResources.string(R.string.fragment_add_note)
+
 
     override fun observeState(owner: LifecycleOwner, observer: Observer<NoteUiState>) =
         communications.observeState(owner, observer)

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_small"
     android:id="@+id/noteCardView"
-    app:cardBackgroundColor="@color/teal_200"
+    tools:cardBackgroundColor="@color/day_primary"
     app:cardCornerRadius="@dimen/item_corner_radius">
 
     <LinearLayout
@@ -64,7 +64,7 @@
 
             <Button
                 android:id="@+id/deleteNoteButton"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/Theme.Notes.Buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_small"
@@ -72,7 +72,7 @@
 
             <Button
                 android:id="@+id/updateNoteButton"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/Theme.Notes.Buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_small"

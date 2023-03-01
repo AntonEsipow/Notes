@@ -1,6 +1,7 @@
 package com.bigtoapp.notes.category.presentation
 
 import android.graphics.Color
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -20,7 +21,7 @@ class CategoryViewModel(
     private val handleRequest: HandleRequest<Unit>,
     private val navigationCommunication: NavigationCommunication.Mutate
 ): ViewModel(), CategoryScreenOperations, ClearError, ObserveState<CategoryUiState>,
-    SetColors, InitWithId, SetFragmentTitle {
+    SetColors, InitWithId, SetMutableTitles {
 
     override fun init(isFirstRun: Boolean, id: String) {
         if(isFirstRun){
@@ -46,6 +47,7 @@ class CategoryViewModel(
                     interactor.insertCategory(title, color)
                 }
                 communications.showState(CategoryUiState.AddCategory)
+                Log.d("bigTo", "Color: $color")
             } else {
                 handleRequest.handle(viewModelScope){
                     interactor.updateCategory(categoryId, title, color)
@@ -77,10 +79,15 @@ class CategoryViewModel(
         callback(message, color)
     }
 
-    override fun setColor(redValue: Int, greenValue: Int, blueValue: Int): Int =
+    override fun setColor(redValue: Int, greenValue: Int, blueValue: Int) =
         Color.rgb(redValue, greenValue, blueValue)
 
-    override fun setFragmentTitle(value: Int) = manageResources.string(value)
+    override fun setFragmentTitle(isInEdit: Boolean) =
+        if(isInEdit)
+            manageResources.string(R.string.fragment_edit_category)
+        else
+            manageResources.string(R.string.fragment_add_category)
+
 }
 
 interface CategoryScreenOperations{

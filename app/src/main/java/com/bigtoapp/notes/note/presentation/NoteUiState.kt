@@ -3,6 +3,7 @@ package com.bigtoapp.notes.note.presentation
 import android.graphics.Color
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.views.CustomTextInputEditText
 import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.google.android.material.textfield.TextInputLayout
@@ -36,7 +37,6 @@ sealed class NoteUiState{
             descriptionEditText.showText("")
             dateText.text = dateMessage
             categoryName.text = categoryMessage
-            noteLayout.setBackgroundColor(Color.WHITE)
         }
     }
 

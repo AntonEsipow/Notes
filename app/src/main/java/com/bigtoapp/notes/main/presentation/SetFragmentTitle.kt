@@ -1,7 +1,9 @@
 package com.bigtoapp.notes.main.presentation
 
-import androidx.annotation.StringRes
-
 interface SetFragmentTitle {
-    fun setFragmentTitle(@StringRes value: Int): String
+    fun setFragmentTitle(): String
+}
+
+interface SetMutableTitles{
+    fun setFragmentTitle(isInEdit: Boolean): String
 }

@@ -19,7 +19,7 @@ data class CategoryData(
     companion object {
         const val DEFAULT_CATEGORY_ID = ""
         const val DEFAULT_CATEGORY_NAME = ""
-        const val DEFAULT_CATEGORY_COLOR = 100
+        const val DEFAULT_CATEGORY_COLOR = -1381654
 
         fun getDefaultCategory() =
             SelectedCategoryUi(DEFAULT_CATEGORY_ID, DEFAULT_CATEGORY_NAME, DEFAULT_CATEGORY_COLOR)
