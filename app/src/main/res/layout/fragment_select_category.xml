@@ -19,6 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/itemBackground"
+        android:indeterminateDrawable="@drawable/spinner_ring"
+        android:indeterminateOnly="true"
         android:translationZ="1dp"
         android:visibility="visible"
         tools:visibility="gone" />

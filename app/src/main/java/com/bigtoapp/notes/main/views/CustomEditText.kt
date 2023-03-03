@@ -8,6 +8,7 @@ import com.google.android.material.textfield.TextInputLayout
 interface CustomTextInputEditText {
     fun showText(text: String)
     fun showError(errorMessage: String)
+    fun clearError()
 }
 
 class BaseCustomTextInputEditText : TextInputEditText, CustomTextInputEditText {
@@ -25,5 +26,9 @@ class BaseCustomTextInputEditText : TextInputEditText, CustomTextInputEditText {
 
     override fun showError(errorMessage: String) {
         error = errorMessage
+    }
+
+    override fun clearError() {
+        error = null
     }
 }

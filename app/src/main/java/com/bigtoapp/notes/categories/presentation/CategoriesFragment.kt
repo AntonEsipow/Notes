@@ -1,18 +1,14 @@
 package com.bigtoapp.notes.categories.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.notes.R
-import com.bigtoapp.notes.main.presentation.BaseFragment
 import com.bigtoapp.notes.main.presentation.MenuBaseFragment
-import com.bigtoapp.notes.notes.presentation.ItemActions
+import com.bigtoapp.notes.notes.presentation.adapter.AbstractSwipeCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CategoriesFragment: MenuBaseFragment<CategoriesViewModel>() {
@@ -29,7 +25,6 @@ class CategoriesFragment: MenuBaseFragment<CategoriesViewModel>() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)
         val addCategoryButton = view.findViewById<FloatingActionButton>(R.id.addCategoryButton)
         val adapter = CategoriesAdapter(object: ItemCategoryActions {
-            override fun delete(id: String) = viewModel.deleteCategory(id)
             override fun edit(id: String, color: Int) = viewModel.editCategory(id, color)
         })
         recyclerView.adapter = adapter
@@ -50,6 +45,14 @@ class CategoriesFragment: MenuBaseFragment<CategoriesViewModel>() {
             progressBar.visibility = it
         }
         viewModel.init()
+
+        ItemTouchHelper( object : AbstractSwipeCallback(ItemTouchHelper.LEFT){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val itemId = adapter.getItem(position).id()
+                viewModel.deleteCategory(itemId)
+            }
+        }).attachToRecyclerView(recyclerView)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

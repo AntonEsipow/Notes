@@ -3,13 +3,14 @@ package com.bigtoapp.notes.notes.presentation
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.notes.R
-import com.bigtoapp.notes.main.presentation.BaseFragment
 import com.bigtoapp.notes.main.presentation.MenuBaseFragment
+import com.bigtoapp.notes.notes.presentation.adapter.AbstractSwipeCallback
+import com.bigtoapp.notes.notes.presentation.adapter.ItemActions
+import com.bigtoapp.notes.notes.presentation.adapter.NotesAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class NotesFragment : MenuBaseFragment<NotesViewModel>() {
@@ -25,10 +26,10 @@ class NotesFragment : MenuBaseFragment<NotesViewModel>() {
         val emptyState = view.findViewById<TextView>(R.id.emptyStateTextView)
         val recyclerView = view.findViewById<RecyclerView>(R.id.notesRecyclerView)
         val addNoteButton = view.findViewById<FloatingActionButton>(R.id.addNoteButton)
-        val adapter = NotesAdapter(object: ItemActions {
-            override fun delete(id: String) = viewModel.deleteNote(id)
+        val adapter = NotesAdapter(object : ItemActions {
             override fun edit(id: String) = viewModel.editNote(id)
         })
+
         recyclerView.adapter = adapter
 
         addNoteButton.setOnClickListener {
@@ -47,6 +48,14 @@ class NotesFragment : MenuBaseFragment<NotesViewModel>() {
             progressBar.visibility = it
         }
         viewModel.init()
+
+        ItemTouchHelper( object : AbstractSwipeCallback(ItemTouchHelper.LEFT){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val itemId = adapter.getItem(position).id()
+                viewModel.deleteNote(itemId)
+            }
+        }).attachToRecyclerView(recyclerView)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

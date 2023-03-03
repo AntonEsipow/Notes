@@ -22,6 +22,7 @@ class EditNoteUi(
         categoryName: String,
         categoryColor: Int
     ) {
+        titleField.clearError()
         titleField.showText(header)
         descriptionField.showText(description)
         dateField.text = performDate

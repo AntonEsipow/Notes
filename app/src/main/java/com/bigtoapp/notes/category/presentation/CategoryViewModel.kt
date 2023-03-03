@@ -47,7 +47,6 @@ class CategoryViewModel(
                     interactor.insertCategory(title, color)
                 }
                 communications.showState(CategoryUiState.AddCategory)
-                Log.d("bigTo", "Color: $color")
             } else {
                 handleRequest.handle(viewModelScope){
                     interactor.updateCategory(categoryId, title, color)

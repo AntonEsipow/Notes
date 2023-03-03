@@ -1,6 +1,5 @@
-package com.bigtoapp.notes.notes.presentation
+package com.bigtoapp.notes.notes.presentation.adapter
 
-import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.notes.R
 import com.bigtoapp.notes.main.presentation.Mapper
 import com.bigtoapp.notes.main.presentation.adapter.DiffUtilCallback
+import com.bigtoapp.notes.notes.presentation.NoteId
+import com.bigtoapp.notes.notes.presentation.NoteItemUi
+import com.bigtoapp.notes.notes.presentation.NoteUi
 
 class NotesAdapter(
     private val noteActions: ItemActions
-): RecyclerView.Adapter<NotesViewHolder>(), Mapper.Unit<List<NoteUi>> {
+): RecyclerView.Adapter<NotesViewHolder>(), Mapper.Unit<List<NoteUi>>, GetItemByPosition<NoteUi> {
 
     private val list = mutableListOf<NoteUi>()
 
@@ -36,6 +38,8 @@ class NotesAdapter(
         list.addAll(source)
         result.dispatchUpdatesTo(this)
     }
+
+    override fun getItem(position: Int) = list[position]
 }
 
 class NotesViewHolder(
@@ -46,8 +50,6 @@ class NotesViewHolder(
     private val title = itemView.findViewById<TextView>(R.id.noteTitleTextView)
     private val description = itemView.findViewById<TextView>(R.id.descriptionTextView)
     private val date = itemView.findViewById<TextView>(R.id.dateTextView)
-    private val deleteButton = itemView.findViewById<Button>(R.id.deleteNoteButton)
-    private val updateButton = itemView.findViewById<Button>(R.id.updateNoteButton)
 
     private val categoryName = itemView.findViewById<TextView>(R.id.noteCategoryName)
     private val card = itemView.findViewById<CardView>(R.id.noteCardView)
@@ -57,12 +59,14 @@ class NotesViewHolder(
 
     fun bind(model: NoteUi){
         model.map(mapper)
-        deleteButton.setOnClickListener { noteActions.delete(model.map(mapId)) }
-        updateButton.setOnClickListener { noteActions.edit(model.map(mapId)) }
+        card.setOnClickListener { noteActions.edit(model.map(mapId)) }
     }
 }
 
 interface ItemActions{
-    fun delete(id: String)
     fun edit(id: String)
+}
+
+interface GetItemByPosition<T>{
+    fun getItem(position: Int): T
 }

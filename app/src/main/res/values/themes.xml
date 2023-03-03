@@ -15,6 +15,10 @@
         <item name="itemBackground">@color/day_text</item>
     </style>
 
+    <style name="Theme.Notes.Background">
+        <item name="itemBackground">?attr/colorOnPrimary</item>
+    </style>
+
     <style name="Theme.Notes.Buttons" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>

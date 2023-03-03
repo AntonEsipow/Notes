@@ -11,6 +11,8 @@
         android:layout_height="match_parent"
         android:background="?attr/itemBackground"
         android:translationZ="3dp"
+        android:indeterminateDrawable="@drawable/spinner_ring"
+        android:indeterminateOnly="true"
         android:visibility="visible"
         tools:visibility="gone" />
 

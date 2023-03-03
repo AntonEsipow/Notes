@@ -1,9 +1,12 @@
 package com.bigtoapp.notes.note.presentation
 
+import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.graphics.Color
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bigtoapp.notes.R
+import com.bigtoapp.notes.categories.data.CategoryData
 import com.bigtoapp.notes.main.views.CustomTextInputEditText
 import com.bigtoapp.notes.notes.presentation.NoteUi
 import com.google.android.material.textfield.TextInputLayout
@@ -24,6 +27,7 @@ sealed class NoteUiState{
         private val dateMessage: String,
         private val categoryMessage: String
     ): NoteUiState(){
+
         override fun apply(
             titleLayout: TextInputLayout,
             titleEditText: CustomTextInputEditText,
@@ -34,9 +38,11 @@ sealed class NoteUiState{
             noteLayout: ConstraintLayout
         ) {
             titleEditText.showText("")
+            titleEditText.clearError()
             descriptionEditText.showText("")
             dateText.text = dateMessage
             categoryName.text = categoryMessage
+            noteLayout.setBackgroundColor(CategoryData.DEFAULT_CATEGORY_COLOR)
         }
     }
 
@@ -101,24 +107,8 @@ sealed class NoteUiState{
             dateText: TextView,
             categoryName: TextView,
             noteLayout: ConstraintLayout
-        ) = with(titleEditText){
-            showError(message)
-        }
-    }
-
-    data class ShowErrorDescription(
-        private val message: String
-        ): NoteUiState(){
-        override fun apply(
-            titleLayout: TextInputLayout,
-            titleEditText: CustomTextInputEditText,
-            descriptionLayout: TextInputLayout,
-            descriptionEditText: CustomTextInputEditText,
-            dateText: TextView,
-            categoryName: TextView,
-            noteLayout: ConstraintLayout
-        ) = with(descriptionEditText){
-            showError(message)
+        ) {
+            titleEditText.showError(message)
         }
     }
 
@@ -131,6 +121,8 @@ sealed class NoteUiState{
             dateText: TextView,
             categoryName: TextView,
             noteLayout: ConstraintLayout
-        ){}
+        ){
+            titleEditText.clearError()
+        }
     }
 }

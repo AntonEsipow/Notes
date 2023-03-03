@@ -9,43 +9,12 @@
     android:id="@+id/cardView"
     app:cardCornerRadius="@dimen/item_corner_radius">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/categoryTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/categoryTitleTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            tools:text="Title" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/deleteCategoryButton"
-                style="@style/Theme.Notes.Buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_small"
-                android:text="@string/delete_note" />
-
-            <Button
-                android:id="@+id/updateCategoryButton"
-                style="@style/Theme.Notes.Buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_small"
-                android:text="@string/edit_note" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_margin="@dimen/margin_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        tools:text="Title" />
 
 </androidx.cardview.widget.CardView>
